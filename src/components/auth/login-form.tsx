@@ -1,0 +1,89 @@
+"use client";
+
+import { useActionState } from "react";
+import { LogIn, Loader2 } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import {
+  authenticateWithCredentials,
+  signInWithGoogle,
+  type LoginActionState,
+} from "@/lib/actions/auth-actions";
+
+const initialState: LoginActionState = { error: null };
+
+export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
+  const authenticate = authenticateWithCredentials.bind(null, callbackUrl);
+  const signInWithGoogleTo = signInWithGoogle.bind(null, callbackUrl);
+  const [state, formAction, isPending] = useActionState(
+    authenticate,
+    initialState
+  );
+
+  return (
+    <div className="w-full max-w-sm space-y-6 rounded-lg border border-border bg-card p-6 shadow-sm">
+      <div className="space-y-1">
+        <h1 className="text-base font-semibold">Sign in</h1>
+        <p className="text-sm text-muted-foreground">
+          Use your company credentials to continue.
+        </p>
+      </div>
+
+      <form action={formAction} className="space-y-3">
+        <div className="space-y-1.5">
+          <label htmlFor="email" className="text-sm font-medium">
+            Email
+          </label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="you@company.com"
+            required
+          />
+        </div>
+        <div className="space-y-1.5">
+          <label htmlFor="password" className="text-sm font-medium">
+            Password
+          </label>
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            autoComplete="current-password"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+
+        {state.error ? (
+          <p className="text-sm text-destructive">{state.error}</p>
+        ) : null}
+
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {isPending ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            <LogIn className="size-4" />
+          )}
+          Sign in
+        </Button>
+      </form>
+
+      <div className="flex items-center gap-3">
+        <Separator className="flex-1" />
+        <span className="text-xs text-muted-foreground">OR</span>
+        <Separator className="flex-1" />
+      </div>
+
+      <form action={signInWithGoogleTo}>
+        <Button type="submit" variant="outline" className="w-full">
+          Continue with Google
+        </Button>
+      </form>
+    </div>
+  );
+}

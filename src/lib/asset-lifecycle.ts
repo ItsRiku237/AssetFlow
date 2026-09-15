@@ -1,15 +1,12 @@
 import type { AssetStatus } from "@/types/asset";
 
-/**
- * The only valid asset status transitions. Any code that changes an
- * asset's status — this task's Retire action, and future
- * assignment/return/repair modules — must go through
- * `assertValidAssetTransition` rather than writing `status` directly.
- */
 export const ASSET_STATUS_TRANSITIONS: Record<AssetStatus, AssetStatus[]> = {
   AVAILABLE: ["ASSIGNED", "RETIRED"],
   ASSIGNED: ["RETURN_REQUESTED"],
-  RETURN_REQUESTED: ["AVAILABLE", "IN_REPAIR"],
+  // ASSIGNED is also a valid target for RETURN_REQUESTED: this covers
+  // the rejection path where an admin denies a return request and
+  // custody reverts to the employee who already holds the asset.
+  RETURN_REQUESTED: ["AVAILABLE", "IN_REPAIR", "ASSIGNED"],
   IN_REPAIR: ["AVAILABLE"],
   RETIRED: [],
 };

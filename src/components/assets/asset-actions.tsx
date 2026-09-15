@@ -43,20 +43,15 @@ export function AssetActions({
       ) : null}
 
       {status === "ASSIGNED" ? (
-        <Button variant="outline" size="sm" disabled title="Return-request module isn't built yet">
-          View assignment
+        <Button variant="outline" size="sm" asChild>
+          <Link href="/assignments">View assignments</Link>
         </Button>
       ) : null}
 
       {status === "RETURN_REQUESTED" ? (
-        <>
-          <Button variant="outline" size="sm" disabled title="Return-request module isn't built yet">
-            Process return
-          </Button>
-          <Button variant="outline" size="sm" disabled title="Repair module isn't built yet">
-            Send to repair
-          </Button>
-        </>
+        <Button variant="outline" size="sm" asChild>
+          <Link href="/return-requests">Process return</Link>
+        </Button>
       ) : null}
 
       {status === "IN_REPAIR" ? (

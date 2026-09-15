@@ -4,6 +4,7 @@ import { Boxes } from "lucide-react";
 import { EmptyState } from "@/components/shared/empty-state";
 import { PageHeader } from "@/components/shared/page-header";
 import { AssetStatusBadge } from "@/components/shared/status-badge";
+import { RequestReturnDialog } from "@/components/assets/request-return-dialog";
 import { getMyAssets } from "@/lib/data/assets";
 import { requireRole } from "@/lib/auth-guards";
 import { formatDate } from "@/lib/utils";
@@ -28,24 +29,31 @@ export default async function MyAssetsPage() {
       ) : (
         <div className="divide-y divide-border rounded-lg border border-border bg-card">
           {assets.map((asset) => (
-            <Link
+            <div
               key={asset.id}
-              href={`/assets/${asset.id}`}
-              className="flex items-center justify-between gap-3 px-4 py-3 text-sm transition-colors hover:bg-muted/40"
+              className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-sm transition-colors hover:bg-muted/40"
             >
-              <div className="min-w-0">
+              <Link href={`/assets/${asset.id}`} className="min-w-0 flex-1">
                 <p className="truncate font-medium">{asset.name}</p>
                 <p className="truncate text-xs text-muted-foreground">
                   {asset.assetTag} · {asset.type}
                 </p>
-              </div>
+              </Link>
               <div className="flex shrink-0 items-center gap-3">
                 <span className="text-xs text-muted-foreground">
                   Since {formatDate(asset.assignedAt)}
                 </span>
                 <AssetStatusBadge status={asset.status} />
+                {asset.status === "ASSIGNED" ? (
+                  <RequestReturnDialog assetId={asset.id} />
+                ) : null}
+                {asset.status === "RETURN_REQUESTED" ? (
+                  <span className="text-xs text-muted-foreground">
+                    Return request pending review
+                  </span>
+                ) : null}
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       )}

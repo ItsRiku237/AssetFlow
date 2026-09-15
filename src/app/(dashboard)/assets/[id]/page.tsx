@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { AssetActions } from "@/components/assets/asset-actions";
+import { RequestReturnDialog } from "@/components/assets/request-return-dialog";
 import { DashboardSection } from "@/components/dashboard/dashboard-section";
 import { ActivityRow } from "@/components/dashboard/activity-row";
 import { EmptyState } from "@/components/shared/empty-state";
@@ -27,12 +28,13 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
   const asset = await getAssetById(id);
   if (!asset) notFound();
 
-  if (session.user.role === "EMPLOYEE") {
-    const owns = await isAssetAssignedToUser(id, session.user.id);
-    if (!owns) notFound();
-  }
-
   const isAdmin = session.user.role === "ADMIN";
+  let ownsAsset = false;
+
+  if (!isAdmin) {
+    ownsAsset = await isAssetAssignedToUser(id, session.user.id);
+    if (!ownsAsset) notFound();
+  }
 
   const assignableEmployees =
     isAdmin && asset.status === "AVAILABLE"
@@ -47,6 +49,8 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
         actions={
           isAdmin ? (
             <AssetActions assetId={asset.id} status={asset.status} assignableEmployees={assignableEmployees} />
+          ) : ownsAsset && asset.status === "ASSIGNED" ? (
+            <RequestReturnDialog assetId={asset.id} />
           ) : undefined
         }
       />

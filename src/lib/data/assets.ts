@@ -3,6 +3,7 @@ import "server-only";
 import { prisma } from "@/lib/prisma";
 import type { AssetStatus } from "@/types/asset";
 import type { ReturnRequestStatus } from "@/types/asset";
+import type { MaintenanceRecordStatus } from "@/types/asset";
 
 export interface AssetListFilters {
   search?: string;
@@ -107,8 +108,13 @@ export interface AssetDetail {
   maintenanceRecords: {
     id: string;
     issue: string;
+    description: string | null;
+    vendor: string | null;
+    cost: string | null;
     startedAt: Date;
     completedAt: Date | null;
+    resolution: string | null;
+    status: MaintenanceRecordStatus;
   }[];
   returnRequests: {
     id: string;
@@ -171,8 +177,13 @@ export async function getAssetById(id: string): Promise<AssetDetail | null> {
     maintenanceRecords: asset.maintenanceRecords.map((m) => ({
       id: m.id,
       issue: m.issue,
+      description: m.description,
+      vendor: m.vendor,
+      cost: m.cost?.toString() ?? null,
       startedAt: m.startedAt,
       completedAt: m.completedAt,
+      resolution: m.resolution,
+      status: (m.completedAt ? "COMPLETED" : "IN_PROGRESS") as MaintenanceRecordStatus,
     })),
     returnRequests: asset.returnRequests.map((r) => ({
       id: r.id,

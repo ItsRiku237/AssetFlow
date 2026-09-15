@@ -1,5 +1,10 @@
 import { Badge } from "@/components/ui/badge";
-import type { AssetStatus, ReturnRequestStatus } from "@/types/asset";
+
+import type {
+  AssetStatus,
+  MaintenanceRecordStatus,
+  ReturnRequestStatus,
+} from "@/types/asset";
 
 const ASSET_STATUS_LABEL: Record<AssetStatus, string> = {
   AVAILABLE: "Available",
@@ -51,6 +56,31 @@ export function ReturnRequestStatusBadge({
   return (
     <Badge variant={RETURN_STATUS_VARIANT[status]}>
       {RETURN_STATUS_LABEL[status]}
+    </Badge>
+  );
+}
+
+const MAINTENANCE_STATUS_LABEL: Record<MaintenanceRecordStatus, string> = {
+  IN_PROGRESS: "In progress",
+  COMPLETED: "Completed",
+};
+
+const MAINTENANCE_STATUS_VARIANT: Record<
+  MaintenanceRecordStatus,
+  "default" | "secondary" | "success" | "warning" | "destructive"
+> = {
+  IN_PROGRESS: "warning",
+  COMPLETED: "success",
+};
+
+export function MaintenanceStatusBadge({
+  status,
+}: {
+  status: MaintenanceRecordStatus;
+}) {
+  return (
+    <Badge variant={MAINTENANCE_STATUS_VARIANT[status]}>
+      {MAINTENANCE_STATUS_LABEL[status]}
     </Badge>
   );
 }

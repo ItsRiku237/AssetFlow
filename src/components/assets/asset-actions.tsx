@@ -55,8 +55,8 @@ export function AssetActions({
       ) : null}
 
       {status === "IN_REPAIR" ? (
-        <Button variant="outline" size="sm" disabled title="Repair module isn't built yet">
-          View repair state
+        <Button variant="outline" size="sm" asChild>
+          <Link href="/repairs">Manage repair</Link>
         </Button>
       ) : null}
     </div>

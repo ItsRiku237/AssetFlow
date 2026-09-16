@@ -5,6 +5,7 @@ import type {
   MaintenanceRecordStatus,
   ReturnRequestStatus,
 } from "@/types/asset";
+import type { EmployeeStatus } from "@/types/employee";
 
 const ASSET_STATUS_LABEL: Record<AssetStatus, string> = {
   AVAILABLE: "Available",
@@ -81,6 +82,36 @@ export function MaintenanceStatusBadge({
   return (
     <Badge variant={MAINTENANCE_STATUS_VARIANT[status]}>
       {MAINTENANCE_STATUS_LABEL[status]}
+    </Badge>
+  );
+}
+
+const EMPLOYEE_STATUS_LABEL: Record<EmployeeStatus, string> = {
+  ACTIVE: "Active",
+  INACTIVE: "Deactivated",
+};
+
+const EMPLOYEE_STATUS_VARIANT: Record<
+  EmployeeStatus,
+  "default" | "secondary" | "success" | "warning" | "destructive"
+> = {
+  ACTIVE: "success",
+  INACTIVE: "secondary",
+};
+
+export function EmployeeStatusBadge({ status }: { status: EmployeeStatus }) {
+  return (
+    <Badge variant={EMPLOYEE_STATUS_VARIANT[status]}>
+      {EMPLOYEE_STATUS_LABEL[status]}
+    </Badge>
+  );
+}
+
+/** Whether a directory record has a linked login account. */
+export function AccountLinkBadge({ linked }: { linked: boolean }) {
+  return (
+    <Badge variant={linked ? "default" : "outline"}>
+      {linked ? "Account linked" : "Account not linked"}
     </Badge>
   );
 }

@@ -56,7 +56,7 @@ export function AssignmentsTable({
               </div>
             </TableCell>
             <TableCell className="text-muted-foreground">
-              {a.department}
+              {a.department ?? "—"}
             </TableCell>
             <TableCell>
               <AssetStatusBadge status={a.assetStatus} />

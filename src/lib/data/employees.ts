@@ -2,54 +2,55 @@ import "server-only";
 
 import { prisma } from "@/lib/prisma";
 import type { AssetStatus } from "@/types/asset";
+import type { EmployeeStatus } from "@/types/employee";
 import type { Role } from "@/types/role";
 
 export interface EmployeeListFilters {
   search?: string;
   department?: string;
+  status?: EmployeeStatus;
 }
 
 export interface EmployeeListItem {
   id: string;
-  name: string;
-  email: string;
   employeeCode: string;
-  department: string;
-  designation: string;
-  role: Role;
-  joinedAt: Date;
+  name: string;
+  email: string | null;
+  department: string | null;
+  designation: string | null;
+  status: EmployeeStatus;
+  /** Whether this directory record has a linked login account. */
+  accountLinked: boolean;
+  role: Role | null;
+  createdAt: Date;
   assignedAssetCount: number;
 }
 
 export async function getEmployees(
-  filters: EmployeeListFilters
+  filters: EmployeeListFilters = {}
 ): Promise<EmployeeListItem[]> {
   const employees = await prisma.employee.findMany({
     where: {
       ...(filters.department ? { department: filters.department } : {}),
+      ...(filters.status ? { status: filters.status } : {}),
       ...(filters.search
         ? {
             OR: [
               {
                 employeeCode: { contains: filters.search, mode: "insensitive" },
               },
+              { name: { contains: filters.search, mode: "insensitive" } },
+              { email: { contains: filters.search, mode: "insensitive" } },
               {
-                user: {
-                  name: { contains: filters.search, mode: "insensitive" },
-                },
-              },
-              {
-                user: {
-                  email: { contains: filters.search, mode: "insensitive" },
-                },
+                department: { contains: filters.search, mode: "insensitive" },
               },
             ],
           }
         : {}),
     },
-    orderBy: { user: { name: "asc" } },
+    orderBy: { name: "asc" },
     include: {
-      user: true,
+      user: { select: { role: true } },
       _count: {
         select: { assignments: { where: { status: "ACTIVE" } } },
       },
@@ -58,24 +59,29 @@ export async function getEmployees(
 
   return employees.map((e) => ({
     id: e.id,
-    name: e.user.name,
-    email: e.user.email,
     employeeCode: e.employeeCode,
+    name: e.name,
+    email: e.email,
     department: e.department,
     designation: e.designation,
-    role: e.user.role,
-    joinedAt: e.user.createdAt,
+    status: e.status,
+    accountLinked: e.userId !== null,
+    role: e.user?.role ?? null,
+    createdAt: e.createdAt,
     assignedAssetCount: e._count.assignments,
   }));
 }
 
 export async function getDepartments(): Promise<string[]> {
   const rows = await prisma.employee.findMany({
+    where: { department: { not: null } },
     distinct: ["department"],
     select: { department: true },
     orderBy: { department: "asc" },
   });
-  return rows.map((r) => r.department);
+  return rows
+    .map((r) => r.department)
+    .filter((d): d is string => Boolean(d));
 }
 
 export interface EmployeeAssignedAsset {
@@ -89,15 +95,20 @@ export interface EmployeeAssignedAsset {
 
 export interface EmployeeDetail {
   id: string;
-  name: string;
-  email: string;
-  image: string | null;
   employeeCode: string;
-  department: string;
-  designation: string;
+  name: string;
+  email: string | null;
+  department: string | null;
+  designation: string | null;
   phone: string | null;
-  role: Role;
-  joinedAt: Date;
+  status: EmployeeStatus;
+  createdAt: Date;
+  /** Login-account details, present only when this directory record is linked. */
+  account: {
+    email: string;
+    image: string | null;
+    role: Role;
+  } | null;
   assignedAssets: EmployeeAssignedAsset[];
 }
 
@@ -107,7 +118,7 @@ export async function getEmployeeById(
   const employee = await prisma.employee.findUnique({
     where: { id },
     include: {
-      user: true,
+      user: { select: { email: true, image: true, role: true } },
       assignments: {
         where: { status: "ACTIVE" },
         orderBy: { assignedAt: "desc" },
@@ -119,15 +130,21 @@ export async function getEmployeeById(
 
   return {
     id: employee.id,
-    name: employee.user.name,
-    email: employee.user.email,
-    image: employee.user.image,
     employeeCode: employee.employeeCode,
+    name: employee.name,
+    email: employee.email,
     department: employee.department,
     designation: employee.designation,
     phone: employee.phone,
-    role: employee.user.role,
-    joinedAt: employee.user.createdAt,
+    status: employee.status,
+    createdAt: employee.createdAt,
+    account: employee.user
+      ? {
+          email: employee.user.email,
+          image: employee.user.image,
+          role: employee.user.role,
+        }
+      : null,
     assignedAssets: employee.assignments.map((a) => ({
       id: a.id,
       assetId: a.asset.id,
@@ -137,4 +154,12 @@ export async function getEmployeeById(
       assignedAt: a.assignedAt,
     })),
   };
+}
+
+/** Used by the Add/Edit Employee forms to check Employee ID uniqueness. */
+export async function getEmployeeByCode(employeeCode: string) {
+  return prisma.employee.findUnique({
+    where: { employeeCode },
+    select: { id: true },
+  });
 }

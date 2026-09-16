@@ -49,7 +49,7 @@ export async function getAssets(
     include: {
       assignments: {
         where: { status: "ACTIVE" },
-        include: { employee: { include: { user: { select: { name: true } } } } },
+        include: { employee: { select: { name: true } } },
       },
     },
   });
@@ -63,7 +63,7 @@ export async function getAssets(
     serialNumber: a.serialNumber,
     status: a.status,
     purchaseDate: a.purchaseDate,
-    assignedEmployeeName: a.assignments[0]?.employee.user.name ?? null,
+    assignedEmployeeName: a.assignments[0]?.employee.name ?? null,
   }));
 }
 
@@ -130,12 +130,12 @@ export async function getAssetById(id: string): Promise<AssetDetail | null> {
     include: {
       assignments: {
         orderBy: { assignedAt: "desc" },
-        include: { employee: { include: { user: { select: { name: true } } } } },
+        include: { employee: { select: { name: true } } },
       },
       maintenanceRecords: { orderBy: { startedAt: "desc" } },
       returnRequests: {
         orderBy: { requestedAt: "desc" },
-        include: { employee: { include: { user: { select: { name: true } } } } },
+        include: { employee: { select: { name: true } } },
       },
     },
   });
@@ -164,13 +164,13 @@ export async function getAssetById(id: string): Promise<AssetDetail | null> {
     currentAssignment: active
       ? {
           employeeId: active.employeeId,
-          employeeName: active.employee.user.name,
+          employeeName: active.employee.name,
           assignedAt: active.assignedAt,
         }
       : null,
     assignmentHistory: asset.assignments.map((a) => ({
       id: a.id,
-      employeeName: a.employee.user.name,
+      employeeName: a.employee.name,
       assignedAt: a.assignedAt,
       returnedAt: a.returnedAt,
     })),
@@ -189,7 +189,7 @@ export async function getAssetById(id: string): Promise<AssetDetail | null> {
       id: r.id,
       status: r.status,
       requestedAt: r.requestedAt,
-      employeeName: r.employee.user.name,
+      employeeName: r.employee.name,
     })),
   };
 }

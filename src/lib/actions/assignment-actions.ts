@@ -35,6 +35,9 @@ export async function assignAsset(
   if (!employee) {
     return { error: "Employee not found." };
   }
+  if (employee.status === "INACTIVE") {
+    return { error: "This employee is deactivated and cannot be assigned assets." };
+  }
 
   // Fail fast with a specific message for the common case (checked
   // again atomically below to guard against a concurrent change).

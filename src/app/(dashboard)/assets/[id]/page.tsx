@@ -38,7 +38,11 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
 
   const assignableEmployees =
     isAdmin && asset.status === "AVAILABLE"
-      ? (await getEmployees({})).map((e) => ({ id: e.id, name: e.name, department: e.department }))
+      ? (await getEmployees({ status: "ACTIVE" })).map((e) => ({
+          id: e.id,
+          name: e.name,
+          department: e.department ?? "—",
+        }))
       : [];
 
   return (

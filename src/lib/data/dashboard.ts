@@ -42,7 +42,7 @@ export async function getRecentAssignments(
     take: limit,
     include: {
       asset: { select: { name: true, assetTag: true } },
-      employee: { include: { user: { select: { name: true } } } },
+      employee: { select: { name: true } },
     },
   });
 
@@ -50,7 +50,7 @@ export async function getRecentAssignments(
     id: a.id,
     assetName: a.asset.name,
     assetTag: a.asset.assetTag,
-    employeeName: a.employee.user.name,
+    employeeName: a.employee.name,
     assignedAt: a.assignedAt,
     returnedAt: a.returnedAt,
   }));
@@ -72,14 +72,14 @@ export async function getRecentReturnRequests(
     take: limit,
     include: {
       asset: { select: { name: true } },
-      employee: { include: { user: { select: { name: true } } } },
+      employee: { select: { name: true } },
     },
   });
 
   return requests.map((r) => ({
     id: r.id,
     assetName: r.asset.name,
-    employeeName: r.employee.user.name,
+    employeeName: r.employee.name,
     status: r.status,
     requestedAt: r.requestedAt,
   }));

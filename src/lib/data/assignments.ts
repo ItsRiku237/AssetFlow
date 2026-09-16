@@ -14,7 +14,7 @@ export interface AssignmentListItem {
   employeeId: string;
   employeeName: string;
   employeeCode: string;
-  department: string;
+  department: string | null;
   status: AssignmentStatus;
   assignedAt: Date;
   returnedAt: Date | null;
@@ -46,9 +46,7 @@ export async function getAssignments(
               },
               {
                 employee: {
-                  user: {
-                    name: { contains: filters.search, mode: "insensitive" },
-                  },
+                  name: { contains: filters.search, mode: "insensitive" },
                 },
               },
             ],
@@ -61,7 +59,7 @@ export async function getAssignments(
         select: { name: true, assetTag: true, type: true, status: true },
       },
       employee: {
-        include: { user: { select: { name: true } } },
+        select: { name: true, employeeCode: true, department: true },
       },
     },
   });
@@ -74,7 +72,7 @@ export async function getAssignments(
     assetType: a.asset.type,
     assetStatus: a.asset.status,
     employeeId: a.employeeId,
-    employeeName: a.employee.user.name,
+    employeeName: a.employee.name,
     employeeCode: a.employee.employeeCode,
     department: a.employee.department,
     status: a.status,

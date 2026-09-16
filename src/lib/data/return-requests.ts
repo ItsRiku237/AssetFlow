@@ -24,7 +24,7 @@ export async function getReturnRequests(
     orderBy: { requestedAt: "desc" },
     include: {
       asset: { select: { name: true, assetTag: true } },
-      employee: { include: { user: { select: { name: true } } } },
+      employee: { select: { name: true } },
       reviewedBy: { select: { name: true } },
     },
   });
@@ -34,7 +34,7 @@ export async function getReturnRequests(
     assetId: r.assetId,
     assetName: r.asset.name,
     assetTag: r.asset.assetTag,
-    employeeName: r.employee.user.name,
+    employeeName: r.employee.name,
     reason: r.reason,
     status: r.status,
     requestedAt: r.requestedAt,

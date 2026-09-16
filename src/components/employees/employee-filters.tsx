@@ -6,6 +6,12 @@ import { X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import type { EmployeeStatus } from "@/types/employee";
+
+const STATUS_OPTIONS: { value: EmployeeStatus; label: string }[] = [
+  { value: "ACTIVE", label: "Active" },
+  { value: "INACTIVE", label: "Deactivated" },
+];
 
 export function EmployeeFilters({ departments }: { departments: string[] }) {
   const router = useRouter();
@@ -14,7 +20,8 @@ export function EmployeeFilters({ departments }: { departments: string[] }) {
   const [search, setSearch] = useState(searchParams.get("q") ?? "");
 
   const department = searchParams.get("department") ?? "";
-  const hasFilters = Boolean(search || department);
+  const status = searchParams.get("status") ?? "";
+  const hasFilters = Boolean(search || department || status);
 
   function pushParams(next: Record<string, string>) {
     const params = new URLSearchParams(searchParams.toString());
@@ -62,6 +69,20 @@ export function EmployeeFilters({ departments }: { departments: string[] }) {
         {departments.map((d) => (
           <option key={d} value={d}>
             {d}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={status}
+        onChange={(e) => pushParams({ status: e.target.value })}
+        aria-label="Filter by status"
+        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+      >
+        <option value="">All statuses</option>
+        {STATUS_OPTIONS.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
           </option>
         ))}
       </select>

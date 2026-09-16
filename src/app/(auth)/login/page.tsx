@@ -14,6 +14,11 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   const session = await auth();
   if (session?.user) {
+    // A user who just completed Google sign-in but hasn't entered their
+    // Employee ID yet must go to /onboarding, not to the dashboard.
+    if (session.user.onboardingRequired) {
+      redirect("/onboarding");
+    }
     redirect(redirectTo);
   }
 

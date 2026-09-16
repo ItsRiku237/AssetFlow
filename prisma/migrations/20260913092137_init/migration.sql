@@ -1,54 +1,5 @@
--- Task 11: Employee Directory + Admin Provisioning
--- Makes Employee independent of User (an employee can exist without
--- a login account) and adds directory fields: name, email, status.
--- Existing data is preserved and backfilled from the linked User.
-
--- CreateEnum
-CREATE TYPE "EmployeeStatus" AS ENUM ('ACTIVE', 'INACTIVE');
-
--- AlterTable: add status (defaults every existing row to ACTIVE)
-ALTER TABLE "employees" ADD COLUMN "status" "EmployeeStatus" NOT NULL DEFAULT 'ACTIVE';
-
--- AlterTable: add name, nullable for now so we can backfill it
-ALTER TABLE "employees" ADD COLUMN "name" TEXT;
-
--- Backfill name from each employee's linked user
-UPDATE "employees" e
-SET "name" = u."name"
-FROM "users" u
-WHERE e."userId" = u."id";
-
--- Safety net: any row that somehow has no linked user falls back to
--- its employee code rather than leaving name NULL.
-UPDATE "employees"
-SET "name" = "employeeCode"
-WHERE "name" IS NULL;
-
--- Now that every row has a name, enforce NOT NULL
-ALTER TABLE "employees" ALTER COLUMN "name" SET NOT NULL;
-
--- AlterTable: add directory email (optional), backfilled from the
--- linked user's account email where one exists
-ALTER TABLE "employees" ADD COLUMN "email" TEXT;
-
-UPDATE "employees" e
-SET "email" = u."email"
-FROM "users" u
-WHERE e."userId" = u."id";
-
--- AlterTable: department/designation are now optional at creation
--- time; existing values are left untouched
-ALTER TABLE "employees" ALTER COLUMN "department" DROP NOT NULL;
-ALTER TABLE "employees" ALTER COLUMN "designation" DROP NOT NULL;
-
--- AlterTable: userId becomes optional so an Employee can exist
--- without a User. Re-point the FK at ON DELETE SET NULL so a
--- (currently nonexistent) user-delete flow can never cascade into
--- deleting directory/history data.
-ALTER TABLE "employees" DROP CONSTRAINT "employees_userId_fkey";
-ALTER TABLE "employees" ALTER COLUMN "userId" DROP NOT NULL;
-ALTER TABLE "employees" ADD CONSTRAINT "employees_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- CreateIndex: directory filtering/search
-CREATE INDEX "employees_status_idx" ON "employees"("status");
-CREATE INDEX "employees_department_idx" ON "employees"("department");
+-- Migration: add onboardingRequired to users
+-- Existing rows (admin + seeded employees) default to FALSE so they
+-- are not affected — they keep working without any change.
+ALTER TABLE "users" 
+ADD COLUMN IF NOT EXISTS "onboardingRequired" BOOLEAN NOT NULL DEFAULT false;

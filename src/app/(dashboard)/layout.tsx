@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { redirect } from "next/navigation";
 
 import { requireAuth } from "@/lib/auth-guards";
 import { Sidebar } from "@/components/layout/sidebar";
@@ -10,9 +11,13 @@ export default async function DashboardLayout({
   children: ReactNode;
 }) {
   // Defense in depth: the proxy already redirects unauthenticated
-  // requests to /login, but this route group never renders without
-  // its own server-side session check either.
+  // and not-yet-onboarded requests, but this layout enforces both
+  // independently so it can't be bypassed.
   const session = await requireAuth();
+
+  if (session.user.onboardingRequired) {
+    redirect("/onboarding");
+  }
 
   return (
     <div className="flex h-dvh w-full overflow-hidden">

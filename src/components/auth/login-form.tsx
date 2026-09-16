@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { LogIn, Loader2 } from "lucide-react";
 
@@ -84,6 +85,18 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
           Continue with Google
         </Button>
       </form>
+
+      <div className="rounded-md border border-border bg-muted/50 px-3 py-2.5">
+        <p className="text-xs text-muted-foreground">
+          New employee?{" "}
+          <Link
+            href="/register"
+            className="font-medium text-foreground underline underline-offset-4"
+          >
+            Activate your account
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

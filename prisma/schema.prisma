@@ -15,8 +15,10 @@ model User {
   emailVerified          DateTime?
   image                  String?
   role                   Role            @default(EMPLOYEE)
-  /// Bcrypt hash. Null for users who only ever sign in via Google OAuth.
   passwordHash           String?
+  /// True for newly-created accounts that have not yet linked to an
+  /// Employee directory record. Dashboard access is blocked until false.
+  onboardingRequired     Boolean         @default(false)
   createdAt              DateTime        @default(now())
   updatedAt              DateTime        @updatedAt
   accounts               Account[]

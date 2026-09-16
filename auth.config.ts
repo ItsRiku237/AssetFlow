@@ -24,22 +24,27 @@ export default {
         return isLoggedIn;
       }
 
-      // Public and unmatched routes.
+      // Public and unmatched routes (including /register).
       if (requiredRole === null) return true;
 
       if (!isLoggedIn) return false;
 
       // A user with onboardingRequired must complete onboarding before
-      // accessing any dashboard route. The proxy redirects them to
-      // /onboarding — the full server-side guard in the dashboard
-      // layout also enforces this independently.
-      const needsOnboarding = (auth as unknown as { user?: { onboardingRequired?: boolean } })
-        ?.user?.onboardingRequired === true;
+      // accessing any protected route. Redirect them to /onboarding
+      // (returning a Response redirect rather than false avoids sending
+      // them to /login, which would loop back to /dashboard and trigger
+      // this check again).
+      const needsOnboarding = (
+        auth as unknown as { user?: { onboardingRequired?: boolean } }
+      )?.user?.onboardingRequired === true;
 
       if (needsOnboarding) {
-        // Allow /login so they can switch accounts; block everything else.
+        // Allow /login so they can switch accounts without looping.
         if (pathname === "/login") return true;
-        return false;
+        // For everything else, redirect to onboarding.
+        const url = request.nextUrl.clone();
+        url.pathname = "/onboarding";
+        return Response.redirect(url);
       }
 
       if (requiredRole === "both") return true;

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { assertValidAssetTransition } from "@/lib/asset-lifecycle";
 import { requireRole } from "@/lib/auth-guards";
 import { prisma } from "@/lib/prisma";
+import { createNotification } from "@/lib/notifications";
 import { assignAssetSchema } from "@/lib/validations/assignment";
 
 export type AssignAssetState = { error: string | null };
@@ -31,6 +32,7 @@ export async function assignAsset(
 
   const employee = await prisma.employee.findUnique({
     where: { id: employeeId },
+    select: { id: true, status: true, userId: true },
   });
   if (!employee) {
     return { error: "Employee not found." };
@@ -90,6 +92,15 @@ export async function assignAsset(
           ? error.message
           : "Could not assign the asset. Please try again.",
     };
+  }
+
+  if (employee.userId) {
+    await createNotification({
+      userId: employee.userId,
+      title: "Asset assigned to you",
+      message: `${asset.name} (${asset.assetTag}) has been assigned to you.`,
+      link: `/assets/${assetId}`,
+    });
   }
 
   revalidatePath("/assets");

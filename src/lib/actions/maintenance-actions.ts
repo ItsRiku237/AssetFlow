@@ -6,6 +6,7 @@ import { assertValidAssetTransition } from "@/lib/asset-lifecycle";
 import { requireRole } from "@/lib/auth-guards";
 import { recordAuditLog } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
+import { createNotification } from "@/lib/notifications";
 import {
   completeMaintenanceRecordSchema,
   createMaintenanceRecordSchema,
@@ -261,6 +262,20 @@ export async function completeMaintenanceRecord(
           ? error.message
           : "Could not complete the repair. Please try again.",
     };
+  }
+
+  const lastAssignment = await prisma.assetAssignment.findFirst({
+    where: { assetId: asset.id },
+    orderBy: { assignedAt: "desc" },
+    include: { employee: { select: { userId: true } } },
+  });
+  if (lastAssignment?.employee.userId) {
+    await createNotification({
+      userId: lastAssignment.employee.userId,
+      title: "Asset repair completed",
+      message: `${asset.name} (${asset.assetTag}) has been repaired and is now available.`,
+      link: `/assets/${asset.id}`,
+    });
   }
 
   revalidateMaintenancePaths(asset.id);

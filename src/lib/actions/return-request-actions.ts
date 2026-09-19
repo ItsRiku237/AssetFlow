@@ -6,6 +6,11 @@ import { assertValidAssetTransition } from "@/lib/asset-lifecycle";
 import { requireRole } from "@/lib/auth-guards";
 import { prisma } from "@/lib/prisma";
 import {
+  createNotification,
+  createNotifications,
+  getAdminUserIds,
+} from "@/lib/notifications";
+import {
   approveReturnRequestSchema,
   createReturnRequestSchema,
 } from "@/lib/validations/return-request";
@@ -113,6 +118,16 @@ export async function createReturnRequest(
     };
   }
 
+  const adminIds = await getAdminUserIds();
+  await createNotifications(
+    adminIds.map((uid) => ({
+      userId: uid,
+      title: "Return request submitted",
+      message: `A return request was submitted for ${asset.name} (${asset.assetTag}).`,
+      link: "/return-requests",
+    }))
+  );
+
   revalidatePath(`/assets/${assetId}`);
   revalidatePath("/assets");
   revalidatePath("/my-assets");
@@ -143,6 +158,7 @@ export async function approveReturnRequest(
 
   const request = await prisma.returnRequest.findUnique({
     where: { id: requestId },
+    include: { employee: { select: { userId: true } } },
   });
   if (!request) {
     return { error: "Return request not found." };
@@ -227,6 +243,15 @@ export async function approveReturnRequest(
     };
   }
 
+  if (request.employee.userId) {
+    await createNotification({
+      userId: request.employee.userId,
+      title: "Return request approved",
+      message: `Your return request for ${asset.name} (${asset.assetTag}) was approved.`,
+      link: "/my-assets",
+    });
+  }
+
   revalidatePath("/return-requests");
   revalidatePath("/assets");
   revalidatePath(`/assets/${request.assetId}`);
@@ -250,6 +275,7 @@ export async function rejectReturnRequest(
 
   const request = await prisma.returnRequest.findUnique({
     where: { id: requestId },
+    include: { employee: { select: { userId: true } } },
   });
   if (!request) {
     return { error: "Return request not found." };
@@ -329,6 +355,15 @@ export async function rejectReturnRequest(
           ? error.message
           : "Could not reject the request. Please try again.",
     };
+  }
+
+  if (request.employee.userId) {
+    await createNotification({
+      userId: request.employee.userId,
+      title: "Return request rejected",
+      message: `Your return request for ${asset.name} (${asset.assetTag}) was not approved.`,
+      link: "/my-assets",
+    });
   }
 
   revalidatePath("/return-requests");

@@ -1,13 +1,22 @@
 import type { Session } from "next-auth";
-import { Bell, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MobileSidebar } from "@/components/layout/mobile-sidebar";
 import { ModeToggle } from "@/components/layout/mode-toggle";
+import { NotificationBell } from "@/components/layout/notification-bell";
 import { UserMenu } from "@/components/layout/user-menu";
+import {
+  getUserNotifications,
+  getUnreadNotificationCount,
+} from "@/lib/data/notifications";
 
-export function Topbar({ user }: { user: Session["user"] }) {
+export async function Topbar({ user }: { user: Session["user"] }) {
+  const [notifications, unreadCount] = await Promise.all([
+    getUserNotifications(user.id),
+    getUnreadNotificationCount(user.id),
+  ]);
+
   return (
     <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-background px-4">
       <MobileSidebar role={user.role} />
@@ -22,9 +31,10 @@ export function Topbar({ user }: { user: Session["user"] }) {
       </div>
 
       <div className="ml-auto flex items-center gap-1">
-        <Button variant="ghost" size="icon" aria-label="Notifications">
-          <Bell className="size-4" />
-        </Button>
+        <NotificationBell
+          notifications={notifications}
+          unreadCount={unreadCount}
+        />
         <ModeToggle />
         <UserMenu user={user} />
       </div>

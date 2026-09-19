@@ -3,6 +3,7 @@
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
+import { createNotifications, getAdminUserIds } from "@/lib/notifications";
 import { hashPassword } from "@/lib/password";
 import { sendOtpEmail } from "@/lib/email";
 import {
@@ -333,6 +334,16 @@ export async function createAccount(
       employeeCode,
     };
   }
+
+  const adminIds = await getAdminUserIds();
+  await createNotifications(
+    adminIds.map((uid) => ({
+      userId: uid,
+      title: "Employee account activated",
+      message: `${employee.email} activated their account (${employeeCode}).`,
+      link: "/employees",
+    }))
+  );
 
   return { step: 4, error: null };
 }

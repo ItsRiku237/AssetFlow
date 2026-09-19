@@ -8,6 +8,7 @@ import { prisma } from "@/lib/prisma";
 import { verifyPassword } from "@/lib/password";
 import { loginSchema } from "@/lib/validations/auth";
 import type { Role } from "@/types/role";
+import { createNotifications, getAdminUserIds } from "@/lib/notifications";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -184,6 +185,16 @@ async function linkGoogleEmployee(
       },
     });
   });
+
+  const adminIds = await getAdminUserIds();
+  await createNotifications(
+    adminIds.map((uid) => ({
+      userId: uid,
+      title: "Employee account activated",
+      message: `An employee activated their account via Google (${employeeCode}).`,
+      link: "/employees",
+    }))
+  );
 }
 
 /**

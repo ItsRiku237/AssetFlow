@@ -1,7 +1,7 @@
 import "server-only";
 
 import { prisma } from "@/lib/prisma";
-import type { AssetStatus } from "@/types/asset";
+import type { AssetStatus, AssetLocationData } from "@/types/asset";
 import type { ReturnRequestStatus } from "@/types/asset";
 import type { MaintenanceRecordStatus } from "@/types/asset";
 
@@ -9,6 +9,7 @@ export interface AssetListFilters {
   search?: string;
   status?: AssetStatus;
   type?: string;
+  locationType?: AssetLocationData["locationType"];
 }
 
 export interface AssetListItem {
@@ -21,6 +22,7 @@ export interface AssetListItem {
   status: AssetStatus;
   purchaseDate: Date | null;
   assignedEmployeeName: string | null;
+  location: AssetLocationData | null;
 }
 
 export async function getAssets(
@@ -30,6 +32,9 @@ export async function getAssets(
     where: {
       ...(filters.status ? { status: filters.status } : {}),
       ...(filters.type ? { type: filters.type } : {}),
+      ...(filters.locationType
+        ? { location: { locationType: filters.locationType } }
+        : {}),
       ...(filters.search
         ? {
             OR: [
@@ -51,6 +56,7 @@ export async function getAssets(
         where: { status: "ACTIVE" },
         include: { employee: { select: { name: true } } },
       },
+      location: true,
     },
   });
 
@@ -64,6 +70,17 @@ export async function getAssets(
     status: a.status,
     purchaseDate: a.purchaseDate,
     assignedEmployeeName: a.assignments[0]?.employee.name ?? null,
+    location: a.location
+      ? {
+          id: a.location.id,
+          locationType: a.location.locationType as AssetLocationData['locationType'],
+          building: a.location.building,
+          floor: a.location.floor,
+          room: a.location.room,
+          desk: a.location.desk,
+          description: a.location.description,
+        }
+      : null,
   }));
 }
 
@@ -94,6 +111,7 @@ export interface AssetDetail {
   status: AssetStatus;
   createdAt: Date;
   updatedAt: Date;
+  location: AssetLocationData | null;
   currentAssignment: {
     employeeId: string;
     employeeName: string;
@@ -133,6 +151,7 @@ export async function getAssetById(id: string): Promise<AssetDetail | null> {
         include: { employee: { select: { name: true } } },
       },
       maintenanceRecords: { orderBy: { startedAt: "desc" } },
+      location: true,
       returnRequests: {
         orderBy: { requestedAt: "desc" },
         include: { employee: { select: { name: true } } },
@@ -161,6 +180,17 @@ export async function getAssetById(id: string): Promise<AssetDetail | null> {
     status: asset.status,
     createdAt: asset.createdAt,
     updatedAt: asset.updatedAt,
+    location: asset.location
+      ? {
+          id: asset.location.id,
+          locationType: asset.location.locationType as AssetLocationData['locationType'],
+          building: asset.location.building,
+          floor: asset.location.floor,
+          room: asset.location.room,
+          desk: asset.location.desk,
+          description: asset.location.description,
+        }
+      : null,
     currentAssignment: active
       ? {
           employeeId: active.employeeId,

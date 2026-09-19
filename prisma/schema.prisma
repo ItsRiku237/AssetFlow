@@ -124,6 +124,7 @@ model Asset {
   assignments        AssetAssignment[]
   maintenanceRecords MaintenanceRecord[]
   returnRequests     ReturnRequest[]
+  location           AssetLocation?
 
   @@index([status])
   @@map("assets")
@@ -263,4 +264,34 @@ enum ReturnRequestStatus {
 enum EmployeeStatus {
   ACTIVE
   INACTIVE
+}
+
+enum LocationType {
+  OFFICE
+  REMOTE
+  OTHER
+}
+
+/// Physical location of an asset, independent of assignment/custody.
+/// One record per asset at most (one-to-one via @unique on assetId).
+/// Cleared by the admin when location is removed.
+model AssetLocation {
+  id           String       @id @default(cuid())
+  assetId      String       @unique
+  locationType LocationType
+  /// Building / office name — OFFICE only
+  building     String?
+  /// Floor — OFFICE only
+  floor        String?
+  /// Room — OFFICE only
+  room         String?
+  /// Desk/seat — OFFICE only
+  desk         String?
+  /// Free-text description — REMOTE and OTHER
+  description  String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  asset        Asset        @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@map("asset_locations")
 }

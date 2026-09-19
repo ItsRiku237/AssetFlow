@@ -15,7 +15,10 @@ import { getAssetById, isAssetAssignedToUser } from "@/lib/data/assets";
 import { getEmployees } from "@/lib/data/employees";
 import { requireAuth } from "@/lib/auth-guards";
 import { formatDate } from "@/lib/utils";
-import { History, Undo2, Wrench } from "lucide-react";
+import { History, MapPin, Undo2, Wrench } from "lucide-react";
+
+import { AssetLocationCard } from "@/components/assets/asset-location-card";
+import { AssetLocationForm } from "@/components/assets/asset-location-form";
 
 interface AssetDetailPageProps {
   params: Promise<{ id: string }>;
@@ -95,6 +98,13 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
           ]}
         />
       </div>
+
+      {/* Physical Location */}
+      {isAdmin ? (
+        <AssetLocationForm assetId={asset.id} existingLocation={asset.location} />
+      ) : (
+        <AssetLocationCard location={asset.location} />
+      )}
 
       <div className="grid gap-4 lg:grid-cols-2">
         <DashboardSection

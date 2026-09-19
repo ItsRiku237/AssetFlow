@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import type { AssetStatus } from "@/types/asset";
+import type { AssetStatus, LocationType } from "@/types/asset";
 
 const STATUS_OPTIONS: { value: AssetStatus; label: string }[] = [
   { value: "AVAILABLE", label: "Available" },
@@ -14,6 +14,12 @@ const STATUS_OPTIONS: { value: AssetStatus; label: string }[] = [
   { value: "RETURN_REQUESTED", label: "Return requested" },
   { value: "IN_REPAIR", label: "In repair" },
   { value: "RETIRED", label: "Retired" },
+];
+
+const LOCATION_TYPE_OPTIONS: { value: LocationType; label: string }[] = [
+  { value: "OFFICE", label: "Office" },
+  { value: "REMOTE", label: "Remote" },
+  { value: "OTHER", label: "Other" },
 ];
 
 export function AssetFilters({ types }: { types: string[] }) {
@@ -24,7 +30,8 @@ export function AssetFilters({ types }: { types: string[] }) {
 
   const status = searchParams.get("status") ?? "";
   const type = searchParams.get("type") ?? "";
-  const hasFilters = Boolean(search || status || type);
+  const locationType = searchParams.get("locationType") ?? "";
+  const hasFilters = Boolean(search || status || type || locationType);
 
   function pushParams(next: Record<string, string>) {
     const params = new URLSearchParams(searchParams.toString());
@@ -86,6 +93,20 @@ export function AssetFilters({ types }: { types: string[] }) {
         {types.map((t) => (
           <option key={t} value={t}>
             {t}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={locationType}
+        onChange={(e) => pushParams({ locationType: e.target.value })}
+        aria-label="Filter by location type"
+        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+      >
+        <option value="">All locations</option>
+        {LOCATION_TYPE_OPTIONS.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
           </option>
         ))}
       </select>

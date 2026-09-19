@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { AssetStatusBadge } from "@/components/shared/status-badge";
 import { formatDate } from "@/lib/utils";
+import { formatLocationSummary } from "@/components/assets/asset-location-card";
 import type { AssetListItem } from "@/lib/data/assets";
 
 export function AssetTable({ assets }: { assets: AssetListItem[] }) {
@@ -25,6 +26,7 @@ export function AssetTable({ assets }: { assets: AssetListItem[] }) {
           <TableHead>Serial</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Assigned to</TableHead>
+          <TableHead>Location</TableHead>
           <TableHead>Purchased</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
@@ -48,6 +50,9 @@ export function AssetTable({ assets }: { assets: AssetListItem[] }) {
             </TableCell>
             <TableCell className="text-muted-foreground">
               {asset.assignedEmployeeName ?? "—"}
+            </TableCell>
+            <TableCell className="text-muted-foreground">
+              {formatLocationSummary(asset.location) ?? "—"}
             </TableCell>
             <TableCell className="text-muted-foreground">
               {asset.purchaseDate ? formatDate(asset.purchaseDate) : "—"}

@@ -8,7 +8,7 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { PageHeader } from "@/components/shared/page-header";
 import { getAssets, getAssetTypes } from "@/lib/data/assets";
 import { requireRole } from "@/lib/auth-guards";
-import type { AssetStatus } from "@/types/asset";
+import type { AssetStatus, LocationType } from "@/types/asset";
 
 const VALID_STATUSES: readonly AssetStatus[] = [
   "AVAILABLE",
@@ -22,8 +22,14 @@ function isAssetStatus(value: string | undefined): value is AssetStatus {
   return !!value && (VALID_STATUSES as readonly string[]).includes(value);
 }
 
+const VALID_LOCATION_TYPES: readonly LocationType[] = ["OFFICE", "REMOTE", "OTHER"];
+
+function isLocationType(value: string | undefined): value is LocationType {
+  return !!value && (VALID_LOCATION_TYPES as readonly string[]).includes(value);
+}
+
 interface AssetsPageProps {
-  searchParams: Promise<{ q?: string; status?: string; type?: string }>;
+  searchParams: Promise<{ q?: string; status?: string; type?: string; locationType?: string }>;
 }
 
 export default async function AssetsPage({ searchParams }: AssetsPageProps) {
@@ -33,13 +39,14 @@ export default async function AssetsPage({ searchParams }: AssetsPageProps) {
   const search = params.q?.trim() || undefined;
   const status = isAssetStatus(params.status) ? params.status : undefined;
   const type = params.type?.trim() || undefined;
+  const locationType = isLocationType(params.locationType) ? params.locationType : undefined;
 
   const [assets, types] = await Promise.all([
-    getAssets({ search, status, type }),
+    getAssets({ search, status, type, locationType }),
     getAssetTypes(),
   ]);
 
-  const hasActiveFilters = Boolean(search || status || type);
+  const hasActiveFilters = Boolean(search || status || type || locationType);
 
   return (
     <div className="space-y-6">

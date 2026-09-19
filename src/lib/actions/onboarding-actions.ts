@@ -1,7 +1,6 @@
 "use server";
 
 import { requireAuth } from "@/lib/auth-guards";
-import { recordAuditLog } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
 import {
   onboardingSchema,

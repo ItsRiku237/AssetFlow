@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import { RegisterForm } from "@/components/auth/register-form";
+import { ActivationForm } from "@/components/auth/activation-form";
 
 export const metadata = {
   title: "Activate Account — AssetFlow",
@@ -15,10 +15,15 @@ export default async function RegisterPage() {
     redirect("/dashboard");
   }
 
-  // Authenticated but in onboarding (Google path) → they should be at /onboarding.
-  if (session?.user && session.user.onboardingRequired) {
-    redirect("/onboarding");
-  }
-
-  return <RegisterForm />;
+  return (
+    <div className="space-y-2">
+      <h1 className="text-2xl font-semibold tracking-tight">Activate your account</h1>
+      <p className="text-sm text-muted-foreground">
+        Enter your Employee ID and company email to get started.
+      </p>
+      <div className="pt-2">
+        <ActivationForm />
+      </div>
+    </div>
+  );
 }

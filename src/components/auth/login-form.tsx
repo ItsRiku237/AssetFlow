@@ -80,6 +80,9 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
         <Separator className="flex-1" />
       </div>
 
+      {/* Google sign-in: activates an employee account when the Google
+          email exactly matches a provisioned, ACTIVE, unlinked Employee.
+          Existing employees who linked via Google can also sign back in. */}
       <form action={signInWithGoogleTo}>
         <Button type="submit" variant="outline" className="w-full">
           Continue with Google
@@ -93,7 +96,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
             href="/register"
             className="font-medium text-foreground underline underline-offset-4"
           >
-            Activate your account
+            Activate your account with Employee ID + email
           </Link>
         </p>
       </div>

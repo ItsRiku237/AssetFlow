@@ -9,11 +9,6 @@ import { Input } from "@/components/ui/input";
 import { registerEmployee } from "@/lib/actions/register-actions";
 import { registerInitialState } from "@/lib/validations/register";
 
-function FieldError({ message }: { message: string | undefined }) {
-  if (!message) return null;
-  return <p className="text-xs text-destructive">{message}</p>;
-}
-
 interface FieldProps {
   label: string;
   name: string;

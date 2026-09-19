@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DashboardSection } from "@/components/dashboard/dashboard-section";
+import { DeleteEmployeeButton } from "@/components/employees/delete-employee-button";
 import {
   DeactivateEmployeeButton,
   ReactivateEmployeeButton,
@@ -62,6 +63,10 @@ export default async function EmployeeDetailPage({
             ) : (
               <ReactivateEmployeeButton employeeId={employee.id} />
             )}
+            <DeleteEmployeeButton
+              employeeId={employee.id}
+              employeeName={employee.name}
+            />
           </div>
         }
       />

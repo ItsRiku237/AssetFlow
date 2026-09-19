@@ -1,5 +1,6 @@
--- Migration: add onboardingRequired to users
--- Existing rows (admin + seeded employees) default to FALSE so they
--- are not affected — they keep working without any change.
-ALTER TABLE "users" 
-ADD COLUMN IF NOT EXISTS "onboardingRequired" BOOLEAN NOT NULL DEFAULT false;
+-- This migration was applied to the database when the project was first set up.
+-- The original SQL created all base tables (users, employees, assets, etc.)
+-- and the onboardingRequired column.
+--
+-- Note: the employee_otps table was NOT part of this migration —
+-- it is created by migration 20260918100000_add_employee_otp_table.

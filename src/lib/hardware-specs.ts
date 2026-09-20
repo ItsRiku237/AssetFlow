@@ -145,3 +145,89 @@ export function formatStorageSummary(
   if (storage && storageType) return `${storage} ${storageType}`;
   return storage ?? storageType;
 }
+
+// ──────────────────────────── Asset Types ───────────────────────────
+
+export const ASSET_TYPE_LIST = [
+  "Laptop",
+  "Desktop",
+  "Monitor",
+  "Keyboard",
+  "Mouse",
+  "Printer",
+  "Scanner",
+  "Speaker",
+  "Headphones",
+  "Webcam",
+  "Microphone",
+  "Phone",
+  "Tablet",
+  "UPS",
+  "Router",
+  "Switch",
+  "Server",
+  "External HDD",
+  "USB Hub",
+  "Docking Station",
+  "Projector",
+  "Graphics Card",
+  "RAM Module",
+  "SSD",
+  "Software License",
+  "Other",
+] as const;
+
+// ──────────────────────────── Brands by Type ────────────────────────
+
+const COMMON_BRANDS: Record<string, string[]> = {
+  Laptop: [
+    "Apple",
+    "Dell",
+    "HP",
+    "Lenovo",
+    "Asus",
+    "Acer",
+    "Microsoft",
+    "Samsung",
+    "LG",
+    "Razer",
+    "MSI",
+    "Toshiba",
+  ],
+  Desktop: ["Dell", "HP", "Lenovo", "Apple", "Asus", "Acer", "MSI"],
+  Monitor: [
+    "Dell",
+    "Samsung",
+    "LG",
+    "Asus",
+    "Acer",
+    "HP",
+    "BenQ",
+    "ViewSonic",
+    "AOC",
+    "Philips",
+  ],
+  Keyboard: ["Logitech", "Apple", "Microsoft", "Corsair", "Razer", "Keychron", "HP", "Dell"],
+  Mouse: ["Logitech", "Apple", "Microsoft", "Corsair", "Razer", "HP", "Dell"],
+  Printer: ["HP", "Canon", "Epson", "Brother", "Xerox", "Kyocera"],
+  Scanner: ["HP", "Canon", "Epson", "Brother", "Fujitsu"],
+  Speaker: ["JBL", "Bose", "Sony", "Samsung", "Apple", "Logitech", "Creative", "Harman Kardon"],
+  Headphones: ["Sony", "Bose", "Apple", "Sennheiser", "Audio-Technica", "Jabra", "JBL"],
+  Webcam: ["Logitech", "Microsoft", "Razer", "Elgato", "Sony"],
+  Microphone: ["Blue", "Audio-Technica", "Rode", "Sennheiser", "Shure", "Logitech"],
+  Phone: ["Apple", "Samsung", "OnePlus", "Google", "Xiaomi", "Realme"],
+  Tablet: ["Apple", "Samsung", "Lenovo", "Microsoft", "Google", "Amazon"],
+  UPS: ["APC", "Eaton", "CyberPower", "Vertiv"],
+  Router: ["TP-Link", "Cisco", "Netgear", "Asus", "D-Link"],
+  Switch: ["Cisco", "TP-Link", "Netgear", "D-Link", "HP"],
+  Server: ["Dell", "HP", "Lenovo", "IBM", "Fujitsu"],
+  Projector: ["Epson", "Benq", "Optoma", "Sony", "Panasonic"],
+};
+
+/** Get brand suggestions for a given asset type. Returns [] for unknown types. */
+export function getBrandsForType(type: string): string[] {
+  return COMMON_BRANDS[type] ?? [];
+}
+
+/** Spec localStorage key prefix – avoids clashes with other app data. */
+export const SPEC_STORAGE_PREFIX = "af_spec_custom_";

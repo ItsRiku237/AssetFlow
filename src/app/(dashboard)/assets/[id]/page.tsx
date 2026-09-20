@@ -32,9 +32,11 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
   const asset = await getAssetById(id);
   if (!asset) notFound();
 
-  const isAdmin = session.user.role === "ADMIN";
-  let ownsAsset = false;
+  // SUPER_ADMIN and ADMIN can view any asset.
+  const isAdmin =
+    session.user.role === "ADMIN" || session.user.role === "SUPER_ADMIN";
 
+  let ownsAsset = false;
   if (!isAdmin) {
     ownsAsset = await isAssetAssignedToUser(id, session.user.id);
     if (!ownsAsset) notFound();
@@ -49,6 +51,21 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
         }))
       : [];
 
+  const hardwareItems = isHardwareAsset(asset.type)
+    ? [
+        ...(asset.processor ? [{ label: "Processor", value: asset.processor }] : []),
+        ...(asset.ram ? [{ label: "RAM", value: asset.ram }] : []),
+        ...(asset.storage || asset.storageType
+          ? [
+              {
+                label: "Storage",
+                value: formatStorageSummary(asset.storage, asset.storageType) ?? "—",
+              },
+            ]
+          : []),
+      ]
+    : [];
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -56,13 +73,16 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
         description={`Tag: ${asset.assetTag}`}
         actions={
           isAdmin ? (
-            <AssetActions assetId={asset.id} status={asset.status} assignableEmployees={assignableEmployees} />
+            <AssetActions
+              assetId={asset.id}
+              status={asset.status}
+              assignableEmployees={assignableEmployees}
+            />
           ) : ownsAsset && asset.status === "ASSIGNED" ? (
             <RequestReturnDialog assetId={asset.id} />
           ) : undefined
         }
       />
-      {/* ...rest of the page unchanged... */}
 
       <div className="space-y-4 rounded-lg border border-border bg-card p-4">
         <div className="flex items-center gap-2">
@@ -96,29 +116,20 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
           ]}
         />
 
-        {isHardwareAsset(asset.type) &&
-          (asset.processor ?? asset.ram ?? asset.storage ?? asset.storageType) ? (
+        {/* Show hardware specs section for any hardware-type asset,
+            whether or not all fields are populated. */}
+        {isHardwareAsset(asset.type) ? (
           <div className="mt-4 space-y-2 border-t border-border pt-4">
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
               Hardware Specifications
             </p>
-            <InfoGrid
-              items={[
-                ...(asset.processor
-                  ? [{ label: "Processor", value: asset.processor }]
-                  : []),
-                ...(asset.ram ? [{ label: "RAM", value: asset.ram }] : []),
-                ...(asset.storage || asset.storageType
-                  ? [
-                      {
-                        label: "Storage",
-                        value:
-                          formatStorageSummary(asset.storage, asset.storageType) ?? "—",
-                      },
-                    ]
-                  : []),
-              ]}
-            />
+            {hardwareItems.length > 0 ? (
+              <InfoGrid items={hardwareItems} />
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                No hardware specifications recorded.
+              </p>
+            )}
           </div>
         ) : null}
       </div>

@@ -14,12 +14,13 @@ export const ADMIN_ONLY_ROUTES = [
 ] as const;
 
 /** Routes only an EMPLOYEE may load. */
-export const EMPLOYEE_ONLY_ROUTES = ["/my-assets", "/profile"] as const;
+export const EMPLOYEE_ONLY_ROUTES = ["/my-assets"] as const;
 
 /** Routes any authenticated user may load, regardless of role. */
 export const SHARED_ROUTES = [
   "/dashboard",
   "/return-requests",
+  "/profile",
   "/settings",
 ] as const;
 

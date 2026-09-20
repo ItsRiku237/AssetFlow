@@ -52,14 +52,12 @@ export function UserMenu({ user }: { user: Session["user"] }) {
           </p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {user.role === "EMPLOYEE" ? (
-          <DropdownMenuItem asChild>
-            <Link href="/profile">
-              <UserCircle />
-              Profile
-            </Link>
-          </DropdownMenuItem>
-        ) : null}
+        <DropdownMenuItem asChild>
+          <Link href="/profile">
+            <UserCircle />
+            Profile
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/settings">
             <Settings />

@@ -27,6 +27,6 @@ export const NAV_ITEMS: NavItem[] = [
   { title: "Return Requests", href: "/return-requests", icon: Undo2, roles: ["both"] },
   { title: "Repairs", href: "/repairs", icon: Wrench, roles: ["ADMIN"] },
   { title: "Audit Logs", href: "/audit-logs", icon: ScrollText, roles: ["ADMIN"] },
-  { title: "Profile", href: "/profile", icon: UserCircle, roles: ["EMPLOYEE"] },
+  { title: "Profile", href: "/profile", icon: UserCircle, roles: ["both"] },
   { title: "Settings", href: "/settings", icon: Settings, roles: ["both"] },
 ];

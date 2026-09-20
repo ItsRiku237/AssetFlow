@@ -14,6 +14,7 @@ export interface EmployeeFormDefaultValues {
   email?: string;
   department?: string;
   designation?: string;
+  phone?: string;
   status?: EmployeeStatus;
 }
 
@@ -65,6 +66,13 @@ export function EmployeeForm({
           type="email"
           defaultValue={defaultValues?.email}
           placeholder="Optional — set once they have an account"
+        />
+        <Field
+          label="Phone"
+          name="phone"
+          type="tel"
+          defaultValue={defaultValues?.phone}
+          placeholder="Optional — e.g. +1 (555) 000-0000"
         />
         <Field
           label="Department"

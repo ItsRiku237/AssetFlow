@@ -37,6 +37,7 @@ function toCreateData(input: CreateEmployeeInput) {
     email: input.email ?? null,
     department: input.department ?? null,
     designation: input.designation ?? null,
+    phone: input.phone ?? null,
   };
 }
 
@@ -47,6 +48,7 @@ function toUpdateData(input: UpdateEmployeeInput) {
     email: input.email ?? null,
     department: input.department ?? null,
     designation: input.designation ?? null,
+    phone: input.phone ?? null,
     status: input.status,
   };
 }

@@ -42,6 +42,7 @@ export const createEmployeeSchema = z.object({
   email: optionalEmailSchema,
   department: optionalTextMax(100),
   designation: optionalTextMax(100),
+  phone: optionalTextMax(30),
 });
 
 export type CreateEmployeeInput = z.infer<typeof createEmployeeSchema>;
@@ -52,6 +53,7 @@ export const updateEmployeeSchema = z.object({
   email: optionalEmailSchema,
   department: optionalTextMax(100),
   designation: optionalTextMax(100),
+  phone: optionalTextMax(30),
   status: employeeStatusSchema,
 });
 

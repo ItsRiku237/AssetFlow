@@ -32,6 +32,7 @@ export default async function EditEmployeePage({ params }: EditEmployeePageProps
           email: employee.email ?? undefined,
           department: employee.department ?? undefined,
           designation: employee.designation ?? undefined,
+          phone: employee.phone ?? undefined,
           status: employee.status,
         }}
       />

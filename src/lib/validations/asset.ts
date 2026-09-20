@@ -8,6 +8,13 @@ const optionalText = z
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
+const optionalSpec = z
+  .string()
+  .trim()
+  .max(120, "Value must be 120 characters or fewer")
+  .optional()
+  .transform((v) => (v ? v : undefined));
+
 export const assetFormSchema = z.object({
   assetTag: z.string().trim().min(1, "Asset tag is required").max(50),
   name: z.string().trim().min(1, "Name is required").max(120),
@@ -15,9 +22,12 @@ export const assetFormSchema = z.object({
   brand: optionalText,
   model: optionalText,
   serialNumber: optionalText,
-  processor: optionalText,
-  ram: optionalText,
-  storage: optionalText,
+  // Hardware spec fields: allow predefined values or any trimmed string
+  // (custom "Other" entries). Length-capped; whitespace-trimmed.
+  processor: optionalSpec,
+  ram: optionalSpec,
+  storage: optionalSpec,
+  storageType: optionalSpec,
   purchaseDate: optionalText.refine(
     (v) => v === undefined || DATE_PATTERN.test(v),
     "Enter a valid date"

@@ -114,6 +114,7 @@ model Asset {
   processor          String?
   ram                String?
   storage            String?
+  storageType        String?
   purchaseDate       DateTime?
   purchasePrice      Decimal?            @db.Decimal(10, 2)
   warrantyExpiry     DateTime?

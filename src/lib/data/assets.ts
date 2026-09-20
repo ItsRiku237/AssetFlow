@@ -10,6 +10,7 @@ export interface AssetListFilters {
   status?: AssetStatus;
   type?: string;
   locationType?: AssetLocationData["locationType"];
+  ram?: string;
 }
 
 export interface AssetListItem {
@@ -35,6 +36,7 @@ export async function getAssets(
       ...(filters.locationType
         ? { location: { locationType: filters.locationType } }
         : {}),
+      ...(filters.ram ? { ram: filters.ram } : {}),
       ...(filters.search
         ? {
             OR: [
@@ -104,6 +106,7 @@ export interface AssetDetail {
   processor: string | null;
   ram: string | null;
   storage: string | null;
+  storageType: string | null;
   purchaseDate: Date | null;
   purchasePrice: string | null;
   warrantyExpiry: Date | null;
@@ -173,6 +176,7 @@ export async function getAssetById(id: string): Promise<AssetDetail | null> {
     processor: asset.processor,
     ram: asset.ram,
     storage: asset.storage,
+    storageType: asset.storageType,
     purchaseDate: asset.purchaseDate,
     purchasePrice: asset.purchasePrice?.toString() ?? null,
     warrantyExpiry: asset.warrantyExpiry,

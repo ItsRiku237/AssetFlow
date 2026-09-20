@@ -40,6 +40,7 @@ export default async function EditAssetPage({ params }: EditAssetPageProps) {
           processor: asset.processor ?? undefined,
           ram: asset.ram ?? undefined,
           storage: asset.storage ?? undefined,
+          storageType: asset.storageType ?? undefined,
           purchaseDate: toDateInputValue(asset.purchaseDate),
           purchasePrice: asset.purchasePrice ?? undefined,
           warrantyExpiry: toDateInputValue(asset.warrantyExpiry),

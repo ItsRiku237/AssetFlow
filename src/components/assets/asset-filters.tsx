@@ -7,6 +7,7 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { AssetStatus, LocationType } from "@/types/asset";
+import { RAM_OPTIONS } from "@/lib/hardware-specs";
 
 const STATUS_OPTIONS: { value: AssetStatus; label: string }[] = [
   { value: "AVAILABLE", label: "Available" },
@@ -31,7 +32,8 @@ export function AssetFilters({ types }: { types: string[] }) {
   const status = searchParams.get("status") ?? "";
   const type = searchParams.get("type") ?? "";
   const locationType = searchParams.get("locationType") ?? "";
-  const hasFilters = Boolean(search || status || type || locationType);
+  const ram = searchParams.get("ram") ?? "";
+  const hasFilters = Boolean(search || status || type || locationType || ram);
 
   function pushParams(next: Record<string, string>) {
     const params = new URLSearchParams(searchParams.toString());
@@ -107,6 +109,20 @@ export function AssetFilters({ types }: { types: string[] }) {
         {LOCATION_TYPE_OPTIONS.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={ram}
+        onChange={(e) => pushParams({ ram: e.target.value })}
+        aria-label="Filter by RAM"
+        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+      >
+        <option value="">All RAM</option>
+        {RAM_OPTIONS.map((r) => (
+          <option key={r} value={r}>
+            {r}
           </option>
         ))}
       </select>

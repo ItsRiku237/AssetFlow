@@ -27,6 +27,7 @@ function toAssetData(input: AssetFormInput) {
     processor: input.processor ?? null,
     ram: input.ram ?? null,
     storage: input.storage ?? null,
+    storageType: input.storageType ?? null,
     purchaseDate: input.purchaseDate ? new Date(input.purchaseDate) : null,
     purchasePrice: input.purchasePrice ?? null,
     warrantyExpiry: input.warrantyExpiry ? new Date(input.warrantyExpiry) : null,

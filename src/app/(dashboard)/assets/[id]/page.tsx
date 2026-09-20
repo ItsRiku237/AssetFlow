@@ -15,10 +15,11 @@ import { getAssetById, isAssetAssignedToUser } from "@/lib/data/assets";
 import { getEmployees } from "@/lib/data/employees";
 import { requireAuth } from "@/lib/auth-guards";
 import { formatDate } from "@/lib/utils";
-import { History, MapPin, Undo2, Wrench } from "lucide-react";
+import { History, Undo2, Wrench } from "lucide-react";
 
 import { AssetLocationCard } from "@/components/assets/asset-location-card";
 import { AssetLocationForm } from "@/components/assets/asset-location-form";
+import { isHardwareAsset, formatStorageSummary } from "@/lib/hardware-specs";
 
 interface AssetDetailPageProps {
   params: Promise<{ id: string }>;
@@ -80,9 +81,6 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
             { label: "Brand", value: asset.brand ?? "—" },
             { label: "Model", value: asset.model ?? "—" },
             { label: "Serial number", value: asset.serialNumber ?? "—" },
-            { label: "Processor", value: asset.processor ?? "—" },
-            { label: "RAM", value: asset.ram ?? "—" },
-            { label: "Storage", value: asset.storage ?? "—" },
             {
               label: "Purchase date",
               value: asset.purchaseDate ? formatDate(asset.purchaseDate) : "—",
@@ -97,6 +95,32 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
             },
           ]}
         />
+
+        {isHardwareAsset(asset.type) &&
+          (asset.processor ?? asset.ram ?? asset.storage ?? asset.storageType) ? (
+          <div className="mt-4 space-y-2 border-t border-border pt-4">
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+              Hardware Specifications
+            </p>
+            <InfoGrid
+              items={[
+                ...(asset.processor
+                  ? [{ label: "Processor", value: asset.processor }]
+                  : []),
+                ...(asset.ram ? [{ label: "RAM", value: asset.ram }] : []),
+                ...(asset.storage || asset.storageType
+                  ? [
+                      {
+                        label: "Storage",
+                        value:
+                          formatStorageSummary(asset.storage, asset.storageType) ?? "—",
+                      },
+                    ]
+                  : []),
+              ]}
+            />
+          </div>
+        ) : null}
       </div>
 
       {/* Physical Location */}

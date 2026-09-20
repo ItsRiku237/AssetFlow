@@ -166,9 +166,12 @@ export async function deactivateEmployee(
     return { error: null };
   }
 
-  // Protect the system admin account.
+  // Protect the system admin account and any SUPER_ADMIN-linked employee.
   if (employee.user?.email === PROTECTED_ADMIN_EMAIL) {
     return { error: "The system administrator account cannot be deactivated." };
+  }
+  if (employee.user?.role === "SUPER_ADMIN") {
+    return { error: "Super-admin accounts cannot be deactivated through this interface." };
   }
 
   await prisma.$transaction(async (tx) => {
@@ -285,11 +288,11 @@ export async function deleteEmployee(
     };
   }
 
-  if (employee.user?.role === "ADMIN") {
+  if (employee.user?.role === "ADMIN" || employee.user?.role === "SUPER_ADMIN") {
     return {
       ok: false,
       reason: "protected",
-      message: "Admin accounts cannot be deleted through this interface.",
+      message: "Admin and super-admin accounts cannot be deleted through this interface.",
     };
   }
 

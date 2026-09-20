@@ -20,6 +20,9 @@ model User {
   /// True for newly-created accounts that have not yet linked to an
   /// Employee directory record. Dashboard access is blocked until false.
   onboardingRequired     Boolean         @default(false)
+  /// Explicit account status for admin accounts. DEACTIVATED blocks
+  /// dashboard access without touching the onboarding flow.
+  status                 UserStatus      @default(ACTIVE)
   createdAt              DateTime        @default(now())
   updatedAt              DateTime        @updatedAt
   accounts               Account[]
@@ -165,7 +168,7 @@ model ReturnRequest {
   reviewedById String?
   asset        Asset               @relation(fields: [assetId], references: [id], onDelete: Cascade)
   employee     Employee            @relation(fields: [employeeId], references: [id], onDelete: Cascade)
-  reviewedBy   User?               @relation("ReturnRequestReviewer", fields: [reviewedById], references: [id])
+  reviewedBy   User?               @relation("ReturnRequestReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
 
   @@index([assetId])
   @@index([employeeId])
@@ -201,7 +204,7 @@ model AuditLog {
   entityId   String
   metadata   Json?
   createdAt  DateTime @default(now())
-  actor      User?    @relation(fields: [actorId], references: [id])
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
 
   @@index([entityType, entityId])
   @@index([actorId])
@@ -239,8 +242,14 @@ model Notification {
 }
 
 enum Role {
+  SUPER_ADMIN
   ADMIN
   EMPLOYEE
+}
+
+enum UserStatus {
+  ACTIVE
+  DEACTIVATED
 }
 
 enum AssetStatus {

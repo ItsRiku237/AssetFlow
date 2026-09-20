@@ -84,7 +84,7 @@ export async function updateProfile(
         });
       });
 
-      const isUserAdmin = session.user.role === "ADMIN";
+      const isUserAdmin = session.user.role === "ADMIN" || session.user.role === "SUPER_ADMIN";
       await recordAuditLog({
         actorId: session.user.id,
         action: isUserAdmin ? "ADMIN_PROFILE_UPDATED" : "EMPLOYEE_PROFILE_UPDATED",

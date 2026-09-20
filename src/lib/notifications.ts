@@ -53,13 +53,14 @@ export async function createNotifications(
 }
 
 /**
- * Fetch all admin user IDs so we can fan-out admin notifications without
- * hardcoding IDs. Errors return an empty array so callers stay safe.
+ * Fetch all admin-tier user IDs (ADMIN + SUPER_ADMIN) so we can fan-out
+ * admin notifications without hardcoding IDs. Errors return an empty array
+ * so callers stay safe.
  */
 export async function getAdminUserIds(): Promise<string[]> {
   try {
     const admins = await prisma.user.findMany({
-      where: { role: "ADMIN" },
+      where: { role: { in: ["ADMIN", "SUPER_ADMIN"] } },
       select: { id: true },
     });
     return admins.map((a) => a.id);

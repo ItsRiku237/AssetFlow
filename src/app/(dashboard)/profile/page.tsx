@@ -41,7 +41,7 @@ function initials(name: string) {
 
 export default async function ProfilePage() {
   const session = await requireAuth();
-  const profile = await getEmployeeProfile(session.user.id);
+  const profile = await getEmployeeProfile(session.user.id, session.user.email);
 
   if (!profile) {
     notFound();
@@ -49,7 +49,7 @@ export default async function ProfilePage() {
 
   const { account, employee, assignedAssets, pendingReturnRequests, custodyHistory } =
     profile;
-  const isAdmin = account.role === "ADMIN";
+  const isAdmin = account.role === "ADMIN" || account.role === "SUPER_ADMIN";
 
   return (
     <div className="space-y-6">

@@ -3,9 +3,16 @@
  * Consulted by `src/proxy.ts` (edge, cookie/JWT only) and by the
  * server-side guards in `src/lib/auth-guards.ts` (defense in depth —
  * the proxy alone is never treated as sufficient authorization).
+ *
+ * Role hierarchy: SUPER_ADMIN > ADMIN > EMPLOYEE
+ * "ADMIN" in this file means "ADMIN or SUPER_ADMIN" (the middleware
+ * and auth-guards both apply the hierarchy).
  */
 
-/** Routes only an ADMIN may load. */
+/** Routes only a SUPER_ADMIN may load. */
+export const SUPER_ADMIN_ONLY_ROUTES = ["/admins"] as const;
+
+/** Routes only an ADMIN (or SUPER_ADMIN) may load. */
 export const ADMIN_ONLY_ROUTES = [
   "/employees",
   "/assignments",
@@ -37,7 +44,12 @@ const ASSET_DETAIL_PATTERN = /^\/assets\/[^/]+$/;
 
 export function getRequiredRole(
   pathname: string
-): "ADMIN" | "EMPLOYEE" | "both" | null {
+): "SUPER_ADMIN" | "ADMIN" | "EMPLOYEE" | "both" | null {
+  // SUPER_ADMIN-only routes.
+  if (SUPER_ADMIN_ONLY_ROUTES.some((route) => pathname.startsWith(route))) {
+    return "SUPER_ADMIN";
+  }
+
   if (pathname === "/assets" || pathname === "/assets/new") return "ADMIN";
   if (ASSET_EDIT_PATTERN.test(pathname)) return "ADMIN";
   if (ASSET_DETAIL_PATTERN.test(pathname)) return "both";

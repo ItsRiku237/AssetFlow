@@ -11,11 +11,13 @@ async function main() {
 
   const admin = await prisma.user.upsert({
     where: { email: "admin@assetflow.dev" },
-    update: {},
+    // If the row already exists (re-seed), promote it to SUPER_ADMIN
+    // so that the dev seed account is always the bootstrap super-admin.
+    update: { role: "SUPER_ADMIN" },
     create: {
       name: "Ava Admin",
       email: "admin@assetflow.dev",
-      role: "ADMIN",
+      role: "SUPER_ADMIN",
       passwordHash: adminPassword,
     },
   });

@@ -62,9 +62,10 @@ export interface EmployeeProfileData {
 }
 
 export async function getEmployeeProfile(
-  userId: string
+  userId: string,
+  userEmail?: string | null
 ): Promise<EmployeeProfileData | null> {
-  const user = await prisma.user.findUnique({
+  let user = await prisma.user.findUnique({
     where: { id: userId },
     select: {
       id: true,
@@ -107,6 +108,54 @@ export async function getEmployeeProfile(
       },
     },
   });
+
+  // Fallback: if id lookup missed (e.g. stale JWT id after account recreation),
+  // retry by email so authenticated admins never hit a spurious 404.
+  if (!user && userEmail) {
+    user = await prisma.user.findUnique({
+      where: { email: userEmail },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image: true,
+        role: true,
+        createdAt: true,
+        employee: {
+          include: {
+            assignments: {
+              orderBy: { assignedAt: "desc" },
+              include: {
+                asset: {
+                  select: {
+                    id: true,
+                    name: true,
+                    assetTag: true,
+                    type: true,
+                    brand: true,
+                    model: true,
+                    status: true,
+                  },
+                },
+              },
+            },
+            returnRequests: {
+              where: { status: "PENDING" },
+              orderBy: { requestedAt: "desc" },
+              include: {
+                asset: {
+                  select: {
+                    name: true,
+                    assetTag: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  }
 
   if (!user) return null;
 

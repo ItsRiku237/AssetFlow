@@ -4,4 +4,4 @@
  * edge-safe modules — `auth.config.ts`, `proxy.ts` — never pull the
  * Prisma runtime into the edge bundle.
  */
-export type Role = "ADMIN" | "EMPLOYEE";
+export type Role = "SUPER_ADMIN" | "ADMIN" | "EMPLOYEE";

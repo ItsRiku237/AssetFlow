@@ -14,12 +14,12 @@ export default async function DashboardPage() {
       <PageHeader
         title="Dashboard"
         description={
-          user.role === "ADMIN"
+          user.role === "ADMIN" || user.role === "SUPER_ADMIN"
             ? "Overview of assets, assignments, and activity."
             : "Your assets, requests, and recent activity."
         }
       />
-      {user.role === "ADMIN" ? (
+      {user.role === "ADMIN" || user.role === "SUPER_ADMIN" ? (
         <AdminDashboard />
       ) : (
         <EmployeeDashboard userId={user.id} />

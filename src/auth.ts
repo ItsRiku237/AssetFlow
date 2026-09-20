@@ -134,11 +134,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (trigger === "update" || (!user && token.id)) {
         const dbUser = await prisma.user.findUnique({
           where: { id: token.id as string },
-          select: { onboardingRequired: true, role: true },
+          select: { onboardingRequired: true, role: true, status: true },
         });
         if (dbUser) {
           token.onboardingRequired = dbUser.onboardingRequired;
           token.role = dbUser.role as Role;
+          token.status = dbUser.status as "ACTIVE" | "DEACTIVATED";
         }
       }
 

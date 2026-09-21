@@ -18,7 +18,7 @@ import { inviteAdmin, type InviteAdminActionState } from "@/lib/actions/admin-ac
 
 const initialState: InviteAdminActionState = { error: null };
 
-export function InviteAdminDialog() {
+export function InviteAdminDialog({ demoMode = false }: { demoMode?: boolean }) {
   const [open, setOpen] = useState(false);
   const [state, formAction, isPending] = useActionState(inviteAdmin, initialState);
 
@@ -34,8 +34,9 @@ export function InviteAdminDialog() {
         <DialogHeader>
           <DialogTitle>Invite Administrator</DialogTitle>
           <DialogDescription>
-            Create an admin account and send a temporary password to their email.
-            They can sign in immediately and should change their password after first login.
+            {demoMode
+              ? "Demo mode: this creates a demo-only admin account. No invitation email is sent and the account cannot sign in. Use an address like demo-jane@assetflow.dev."
+              : "Create an admin account and send a temporary password to their email. They can sign in immediately and should change their password after first login."}
           </DialogDescription>
         </DialogHeader>
 
@@ -65,7 +66,7 @@ export function InviteAdminDialog() {
               id="invite-email"
               name="email"
               type="email"
-              placeholder="jane@company.com"
+              placeholder={demoMode ? "demo-jane@assetflow.dev" : "jane@company.com"}
               autoComplete="off"
               required
             />
@@ -89,7 +90,7 @@ export function InviteAdminDialog() {
             </Button>
             <Button type="submit" disabled={isPending}>
               {isPending ? <Loader2 className="size-4 animate-spin" /> : null}
-              Send Invitation
+              {demoMode ? "Create Demo Admin" : "Send Invitation"}
             </Button>
           </DialogFooter>
         </form>

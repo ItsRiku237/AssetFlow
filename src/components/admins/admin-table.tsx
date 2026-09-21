@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { DeactivateAdminButton, DeleteAdminButton, ReactivateAdminButton } from "@/components/admins/admin-status-button";
 import { formatDate } from "@/lib/utils";
+import { isDemoAccountEmail } from "@/lib/demo";
 import type { AdminListItem } from "@/lib/data/admins";
 
 function initials(name: string) {
@@ -28,9 +29,15 @@ const PROTECTED_EMAIL = "admin@assetflow.dev";
 interface AdminTableProps {
   admins: AdminListItem[];
   currentUserId: string;
+  /** Demo sessions cannot act on the built-in demo accounts. */
+  demoMode?: boolean;
 }
 
-export function AdminTable({ admins, currentUserId }: AdminTableProps) {
+export function AdminTable({
+  admins,
+  currentUserId,
+  demoMode = false,
+}: AdminTableProps) {
   return (
     <div className="bg-card">
       <Table>
@@ -47,7 +54,9 @@ export function AdminTable({ admins, currentUserId }: AdminTableProps) {
           {admins.map((admin) => {
             const isSelf = admin.id === currentUserId;
             const isProtected =
-              admin.email === PROTECTED_EMAIL || admin.role === "SUPER_ADMIN";
+              admin.email === PROTECTED_EMAIL ||
+              admin.role === "SUPER_ADMIN" ||
+              (demoMode && isDemoAccountEmail(admin.email));
 
             return (
               <TableRow key={admin.id}>

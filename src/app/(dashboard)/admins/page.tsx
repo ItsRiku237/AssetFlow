@@ -6,17 +6,20 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { PageHeader } from "@/components/shared/page-header";
 import { requireSuperAdmin } from "@/lib/auth-guards";
 import { getAdmins } from "@/lib/data/admins";
+import { isDemoAccountEmail } from "@/lib/demo";
 
 export default async function AdminsPage() {
   const session = await requireSuperAdmin();
-  const admins = await getAdmins();
+  // Demo sessions only ever see (and manage) demo-scoped admin accounts.
+  const demoMode = isDemoAccountEmail(session.user.email);
+  const admins = await getAdmins({ demoOnly: demoMode });
 
   return (
     <div className="space-y-6">
       <PageHeader
         title="Administrators"
         description="Manage admin accounts. Only super-admins can invite, activate, or deactivate administrators."
-        actions={<InviteAdminDialog />}
+        actions={<InviteAdminDialog demoMode={demoMode} />}
       />
 
       {/* ─── Scope notice ─── */}
@@ -36,7 +39,11 @@ export default async function AdminsPage() {
           description="Invite your first administrator using the button above."
         />
       ) : (
-        <AdminTable admins={admins} currentUserId={session.user.id} />
+        <AdminTable
+          admins={admins}
+          currentUserId={session.user.id}
+          demoMode={demoMode}
+        />
       )}
     </div>
   );

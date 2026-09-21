@@ -9,6 +9,14 @@ import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/password";
 import { sendAdminInviteEmail } from "@/lib/email";
 import {
+  DEMO_ADMIN_EMAIL_SUFFIX,
+  DemoScopeError,
+  assertDemoAdminManagementScope,
+  isDemoAccountEmail,
+  isDemoScopedAdminEmail,
+  isDemoSuperAdminEmail,
+} from "@/lib/demo";
+import {
   inviteAdminSchema,
   type InviteAdminActionState,
 } from "@/lib/validations/admin";
@@ -68,6 +76,22 @@ export async function inviteAdmin(
 
   const { name, email } = parsed.data;
 
+  const isDemoActor = isDemoAccountEmail(session.user.email);
+
+  // The demo Super Admin's address is reserved: it is elevated to
+  // SUPER_ADMIN in the session, so nobody may be invited under it.
+  if (isDemoSuperAdminEmail(email)) {
+    const message = "This email address is reserved.";
+    return { error: message, fieldErrors: { email: message } };
+  }
+
+  // Demo mode never stores arbitrary (possibly real) email addresses:
+  // invited demo admins must live inside the demo admin scope.
+  if (isDemoActor && !isDemoScopedAdminEmail(email)) {
+    const message = `Demo mode: use a demo address such as demo-jane${DEMO_ADMIN_EMAIL_SUFFIX}. No email is sent.`;
+    return { error: message, fieldErrors: { email: message } };
+  }
+
   // Check email isn't already taken.
   const existing = await prisma.user.findUnique({
     where: { email },
@@ -81,7 +105,8 @@ export async function inviteAdmin(
   }
 
   const tempPassword = generateTemporaryPassword();
-  const passwordHash = await hashPassword(tempPassword);
+  // Demo mode: the account gets no password (nobody can sign in as it).
+  const passwordHash = isDemoActor ? null : await hashPassword(tempPassword);
 
   let createdId: string;
   try {
@@ -110,6 +135,20 @@ export async function inviteAdmin(
       };
     }
     return { error: "Could not create the admin account. Please try again." };
+  }
+
+  // Demo mode never sends real invitation emails.
+  if (isDemoActor) {
+    await recordAuditLog({
+      actorId: session.user.id,
+      action: "ADMIN_INVITED",
+      entityType: "User",
+      entityId: createdId,
+      metadata: { name, email, invitedBy: session.user.id, demo: true },
+    });
+
+    revalidatePath("/admins");
+    return { error: null, success: true };
   }
 
   // Send invitation email. If email fails, roll back the user creation
@@ -171,6 +210,13 @@ export async function deactivateAdmin(
 
   if (!target) return { error: "Admin account not found." };
 
+  try {
+    assertDemoAdminManagementScope(session.user.email, target.email);
+  } catch (error) {
+    if (error instanceof DemoScopeError) return { error: error.message };
+    throw error;
+  }
+
   // Cannot touch SUPER_ADMIN accounts.
   if (target.role === "SUPER_ADMIN") {
     return { error: "Super-admin accounts cannot be deactivated here." };
@@ -226,6 +272,13 @@ export async function reactivateAdmin(
   });
 
   if (!target) return { error: "Admin account not found." };
+
+  try {
+    assertDemoAdminManagementScope(session.user.email, target.email);
+  } catch (error) {
+    if (error instanceof DemoScopeError) return { error: error.message };
+    throw error;
+  }
 
   if (target.role !== "ADMIN") {
     return { error: "This account is not an admin." };
@@ -293,6 +346,15 @@ export async function deleteAdmin(
 
   if (!target) {
     return { ok: false, message: "Admin account not found." };
+  }
+
+  try {
+    assertDemoAdminManagementScope(session.user.email, target.email);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { ok: false, message: error.message };
+    }
+    throw error;
   }
 
   if (target.role === "SUPER_ADMIN") {

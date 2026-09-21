@@ -72,6 +72,7 @@ async function main() {
   // runs under plain tsx/node). Keep these values in sync by hand.
   const DEMO_ADMIN_EMAIL = "demo-admin@assetflow.dev";
   const DEMO_EMPLOYEE_EMAIL = "demo-employee@assetflow.dev";
+  const DEMO_SUPER_ADMIN_EMAIL = "demo-super-admin@assetflow.dev";
   const DEMO_EMPLOYEE_CODE = "DEMO-0001";
   const demoAdminPassword = await bcrypt.hash(
     process.env.DEMO_ADMIN_PASSWORD || "DemoAdmin@2026",
@@ -79,6 +80,10 @@ async function main() {
   );
   const demoEmployeePassword = await bcrypt.hash(
     process.env.DEMO_EMPLOYEE_PASSWORD || "DemoEmployee@2026",
+    12
+  );
+  const demoSuperAdminPassword = await bcrypt.hash(
+    process.env.DEMO_SUPER_ADMIN_PASSWORD || "DemoSuperAdmin@2026",
     12
   );
 
@@ -90,6 +95,22 @@ async function main() {
       email: DEMO_ADMIN_EMAIL,
       role: "ADMIN",
       passwordHash: demoAdminPassword,
+      onboardingRequired: false,
+      status: "ACTIVE",
+    },
+  });
+
+  // Demo Super Admin: stored with role ADMIN on purpose. The SUPER_ADMIN
+  // role is granted only in the session (see resolveSessionRole in
+  // src/lib/demo.ts), so no SUPER_ADMIN row exists for the demo.
+  const demoSuperAdmin = await prisma.user.upsert({
+    where: { email: DEMO_SUPER_ADMIN_EMAIL },
+    update: {},
+    create: {
+      name: "Demo Super Admin",
+      email: DEMO_SUPER_ADMIN_EMAIL,
+      role: "ADMIN",
+      passwordHash: demoSuperAdminPassword,
       onboardingRequired: false,
       status: "ACTIVE",
     },
@@ -260,6 +281,7 @@ async function main() {
 
   console.log("Seeded demo accounts:");
   console.log(`  Demo Admin:    ${demoAdmin.email}`);
+  console.log(`  Demo Super Admin: ${demoSuperAdmin.email}`);
   console.log(`  Demo Employee: ${demoEmployeeUser.email}`);
   console.log("Seeded 5 demo assets, 1 assignment, 1 maintenance record, 1 asset request, 1 reimbursement.");
 }

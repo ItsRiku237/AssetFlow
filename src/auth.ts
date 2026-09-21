@@ -9,6 +9,7 @@ import { verifyPassword } from "@/lib/password";
 import { loginSchema } from "@/lib/validations/auth";
 import type { Role } from "@/types/role";
 import { createNotifications, getAdminUserIds } from "@/lib/notifications";
+import { resolveSessionRole } from "@/lib/demo";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -38,7 +39,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           name: user.name,
           email: user.email,
           image: user.image,
-          role: user.role,
+          role: resolveSessionRole(user.role as Role, user.email),
         };
       },
     }),
@@ -134,11 +135,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (trigger === "update" || (!user && token.id)) {
         const dbUser = await prisma.user.findUnique({
           where: { id: token.id as string },
-          select: { onboardingRequired: true, role: true, status: true },
+          select: {
+            onboardingRequired: true,
+            role: true,
+            status: true,
+            email: true,
+          },
         });
         if (dbUser) {
           token.onboardingRequired = dbUser.onboardingRequired;
-          token.role = dbUser.role as Role;
+          token.role = resolveSessionRole(dbUser.role as Role, dbUser.email);
           token.status = dbUser.status as "ACTIVE" | "DEACTIVATED";
         }
       }

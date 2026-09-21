@@ -1,12 +1,13 @@
 "use client";
 
 import { useActionState } from "react";
-import { Loader2, ShieldCheck, UserRound } from "lucide-react";
+import { Crown, Loader2, ShieldCheck, UserRound } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
   signInAsDemoAdmin,
   signInAsDemoEmployee,
+  signInAsDemoSuperAdmin,
   type DemoSignInState,
 } from "@/lib/actions/demo-actions";
 
@@ -51,7 +52,7 @@ function DemoOption({
 
 export function DemoEntry() {
   return (
-    <div className="flex w-full max-w-2xl flex-col gap-6 sm:flex-row">
+    <div className="flex w-full max-w-4xl flex-col gap-6 md:flex-row">
       <DemoOption
         title="Admin Demo"
         description="Manage assets, employees, assignments, return requests, repairs, reimbursements, and audit logs."
@@ -63,6 +64,12 @@ export function DemoEntry() {
         description="View assigned assets, request equipment, submit returns and reimbursements, and manage your profile."
         icon={UserRound}
         action={signInAsDemoEmployee}
+      />
+      <DemoOption
+        title="Super Admin Demo"
+        description="Everything an Admin can do, plus managing administrator accounts — invite, deactivate, reactivate, and remove demo admins. No real emails are sent."
+        icon={Crown}
+        action={signInAsDemoSuperAdmin}
       />
     </div>
   );

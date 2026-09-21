@@ -5,6 +5,7 @@ import type {
   AssetRequestStatus,
   MaintenanceRecordStatus,
   ReturnRequestStatus,
+  ReimbursementStatus,
 } from "@/types/asset";
 import type { EmployeeStatus } from "@/types/employee";
 
@@ -142,6 +143,35 @@ export function AssetRequestStatusBadge({
   return (
     <Badge variant={ASSET_REQUEST_STATUS_VARIANT[status]}>
       {ASSET_REQUEST_STATUS_LABEL[status]}
+    </Badge>
+  );
+}
+
+const REIMBURSEMENT_STATUS_LABEL: Record<ReimbursementStatus, string> = {
+  PENDING: "Pending",
+  APPROVED: "Approved",
+  REJECTED: "Rejected",
+  CANCELLED: "Cancelled",
+};
+
+const REIMBURSEMENT_STATUS_VARIANT: Record<
+  ReimbursementStatus,
+  "default" | "secondary" | "success" | "warning" | "destructive"
+> = {
+  PENDING: "warning",
+  APPROVED: "success",
+  REJECTED: "destructive",
+  CANCELLED: "secondary",
+};
+
+export function ReimbursementStatusBadge({
+  status,
+}: {
+  status: ReimbursementStatus;
+}) {
+  return (
+    <Badge variant={REIMBURSEMENT_STATUS_VARIANT[status]}>
+      {REIMBURSEMENT_STATUS_LABEL[status]}
     </Badge>
   );
 }

@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   PackageSearch,
   PackagePlus,
+  Receipt,
 } from "lucide-react";
 
 import type { NavItem } from "@/types/nav";
@@ -22,8 +23,9 @@ export const NAV_ITEMS: NavItem[] = [
   { title: "Employees",        href: "/employees",        icon: Users,           roles: ["ADMIN", "SUPER_ADMIN"] },
   { title: "Assignments",      href: "/assignments",      icon: ClipboardList,   roles: ["ADMIN", "SUPER_ADMIN"] },
   { title: "Asset Requests",   href: "/asset-requests",   icon: PackagePlus,     roles: ["ADMIN", "SUPER_ADMIN"] },
-  { title: "Return Requests",  href: "/return-requests",  icon: Undo2,           roles: ["both"] },
-  { title: "Repairs",          href: "/repairs",          icon: Wrench,          roles: ["ADMIN", "SUPER_ADMIN"] },
+  { title: "Return Requests",    href: "/return-requests",   icon: Undo2,           roles: ["both"] },
+  { title: "Reimbursements",     href: "/reimbursements",   icon: Receipt,         roles: ["both"] },
+  { title: "Repairs",            href: "/repairs",          icon: Wrench,          roles: ["ADMIN", "SUPER_ADMIN"] },
   { title: "Audit Logs",       href: "/audit-logs",       icon: ScrollText,      roles: ["ADMIN", "SUPER_ADMIN"] },
   { title: "Admins",           href: "/admins",           icon: ShieldCheck,     roles: ["SUPER_ADMIN"] },
   { title: "Profile",          href: "/profile",          icon: UserCircle,      roles: ["both"] },

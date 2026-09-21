@@ -31,6 +31,7 @@ model User {
   notifications          Notification[]
   reviewedReturnRequests ReturnRequest[]  @relation("ReturnRequestReviewer")
   reviewedAssetRequests  AssetRequest[]   @relation("AssetRequestReviewer")
+  reviewedReimbursements Reimbursement[]  @relation("ReimbursementReviewer")
   sessions               Session[]
 
   @@map("users")
@@ -100,6 +101,7 @@ model Employee {
   user           User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
   returnRequests ReturnRequest[]
   assetRequests  AssetRequest[]
+  reimbursements Reimbursement[]
 
   @@index([status])
   @@index([department])
@@ -132,6 +134,7 @@ model Asset {
   returnRequests     ReturnRequest[]
   location           AssetLocation?
   assetRequests      AssetRequest[]
+  reimbursements     Reimbursement[]
 
   @@index([status])
   @@map("assets")
@@ -182,17 +185,18 @@ model ReturnRequest {
 /// Servicing/repair history. An asset can have many records over its
 /// lifetime.
 model MaintenanceRecord {
-  id          String    @id @default(cuid())
-  assetId     String
-  issue       String
-  description String?
-  vendor      String?
-  cost        Decimal?  @db.Decimal(10, 2)
-  startedAt   DateTime  @default(now())
-  completedAt DateTime?
-  resolution  String?
-  createdAt   DateTime  @default(now())
-  asset       Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  id             String          @id @default(cuid())
+  assetId        String
+  issue          String
+  description    String?
+  vendor         String?
+  cost           Decimal?        @db.Decimal(10, 2)
+  startedAt      DateTime        @default(now())
+  completedAt    DateTime?
+  resolution     String?
+  createdAt      DateTime        @default(now())
+  asset          Asset           @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  reimbursements Reimbursement[]
 
   @@index([assetId])
   @@map("maintenance_records")
@@ -286,6 +290,13 @@ enum AssetRequestStatus {
   CANCELLED
 }
 
+enum ReimbursementStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
 enum LocationType {
   OFFICE
   REMOTE
@@ -338,4 +349,42 @@ model AssetLocation {
   asset        Asset        @relation(fields: [assetId], references: [id], onDelete: Cascade)
 
   @@map("asset_locations")
+}
+
+/// Employee-initiated repair reimbursement request.
+/// Tracks out-of-pocket repair expenses an employee wants to reclaim.
+/// Linked to the asset and optionally to its MaintenanceRecord.
+/// Does NOT process payment — approval/rejection only.
+model Reimbursement {
+  id                  String              @id @default(cuid())
+  /// The asset the expense relates to.
+  assetId             String
+  /// The maintenance/repair record, if applicable.
+  maintenanceRecordId String?
+  /// The employee who paid and is requesting reimbursement.
+  employeeId          String
+  /// Amount claimed (positive, max 2 dp).
+  amount              Decimal             @db.Decimal(10, 2)
+  /// Short reason / description of the expense.
+  description         String
+  /// Optional reference: receipt number, vendor invoice ID, URL, etc.
+  /// No sensitive data. Validated to safe patterns by the server action.
+  receiptReference    String?
+  status              ReimbursementStatus @default(PENDING)
+  submittedAt         DateTime            @default(now())
+  reviewedAt          DateTime?
+  reviewedById        String?
+  /// Reason the request was rejected, if applicable.
+  rejectionReason     String?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  asset               Asset               @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  maintenanceRecord   MaintenanceRecord?  @relation(fields: [maintenanceRecordId], references: [id], onDelete: SetNull)
+  employee            Employee            @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  reviewedBy          User?               @relation("ReimbursementReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@index([employeeId])
+  @@index([assetId])
+  @@index([status])
+  @@map("reimbursements")
 }

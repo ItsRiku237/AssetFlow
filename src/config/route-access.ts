@@ -28,6 +28,7 @@ export const EMPLOYEE_ONLY_ROUTES = ["/my-assets", "/available-assets"] as const
 export const SHARED_ROUTES = [
   "/dashboard",
   "/return-requests",
+  "/reimbursements",
   "/profile",
   "/settings",
 ] as const;

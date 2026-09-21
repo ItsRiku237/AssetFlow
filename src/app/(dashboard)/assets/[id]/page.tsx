@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { AssetActions } from "@/components/assets/asset-actions";
 import { RequestReturnDialog } from "@/components/assets/request-return-dialog";
 import { RequestAssetDialog } from "@/components/assets/request-asset-dialog";
+import { AssetTimeline } from "@/components/assets/asset-timeline";
 import { DashboardSection } from "@/components/dashboard/dashboard-section";
 import { ActivityRow } from "@/components/dashboard/activity-row";
 import { EmptyState } from "@/components/shared/empty-state";
@@ -13,6 +14,10 @@ import {
   ReturnRequestStatusBadge,
 } from "@/components/shared/status-badge";
 import { getAssetById, isAssetAssignedToUser } from "@/lib/data/assets";
+import {
+  getAssetTimeline,
+  getAssetTimelineForEmployee,
+} from "@/lib/data/asset-timeline";
 import { getEmployees } from "@/lib/data/employees";
 import { requireAuth } from "@/lib/auth-guards";
 import { prisma } from "@/lib/prisma";
@@ -77,6 +82,11 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
           department: e.department ?? "—",
         }))
       : [];
+
+  // Lifecycle timeline — admin gets full history, employee gets filtered view.
+  const timeline = isAdmin
+    ? await getAssetTimeline(id)
+    : await getAssetTimelineForEmployee(id, session.user.id);
 
   const hardwareItems = isHardwareAsset(asset.type)
     ? [
@@ -240,6 +250,13 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
           )}
         </DashboardSection>
       </div>
+
+      <DashboardSection
+        title="Lifecycle Timeline"
+        description="Chronological history of events for this asset."
+      >
+        <AssetTimeline events={timeline} />
+      </DashboardSection>
     </div>
   );
 }

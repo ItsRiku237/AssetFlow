@@ -11,6 +11,8 @@ export type ReturnRequestStatus = "PENDING" | "APPROVED" | "REJECTED";
 
 export type MaintenanceRecordStatus = "IN_PROGRESS" | "COMPLETED";
 
+export type AssetRequestStatus = "PENDING" | "APPROVED" | "REJECTED" | "CANCELLED";
+
 export type LocationType = "OFFICE" | "REMOTE" | "OTHER";
 
 export interface AssetLocationData {

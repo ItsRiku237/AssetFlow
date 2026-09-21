@@ -18,10 +18,11 @@ export const ADMIN_ONLY_ROUTES = [
   "/assignments",
   "/repairs",
   "/audit-logs",
+  "/asset-requests",
 ] as const;
 
 /** Routes only an EMPLOYEE may load. */
-export const EMPLOYEE_ONLY_ROUTES = ["/my-assets"] as const;
+export const EMPLOYEE_ONLY_ROUTES = ["/my-assets", "/available-assets"] as const;
 
 /** Routes any authenticated user may load, regardless of role. */
 export const SHARED_ROUTES = [

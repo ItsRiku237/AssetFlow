@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 
 import type {
   AssetStatus,
+  AssetRequestStatus,
   MaintenanceRecordStatus,
   ReturnRequestStatus,
 } from "@/types/asset";
@@ -112,6 +113,35 @@ export function AccountLinkBadge({ linked }: { linked: boolean }) {
   return (
     <Badge variant={linked ? "default" : "outline"}>
       {linked ? "Account linked" : "Account not linked"}
+    </Badge>
+  );
+}
+
+const ASSET_REQUEST_STATUS_LABEL: Record<AssetRequestStatus, string> = {
+  PENDING: "Pending",
+  APPROVED: "Approved",
+  REJECTED: "Rejected",
+  CANCELLED: "Cancelled",
+};
+
+const ASSET_REQUEST_STATUS_VARIANT: Record<
+  AssetRequestStatus,
+  "default" | "secondary" | "success" | "warning" | "destructive"
+> = {
+  PENDING: "warning",
+  APPROVED: "success",
+  REJECTED: "destructive",
+  CANCELLED: "secondary",
+};
+
+export function AssetRequestStatusBadge({
+  status,
+}: {
+  status: AssetRequestStatus;
+}) {
+  return (
+    <Badge variant={ASSET_REQUEST_STATUS_VARIANT[status]}>
+      {ASSET_REQUEST_STATUS_LABEL[status]}
     </Badge>
   );
 }

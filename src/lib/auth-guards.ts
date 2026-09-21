@@ -38,7 +38,10 @@ export async function requireRole(role: Role) {
   const userRole = session.user.role;
 
   if (role === "EMPLOYEE") {
-    // Any authenticated role satisfies EMPLOYEE-level access.
+    // Only EMPLOYEE role — ADMIN/SUPER_ADMIN have separate flows.
+    if (userRole !== "EMPLOYEE") {
+      redirect("/dashboard");
+    }
     return session;
   }
 

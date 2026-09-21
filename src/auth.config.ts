@@ -14,7 +14,7 @@ function roleAllowed(
   requiredRole: "SUPER_ADMIN" | "ADMIN" | "EMPLOYEE" | "both"
 ): boolean {
   if (requiredRole === "both") return true;
-  if (requiredRole === "EMPLOYEE") return true; // any authenticated role
+  if (requiredRole === "EMPLOYEE") return userRole === "EMPLOYEE";
   if (requiredRole === "ADMIN")
     return userRole === "ADMIN" || userRole === "SUPER_ADMIN";
   if (requiredRole === "SUPER_ADMIN") return userRole === "SUPER_ADMIN";

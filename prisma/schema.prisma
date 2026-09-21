@@ -29,7 +29,8 @@ model User {
   auditLogs              AuditLog[]
   employee               Employee?
   notifications          Notification[]
-  reviewedReturnRequests ReturnRequest[] @relation("ReturnRequestReviewer")
+  reviewedReturnRequests ReturnRequest[]  @relation("ReturnRequestReviewer")
+  reviewedAssetRequests  AssetRequest[]   @relation("AssetRequestReviewer")
   sessions               Session[]
 
   @@map("users")
@@ -98,6 +99,7 @@ model Employee {
   assignments    AssetAssignment[]
   user           User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
   returnRequests ReturnRequest[]
+  assetRequests  AssetRequest[]
 
   @@index([status])
   @@index([department])
@@ -129,6 +131,7 @@ model Asset {
   maintenanceRecords MaintenanceRecord[]
   returnRequests     ReturnRequest[]
   location           AssetLocation?
+  assetRequests      AssetRequest[]
 
   @@index([status])
   @@map("assets")
@@ -276,10 +279,41 @@ enum EmployeeStatus {
   INACTIVE
 }
 
+enum AssetRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
 enum LocationType {
   OFFICE
   REMOTE
   OTHER
+}
+
+/// Employee-initiated request to be assigned an available asset.
+/// Distinct from ReturnRequest — this is an acquisition request,
+/// not a return. Approval triggers the standard assignment workflow.
+model AssetRequest {
+  id           String             @id @default(cuid())
+  assetId      String
+  employeeId   String
+  reason       String?
+  status       AssetRequestStatus @default(PENDING)
+  reviewNote   String?
+  requestedAt  DateTime           @default(now())
+  reviewedAt   DateTime?
+  reviewedById String?
+  createdAt    DateTime           @default(now())
+  asset        Asset              @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  employee     Employee           @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  reviewedBy   User?              @relation("AssetRequestReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@index([assetId])
+  @@index([employeeId])
+  @@index([status])
+  @@map("asset_requests")
 }
 
 /// Physical location of an asset, independent of assignment/custody.

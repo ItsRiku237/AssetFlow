@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { AssetActions } from "@/components/assets/asset-actions";
 import { RequestReturnDialog } from "@/components/assets/request-return-dialog";
+import { RequestAssetDialog } from "@/components/assets/request-asset-dialog";
 import { DashboardSection } from "@/components/dashboard/dashboard-section";
 import { ActivityRow } from "@/components/dashboard/activity-row";
 import { EmptyState } from "@/components/shared/empty-state";
@@ -14,6 +15,7 @@ import {
 import { getAssetById, isAssetAssignedToUser } from "@/lib/data/assets";
 import { getEmployees } from "@/lib/data/employees";
 import { requireAuth } from "@/lib/auth-guards";
+import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/utils";
 import { History, Undo2, Wrench } from "lucide-react";
 
@@ -32,14 +34,39 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
   const asset = await getAssetById(id);
   if (!asset) notFound();
 
-  // SUPER_ADMIN and ADMIN can view any asset.
   const isAdmin =
     session.user.role === "ADMIN" || session.user.role === "SUPER_ADMIN";
 
+  // For employees: allow viewing AVAILABLE assets (so they can request them)
+  // and assets currently assigned to them. Block everything else.
   let ownsAsset = false;
+  let canRequestAsset = false;
+  let hasPendingRequest = false;
+
   if (!isAdmin) {
-    ownsAsset = await isAssetAssignedToUser(id, session.user.id);
-    if (!ownsAsset) notFound();
+    if (asset.status === "AVAILABLE") {
+      // Employee can view available assets to request them.
+      canRequestAsset = true;
+
+      // Check if they already have a pending request for this asset.
+      const employee = await prisma.employee.findUnique({
+        where: { userId: session.user.id },
+        select: { id: true },
+      });
+      if (employee) {
+        const pending = await prisma.assetRequest.findFirst({
+          where: {
+            assetId: id,
+            employeeId: employee.id,
+            status: "PENDING",
+          },
+        });
+        hasPendingRequest = !!pending;
+      }
+    } else {
+      ownsAsset = await isAssetAssignedToUser(id, session.user.id);
+      if (!ownsAsset) notFound();
+    }
   }
 
   const assignableEmployees =
@@ -80,6 +107,12 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
             />
           ) : ownsAsset && asset.status === "ASSIGNED" ? (
             <RequestReturnDialog assetId={asset.id} />
+          ) : canRequestAsset && !hasPendingRequest ? (
+            <RequestAssetDialog assetId={asset.id} />
+          ) : canRequestAsset && hasPendingRequest ? (
+            <span className="text-sm text-muted-foreground">
+              Request pending review
+            </span>
           ) : undefined
         }
       />
@@ -116,8 +149,6 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
           ]}
         />
 
-        {/* Show hardware specs section for any hardware-type asset,
-            whether or not all fields are populated. */}
         {isHardwareAsset(asset.type) ? (
           <div className="mt-4 space-y-2 border-t border-border pt-4">
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -134,7 +165,6 @@ export default async function AssetDetailPage({ params }: AssetDetailPageProps) 
         ) : null}
       </div>
 
-      {/* Physical Location */}
       {isAdmin ? (
         <AssetLocationForm assetId={asset.id} existingLocation={asset.location} />
       ) : (

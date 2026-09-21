@@ -16,7 +16,10 @@ import { formatDate } from "@/lib/utils";
 export default async function ReturnRequestsPage() {
   const session = await requireAuth();
 
-  if (session.user.role === "ADMIN") {
+  const isAdmin =
+    session.user.role === "ADMIN" || session.user.role === "SUPER_ADMIN";
+
+  if (isAdmin) {
     const requests = await getReturnRequests();
 
     return (

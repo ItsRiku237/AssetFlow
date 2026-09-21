@@ -33,10 +33,6 @@ const CATEGORY_META: Record<TimelineCategory, CategoryMeta> = {
   location:      { label: "Location",      icon: MapPin,         dot: "bg-teal-500" },
 };
 
-const ALL_CATEGORIES: TimelineCategory[] = [
-  "lifecycle", "assignment", "return", "repair", "request", "reimbursement", "location",
-];
-
 // ─── Filter tabs ──────────────────────────────────────────────────────────────
 
 type Filter = "all" | TimelineCategory;

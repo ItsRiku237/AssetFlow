@@ -100,6 +100,16 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
           </Link>
         </p>
       </div>
+
+      <p className="text-center text-xs text-muted-foreground">
+        Just looking around?{" "}
+        <Link
+          href="/demo"
+          className="font-medium text-foreground underline underline-offset-4"
+        >
+          Try the live demo
+        </Link>
+      </p>
     </div>
   );
 }

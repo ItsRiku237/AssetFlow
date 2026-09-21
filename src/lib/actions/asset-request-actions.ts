@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import { requireRole } from "@/lib/auth-guards";
+import { DemoScopeError, assertDemoAssetScope, assertDemoEmployeeScope } from "@/lib/demo";
 import { prisma } from "@/lib/prisma";
 import {
   createNotification,
@@ -111,6 +112,18 @@ export async function createAssetRequest(
   }
 
   const { employee, asset } = eligibility;
+
+  // A demo employee may only request demo-tagged assets — requesting a
+  // real asset could later be approved by a real admin, which would
+  // actually assign real business data to the demo account.
+  try {
+    await assertDemoAssetScope(session.user.email, assetId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
+  }
 
   let requestId: string;
   try {
@@ -278,6 +291,16 @@ export async function approveAssetRequest(
   }
 
   try {
+    await assertDemoAssetScope(session.user.email, request.assetId);
+    await assertDemoEmployeeScope(session.user.email, request.employeeId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
+  }
+
+  try {
     await prisma.$transaction(async (tx) => {
       // Mark request approved — idempotency guard.
       const reqUpdate = await tx.assetRequest.updateMany({
@@ -401,6 +424,15 @@ export async function rejectAssetRequest(
   if (!request) return { error: "Request not found." };
   if (request.status !== "PENDING") {
     return { error: "This request has already been processed." };
+  }
+
+  try {
+    await assertDemoAssetScope(session.user.email, request.assetId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
   }
 
   try {

@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { assertValidAssetTransition } from "@/lib/asset-lifecycle";
 import { requireRole } from "@/lib/auth-guards";
 import { recordAuditLog } from "@/lib/audit";
+import { DemoScopeError, assertDemoAssetScope, isDemoAccountEmail, DEMO_ASSET_TAG_PREFIX } from "@/lib/demo";
 import { prisma } from "@/lib/prisma";
 import { assetFormSchema, type AssetFormInput } from "@/lib/validations/asset";
 
@@ -55,9 +56,17 @@ export async function createAsset(
     return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
   }
 
+  const data = toAssetData(parsed.data);
+  // Demo admins may create assets freely, but every asset they create
+  // must be tagged as demo data so it stays inside the demo boundary
+  // for all future mutations (see assertDemoAssetScope).
+  if (isDemoAccountEmail(session.user.email) && !data.assetTag.startsWith(DEMO_ASSET_TAG_PREFIX)) {
+    data.assetTag = `${DEMO_ASSET_TAG_PREFIX}${data.assetTag}`;
+  }
+
   let created;
   try {
-    created = await prisma.asset.create({ data: toAssetData(parsed.data) });
+    created = await prisma.asset.create({ data });
   } catch (error) {
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -90,6 +99,15 @@ export async function updateAsset(
   const existing = await prisma.asset.findUnique({ where: { id: assetId } });
   if (!existing) {
     return { error: "Asset not found." };
+  }
+
+  try {
+    await assertDemoAssetScope(session.user.email, assetId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
   }
 
   const parsed = parseAssetForm(formData);
@@ -137,6 +155,15 @@ export async function retireAsset(
   const asset = await prisma.asset.findUnique({ where: { id: assetId } });
   if (!asset) {
     return { error: "Asset not found." };
+  }
+
+  try {
+    await assertDemoAssetScope(session.user.email, assetId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
   }
 
   try {

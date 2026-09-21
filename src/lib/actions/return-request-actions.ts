@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { assertValidAssetTransition } from "@/lib/asset-lifecycle";
 import { requireRole } from "@/lib/auth-guards";
+import { DemoScopeError, assertDemoAssetScope } from "@/lib/demo";
 import { prisma } from "@/lib/prisma";
 import {
   createNotification,
@@ -175,6 +176,15 @@ export async function approveReturnRequest(
   }
 
   try {
+    await assertDemoAssetScope(session.user.email, request.assetId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
+  }
+
+  try {
     assertValidAssetTransition(asset.status, nextStatus);
   } catch (error) {
     return {
@@ -289,6 +299,15 @@ export async function rejectReturnRequest(
   });
   if (!asset) {
     return { error: "Asset not found." };
+  }
+
+  try {
+    await assertDemoAssetScope(session.user.email, request.assetId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
   }
 
   try {

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { assertValidAssetTransition } from "@/lib/asset-lifecycle";
 import { requireRole } from "@/lib/auth-guards";
+import { DemoScopeError, assertDemoAssetScope, assertDemoEmployeeScope } from "@/lib/demo";
 import { prisma } from "@/lib/prisma";
 import { createNotification } from "@/lib/notifications";
 import { assignAssetSchema } from "@/lib/validations/assignment";
@@ -39,6 +40,18 @@ export async function assignAsset(
   }
   if (employee.status === "INACTIVE") {
     return { error: "This employee is deactivated and cannot be assigned assets." };
+  }
+
+  // A demo admin may only link demo assets to the demo employee — never
+  // a real asset or a real employee, in either direction.
+  try {
+    await assertDemoAssetScope(session.user.email, assetId);
+    await assertDemoEmployeeScope(session.user.email, employeeId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
   }
 
   // Fail fast with a specific message for the common case (checked

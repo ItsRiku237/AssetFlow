@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 
 import { requireRole } from "@/lib/auth-guards";
 import { recordAuditLog } from "@/lib/audit";
+import { DemoScopeError, assertDemoEmployeeScope, isDemoAccountEmail, DEMO_EMPLOYEE_CODE_PREFIX } from "@/lib/demo";
 import { prisma } from "@/lib/prisma";
 import {
   createEmployeeSchema,
@@ -73,9 +74,16 @@ export async function createEmployee(
     return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
   }
 
+  const data = toCreateData(parsed.data);
+  // Any employee created by a demo admin must stay inside the demo
+  // boundary so it can never be confused with real employee data.
+  if (isDemoAccountEmail(session.user.email) && !data.employeeCode.startsWith(DEMO_EMPLOYEE_CODE_PREFIX)) {
+    data.employeeCode = `${DEMO_EMPLOYEE_CODE_PREFIX}${data.employeeCode}`;
+  }
+
   let created;
   try {
-    created = await prisma.employee.create({ data: toCreateData(parsed.data) });
+    created = await prisma.employee.create({ data });
   } catch (error) {
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -110,6 +118,15 @@ export async function updateEmployee(
   });
   if (!existing) {
     return { error: "Employee not found." };
+  }
+
+  try {
+    await assertDemoEmployeeScope(session.user.email, employeeId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
   }
 
   const parsed = parseUpdateEmployeeForm(formData);
@@ -174,6 +191,15 @@ export async function deactivateEmployee(
     return { error: "Super-admin accounts cannot be deactivated through this interface." };
   }
 
+  try {
+    await assertDemoEmployeeScope(session.user.email, employeeId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
+  }
+
   await prisma.$transaction(async (tx) => {
     // Flip employee status to INACTIVE.
     await tx.employee.update({
@@ -221,6 +247,15 @@ export async function reactivateEmployee(
   }
   if (employee.status === "ACTIVE") {
     return { error: null };
+  }
+
+  try {
+    await assertDemoEmployeeScope(session.user.email, employeeId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
   }
 
   await prisma.$transaction(async (tx) => {
@@ -294,6 +329,15 @@ export async function deleteEmployee(
       reason: "protected",
       message: "Admin and super-admin accounts cannot be deleted through this interface.",
     };
+  }
+
+  try {
+    await assertDemoEmployeeScope(session.user.email, employeeId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { ok: false, reason: "protected", message: error.message };
+    }
+    throw error;
   }
 
   // ── Dependency check: block if business history exists ─────────────────

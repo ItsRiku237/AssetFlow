@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { assertValidAssetTransition } from "@/lib/asset-lifecycle";
 import { requireRole } from "@/lib/auth-guards";
 import { recordAuditLog } from "@/lib/audit";
+import { DemoScopeError, assertDemoAssetScope } from "@/lib/demo";
 import { prisma } from "@/lib/prisma";
 import { createNotification } from "@/lib/notifications";
 import {
@@ -59,6 +60,15 @@ export async function createMaintenanceRecord(
     return {
       error: "Only an asset currently in repair can have a maintenance record started.",
     };
+  }
+
+  try {
+    await assertDemoAssetScope(session.user.email, assetId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
   }
 
   const existingActive = await prisma.maintenanceRecord.findFirst({
@@ -133,6 +143,15 @@ export async function updateMaintenanceRecord(
   }
 
   try {
+    await assertDemoAssetScope(session.user.email, record.assetId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
+  }
+
+  try {
     await prisma.maintenanceRecord.update({
       where: { id: recordId },
       data: {
@@ -197,6 +216,15 @@ export async function completeMaintenanceRecord(
   });
   if (!asset) {
     return { error: "Asset not found." };
+  }
+
+  try {
+    await assertDemoAssetScope(session.user.email, asset.id);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
   }
 
   try {

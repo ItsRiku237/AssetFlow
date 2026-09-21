@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { requireRole } from "@/lib/auth-guards";
 import { recordAuditLog } from "@/lib/audit";
+import { DemoScopeError, assertDemoAssetScope } from "@/lib/demo";
 import { prisma } from "@/lib/prisma";
 import { locationFormSchema } from "@/lib/validations/location";
 
@@ -25,6 +26,15 @@ export async function upsertAssetLocation(
     select: { id: true, assetTag: true },
   });
   if (!asset) return { error: "Asset not found." };
+
+  try {
+    await assertDemoAssetScope(session.user.email, assetId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
+  }
 
   const raw = Object.fromEntries(formData.entries());
   const parsed = locationFormSchema.safeParse(raw);
@@ -100,6 +110,15 @@ export async function removeAssetLocation(
     select: { id: true, assetTag: true },
   });
   if (!asset) return { error: "Asset not found." };
+
+  try {
+    await assertDemoAssetScope(session.user.email, assetId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
+  }
 
   // deleteMany is safe — it is a no-op if there's no location record.
   await prisma.assetLocation.deleteMany({ where: { assetId } });

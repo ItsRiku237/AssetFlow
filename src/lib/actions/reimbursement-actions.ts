@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 
 import { requireRole } from "@/lib/auth-guards";
 import { recordAuditLog } from "@/lib/audit";
+import { DemoScopeError, assertDemoAssetScope } from "@/lib/demo";
 import { prisma } from "@/lib/prisma";
 import {
   createNotification,
@@ -72,6 +73,15 @@ export async function createReimbursement(
     return {
       error: "You can only submit a reimbursement for an asset assigned to you.",
     };
+  }
+
+  try {
+    await assertDemoAssetScope(session.user.email, assetId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
   }
 
   // Verify maintenance record belongs to this asset, if provided.
@@ -224,6 +234,15 @@ export async function approveReimbursement(
   }
 
   try {
+    await assertDemoAssetScope(session.user.email, request.assetId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
+  }
+
+  try {
     const updated = await prisma.reimbursement.updateMany({
       where: { id: reimbursementId, status: "PENDING" },
       data: {
@@ -296,6 +315,15 @@ export async function rejectReimbursement(
   }
   if (request.status !== "PENDING") {
     return { error: "This request has already been processed." };
+  }
+
+  try {
+    await assertDemoAssetScope(session.user.email, request.assetId);
+  } catch (error) {
+    if (error instanceof DemoScopeError) {
+      return { error: error.message };
+    }
+    throw error;
   }
 
   try {

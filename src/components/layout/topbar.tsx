@@ -18,15 +18,15 @@ export async function Topbar({ user }: { user: Session["user"] }) {
   ]);
 
   return (
-    <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-background px-4">
+    <header className="glass-panel relative z-10 flex h-14 shrink-0 items-center gap-3 border-x-0 border-t-0 px-4">
       <MobileSidebar role={user.role} />
 
-      <div className="relative flex-1 max-w-sm">
-        <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+      <div className="relative max-w-sm flex-1">
+        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           type="search"
-          placeholder="Search assets, employees..."
-          className="pl-8"
+          placeholder="Search assets, employees, and more..."
+          className="rounded-full bg-background/60 pl-9 shadow-none"
         />
       </div>
 

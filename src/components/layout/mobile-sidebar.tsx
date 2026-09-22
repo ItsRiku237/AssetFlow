@@ -27,7 +27,10 @@ export function MobileSidebar({ role }: { role: Role }) {
           <span className="sr-only">Open navigation</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-72 p-0">
+      <SheetContent
+        side="left"
+        className="flex w-72 flex-col border-y-0 border-l-0 border-sidebar-border/60 bg-sidebar/75 p-0 backdrop-blur-xl backdrop-saturate-150"
+      >
         <SheetHeader className="h-14 flex-row items-center gap-2 pt-0">
           <SheetTitle className="sr-only">Navigation</SheetTitle>
           <Link
@@ -35,7 +38,9 @@ export function MobileSidebar({ role }: { role: Role }) {
             onClick={() => setOpen(false)}
             className="flex items-center gap-2"
           >
-            <Boxes className="size-5 text-sidebar-primary" />
+            <span className="glow-icon-chip flex size-8 items-center justify-center rounded-md text-sidebar-primary">
+              <Boxes className="size-4" />
+            </span>
             <span className="text-sm font-semibold tracking-tight">
               AssetFlow
             </span>
@@ -44,6 +49,25 @@ export function MobileSidebar({ role }: { role: Role }) {
         <Separator className="bg-sidebar-border" />
         <div className="flex-1 overflow-y-auto py-3">
           <NavLinks role={role} onNavigate={() => setOpen(false)} />
+        </div>
+        <Separator className="bg-sidebar-border" />
+        <div className="flex items-center gap-2.5 px-4 py-4">
+          <span
+            aria-hidden
+            className="h-9 w-1 shrink-0 rounded-full"
+            style={{
+              background:
+                "linear-gradient(180deg, var(--glow-cyan), var(--glow-purple))",
+            }}
+          />
+          <div className="min-w-0">
+            <p className="text-xs font-semibold leading-tight">
+              Smarter Asset Management
+            </p>
+            <p className="text-[11px] text-sidebar-foreground/60">
+              Track · Assign · Optimize
+            </p>
+          </div>
         </div>
       </SheetContent>
     </Sheet>

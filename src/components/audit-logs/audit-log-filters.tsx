@@ -2,10 +2,13 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
-import { X } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
+const SELECT_CLS =
+  "h-9 rounded-md border border-input bg-background/50 px-3 text-sm shadow-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30";
 
 function formatOptionLabel(value: string) {
   return value
@@ -37,7 +40,6 @@ export function AuditLogFilters({
       if (value) params.set(key, value);
       else params.delete(key);
     }
-    // Any filter change invalidates the current page.
     params.delete("page");
     startTransition(() => {
       router.push(`/audit-logs?${params.toString()}`);
@@ -59,19 +61,23 @@ export function AuditLogFilters({
       onSubmit={handleSearchSubmit}
       className="flex flex-wrap items-center gap-2"
     >
-      <Input
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder="Search actor name or email..."
-        className="w-64"
-        aria-label="Search by actor"
-      />
+      {/* Search with icon */}
+      <div className="relative">
+        <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search actor name or email…"
+          className="w-64 bg-background/50 pl-8"
+          aria-label="Search by actor"
+        />
+      </div>
 
       <select
         value={action}
         onChange={(e) => pushParams({ action: e.target.value })}
         aria-label="Filter by action"
-        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+        className={SELECT_CLS}
       >
         <option value="">All actions</option>
         {actions.map((value) => (
@@ -85,7 +91,7 @@ export function AuditLogFilters({
         value={entityType}
         onChange={(e) => pushParams({ entityType: e.target.value })}
         aria-label="Filter by entity type"
-        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+        className={SELECT_CLS}
       >
         <option value="">All entity types</option>
         {entityTypes.map((value) => (

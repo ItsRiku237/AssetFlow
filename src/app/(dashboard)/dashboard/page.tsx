@@ -1,29 +1,15 @@
 import { auth } from "@/auth";
 import { AdminDashboard } from "@/components/dashboard/admin-dashboard";
 import { EmployeeDashboard } from "@/components/dashboard/employee-dashboard";
-import { PageHeader } from "@/components/shared/page-header";
 
 export default async function DashboardPage() {
   const session = await auth();
-  // The (dashboard) layout already guarantees a session exists before
-  // this page renders; this is just narrowing the type.
   const user = session!.user;
+  const isAdmin = user.role === "ADMIN" || user.role === "SUPER_ADMIN";
 
-  return (
-    <div className="space-y-6">
-      <PageHeader
-        title="Dashboard"
-        description={
-          user.role === "ADMIN" || user.role === "SUPER_ADMIN"
-            ? "Overview of assets, assignments, and activity."
-            : "Your assets, requests, and recent activity."
-        }
-      />
-      {user.role === "ADMIN" || user.role === "SUPER_ADMIN" ? (
-        <AdminDashboard />
-      ) : (
-        <EmployeeDashboard userId={user.id} />
-      )}
-    </div>
-  );
+  if (isAdmin) {
+    return <AdminDashboard adminName={user.name} />;
+  }
+
+  return <EmployeeDashboard userId={user.id} userName={user.name} />;
 }

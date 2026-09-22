@@ -34,11 +34,14 @@ export function ReturnRequestsTable({
       </TableHeader>
       <TableBody>
         {requests.map((req) => (
-          <TableRow key={req.id}>
+          <TableRow
+            key={req.id}
+            className="group transition-colors hover:bg-accent/40"
+          >
             <TableCell>
               <Link
                 href={`/assets/${req.assetId}`}
-                className="font-medium hover:underline"
+                className="font-medium hover:text-primary hover:underline"
               >
                 {req.assetName}
               </Link>
@@ -46,31 +49,39 @@ export function ReturnRequestsTable({
                 {req.assetTag}
               </div>
             </TableCell>
-            <TableCell className="text-muted-foreground">
-              {req.employeeName}
+
+            <TableCell>
+              <p className="text-sm font-medium">{req.employeeName}</p>
             </TableCell>
-            <TableCell className="max-w-48 truncate text-sm text-muted-foreground">
-              {req.reason}
+
+            <TableCell className="max-w-48">
+              <p className="truncate text-sm text-muted-foreground">
+                {req.reason}
+              </p>
             </TableCell>
-            <TableCell className="text-muted-foreground">
+
+            <TableCell className="text-sm text-muted-foreground">
               {formatDate(req.requestedAt)}
             </TableCell>
+
             <TableCell>
               <ReturnRequestStatusBadge status={req.status} />
             </TableCell>
+
             <TableCell className="text-xs text-muted-foreground">
               {req.reviewedAt
-                ? `${formatDate(req.reviewedAt)} by ${req.reviewedByName ?? "Admin"}`
-                : "—"}
+                ? `${formatDate(req.reviewedAt)} · ${req.reviewedByName ?? "Admin"}`
+                : <span className="opacity-50">—</span>}
             </TableCell>
+
             <TableCell>
               {req.status === "PENDING" ? (
-                <div className="flex justify-end gap-1">
+                <div className="flex justify-end gap-1.5">
                   <ApproveReturnButton requestId={req.id} />
                   <RejectReturnButton requestId={req.id} />
                 </div>
               ) : (
-                <div className="text-right text-xs text-muted-foreground">
+                <div className="text-right text-xs text-muted-foreground/60">
                   Processed
                 </div>
               )}

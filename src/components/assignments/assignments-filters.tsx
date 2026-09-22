@@ -46,7 +46,7 @@ export function AssignmentsFilters() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Search asset, employee..."
-        className="w-56"
+        className="w-56 bg-background/50"
         aria-label="Search assignments"
       />
 
@@ -54,7 +54,7 @@ export function AssignmentsFilters() {
         value={status}
         onChange={(e) => pushParams({ status: e.target.value })}
         aria-label="Filter by custody status"
-        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+        className="h-9 rounded-md border border-input bg-background/50 px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
       >
         <option value="">All assignments</option>
         <option value="ACTIVE">Active only</option>

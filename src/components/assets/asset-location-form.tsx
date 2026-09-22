@@ -6,6 +6,7 @@ import { Loader2, MapPin, Save, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { GlassCard } from "@/components/design-system/glass-card";
 import {
   upsertAssetLocation,
   removeAssetLocation,
@@ -76,7 +77,7 @@ export function AssetLocationForm({
   const errorMessage = saveState.error ?? removeState.error;
 
   return (
-    <div className="space-y-4 rounded-lg border border-border bg-card p-4">
+    <GlassCard className="space-y-4 p-4">
       <div className="flex items-center gap-2">
         <MapPin className="size-4 text-muted-foreground" />
         <h2 className="text-sm font-semibold">
@@ -207,6 +208,6 @@ export function AssetLocationForm({
           </Button>
         </form>
       ) : null}
-    </div>
+    </GlassCard>
   );
 }

@@ -66,8 +66,8 @@ export function AssetFilters({ types }: { types: string[] }) {
       <Input
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        placeholder="Search tag, name, serial..."
-        className="w-56"
+        placeholder="Search tag, name, serial…"
+        className="w-56 bg-background/50"
         aria-label="Search assets"
       />
 
@@ -75,7 +75,7 @@ export function AssetFilters({ types }: { types: string[] }) {
         value={status}
         onChange={(e) => pushParams({ status: e.target.value })}
         aria-label="Filter by status"
-        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+        className="h-9 rounded-md border border-input bg-background/50 px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
       >
         <option value="">All statuses</option>
         {STATUS_OPTIONS.map((opt) => (
@@ -89,7 +89,7 @@ export function AssetFilters({ types }: { types: string[] }) {
         value={type}
         onChange={(e) => pushParams({ type: e.target.value })}
         aria-label="Filter by type"
-        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+        className="h-9 rounded-md border border-input bg-background/50 px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
       >
         <option value="">All types</option>
         {types.map((t) => (
@@ -103,7 +103,7 @@ export function AssetFilters({ types }: { types: string[] }) {
         value={locationType}
         onChange={(e) => pushParams({ locationType: e.target.value })}
         aria-label="Filter by location type"
-        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+        className="h-9 rounded-md border border-input bg-background/50 px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
       >
         <option value="">All locations</option>
         {LOCATION_TYPE_OPTIONS.map((opt) => (
@@ -117,7 +117,7 @@ export function AssetFilters({ types }: { types: string[] }) {
         value={ram}
         onChange={(e) => pushParams({ ram: e.target.value })}
         aria-label="Filter by RAM"
-        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+        className="h-9 rounded-md border border-input bg-background/50 px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
       >
         <option value="">All RAM</option>
         {RAM_OPTIONS.map((r) => (

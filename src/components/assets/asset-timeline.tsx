@@ -79,7 +79,7 @@ function EventRow({ event }: { event: TimelineEvent }) {
 
       {/* Icon dot */}
       <div className={cn(
-        "relative z-10 flex size-9 shrink-0 items-center justify-center rounded-full border border-border bg-card shadow-sm",
+        "relative z-10 flex size-9 shrink-0 items-center justify-center rounded-full shadow-sm glow-icon-chip",
       )}>
         <Icon className="size-4 text-muted-foreground" />
       </div>

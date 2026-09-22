@@ -22,6 +22,7 @@ export interface AssetListItem {
   serialNumber: string | null;
   status: AssetStatus;
   purchaseDate: Date | null;
+  imageUrl: string | null;
   assignedEmployeeName: string | null;
   location: AssetLocationData | null;
 }
@@ -71,6 +72,7 @@ export async function getAssets(
     serialNumber: a.serialNumber,
     status: a.status,
     purchaseDate: a.purchaseDate,
+    imageUrl: a.imageUrl,
     assignedEmployeeName: a.assignments[0]?.employee.name ?? null,
     location: a.location
       ? {

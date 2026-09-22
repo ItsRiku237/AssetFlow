@@ -2,18 +2,25 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
-import { X } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { EmployeeStatus } from "@/types/employee";
+
+const SELECT_CLS =
+  "h-9 rounded-lg border border-input bg-background/60 px-3 text-sm shadow-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30";
 
 const STATUS_OPTIONS: { value: EmployeeStatus; label: string }[] = [
   { value: "ACTIVE", label: "Active" },
   { value: "INACTIVE", label: "Deactivated" },
 ];
 
-export function EmployeeFilters({ departments }: { departments: string[] }) {
+export function EmployeeFilters({
+  departments,
+}: {
+  departments: string[];
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -51,19 +58,23 @@ export function EmployeeFilters({ departments }: { departments: string[] }) {
       onSubmit={handleSearchSubmit}
       className="flex flex-wrap items-center gap-2"
     >
-      <Input
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder="Search name, email, employee ID..."
-        className="w-64"
-        aria-label="Search employees"
-      />
+      {/* Search input with icon */}
+      <div className="relative flex-1 min-w-48 max-w-sm">
+        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search name, email, employee ID…"
+          className="rounded-lg bg-background/60 pl-9"
+          aria-label="Search employees"
+        />
+      </div>
 
       <select
         value={department}
         onChange={(e) => pushParams({ department: e.target.value })}
         aria-label="Filter by department"
-        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+        className={SELECT_CLS}
       >
         <option value="">All departments</option>
         {departments.map((d) => (
@@ -77,7 +88,7 @@ export function EmployeeFilters({ departments }: { departments: string[] }) {
         value={status}
         onChange={(e) => pushParams({ status: e.target.value })}
         aria-label="Filter by status"
-        className="h-9 rounded-md border border-input bg-transparent px-3 text-sm shadow-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+        className={SELECT_CLS}
       >
         <option value="">All statuses</option>
         {STATUS_OPTIONS.map((opt) => (
@@ -88,6 +99,7 @@ export function EmployeeFilters({ departments }: { departments: string[] }) {
       </select>
 
       <Button type="submit" variant="secondary" size="sm" disabled={isPending}>
+        <Search className="size-4" />
         Search
       </Button>
 
@@ -100,7 +112,7 @@ export function EmployeeFilters({ departments }: { departments: string[] }) {
           disabled={isPending}
         >
           <X className="size-4" />
-          Clear filters
+          Clear
         </Button>
       ) : null}
     </form>

@@ -6,6 +6,7 @@ import { Loader2, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SpecSelect } from "@/components/assets/spec-select";
+import { GlassCard } from "@/components/design-system/glass-card";
 import {
   isHardwareAsset,
   ASSET_TYPE_LIST,
@@ -277,7 +278,7 @@ export function AssetForm({
 
       {/* ── Hardware Specifications ─────────────────────────────────── */}
       {showHardware ? (
-        <section className="space-y-4 rounded-lg border border-border p-4">
+        <GlassCard className="space-y-4 p-4">
           <div>
             <h2 className="text-sm font-semibold">Hardware Specifications</h2>
             <p className="text-xs text-muted-foreground mt-0.5">
@@ -320,7 +321,7 @@ export function AssetForm({
               placeholder="e.g. Hybrid SSHD"
             />
           </div>
-        </section>
+        </GlassCard>
       ) : (
         /* Preserve any existing spec values when type is non-hardware */
         <>

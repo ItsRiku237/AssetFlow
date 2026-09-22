@@ -26,7 +26,7 @@ export function AssetRequestsTable({
           <TableHead>Asset</TableHead>
           <TableHead>Requested by</TableHead>
           <TableHead>Reason</TableHead>
-          <TableHead>Requested</TableHead>
+          <TableHead>Date</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Review note</TableHead>
           <TableHead className="text-right">Actions</TableHead>
@@ -34,11 +34,14 @@ export function AssetRequestsTable({
       </TableHeader>
       <TableBody>
         {requests.map((req) => (
-          <TableRow key={req.id}>
+          <TableRow
+            key={req.id}
+            className="group transition-colors hover:bg-accent/40"
+          >
             <TableCell>
               <Link
                 href={`/assets/${req.assetId}`}
-                className="font-medium hover:underline"
+                className="font-medium hover:text-primary hover:underline"
               >
                 {req.assetName}
               </Link>
@@ -46,33 +49,46 @@ export function AssetRequestsTable({
                 {req.assetTag}
               </div>
             </TableCell>
-            <TableCell className="text-muted-foreground">
-              {req.employeeName}
+
+            <TableCell>
+              <p className="text-sm font-medium">{req.employeeName}</p>
             </TableCell>
-            <TableCell className="max-w-40 truncate text-sm text-muted-foreground">
-              {req.reason ?? "—"}
+
+            <TableCell className="max-w-40">
+              <p className="truncate text-sm text-muted-foreground">
+                {req.reason ?? <span className="italic opacity-50">—</span>}
+              </p>
             </TableCell>
-            <TableCell className="text-muted-foreground">
+
+            <TableCell className="text-sm text-muted-foreground">
               {formatDate(req.requestedAt)}
             </TableCell>
+
             <TableCell>
               <AssetRequestStatusBadge status={req.status} />
             </TableCell>
-            <TableCell className="max-w-40 truncate text-xs text-muted-foreground">
-              {req.reviewNote
-                ? `${req.reviewNote} (${req.reviewedByName ?? "Admin"}, ${req.reviewedAt ? formatDate(req.reviewedAt) : ""})`
-                : req.reviewedAt
-                ? `Reviewed by ${req.reviewedByName ?? "Admin"} on ${formatDate(req.reviewedAt)}`
-                : "—"}
+
+            <TableCell className="max-w-40">
+              {req.reviewNote ? (
+                <p className="truncate text-xs text-muted-foreground">
+                  {req.reviewNote}
+                  {req.reviewedAt
+                    ? ` · ${formatDate(req.reviewedAt)}`
+                    : ""}
+                </p>
+              ) : (
+                <span className="text-xs text-muted-foreground/50">—</span>
+              )}
             </TableCell>
+
             <TableCell>
               {req.status === "PENDING" ? (
-                <div className="flex justify-end gap-1">
+                <div className="flex justify-end gap-1.5">
                   <ApproveAssetRequestButton requestId={req.id} />
                   <RejectAssetRequestButton requestId={req.id} />
                 </div>
               ) : (
-                <div className="text-right text-xs text-muted-foreground">
+                <div className="text-right text-xs text-muted-foreground/60">
                   Processed
                 </div>
               )}

@@ -32,10 +32,12 @@ function DemoOption({
   return (
     <form
       action={formAction}
-      className="flex flex-1 flex-col gap-3 rounded-lg border border-border bg-card p-5 text-left"
+      className="flex flex-1 flex-col gap-3 glass-panel rounded-xl p-5 text-left transition-shadow hover:shadow-[0_0_24px_-8px_var(--glow-cyan)]"
     >
       <div className="flex items-center gap-2">
-        <Icon className="size-5 text-primary" />
+        <div className="glow-icon-chip flex size-8 shrink-0 items-center justify-center rounded-lg text-primary">
+          <Icon className="size-4" />
+        </div>
         <h2 className="text-sm font-semibold">{title}</h2>
       </div>
       <p className="text-sm text-muted-foreground">{description}</p>

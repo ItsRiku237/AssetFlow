@@ -18,13 +18,7 @@ const getServerSnapshot = () => false;
 
 export function ThemeSettings() {
   const { theme, setTheme } = useTheme();
-  // Avoid a server/client mismatch on first paint (next-themes resolves
-  // the actual theme only after mount).
-  const mounted = useSyncExternalStore(
-    subscribe,
-    getClientSnapshot,
-    getServerSnapshot
-  );
+  const mounted = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot);
 
   return (
     <div className="grid grid-cols-3 gap-2">
@@ -37,12 +31,14 @@ export function ThemeSettings() {
             type="button"
             onClick={() => setTheme(opt.value)}
             className={cn(
-              "flex flex-col items-center gap-1.5 rounded-md border border-border px-3 py-2.5 text-xs font-medium transition-colors",
-              "hover:bg-accent hover:text-accent-foreground",
-              isActive && "border-primary bg-accent text-accent-foreground"
+              "flex flex-col items-center gap-1.5 rounded-xl border px-3 py-3 text-xs font-medium",
+              "transition-all duration-200 hover:scale-[1.02]",
+              isActive
+                ? "border-primary/50 bg-primary/10 text-primary shadow-[0_0_12px_-4px_var(--glow-cyan)]"
+                : "border-border bg-muted/30 text-muted-foreground hover:border-border/80 hover:bg-muted/60 hover:text-foreground"
             )}
           >
-            <Icon className="size-4" />
+            <Icon className={cn("size-4", isActive && "text-primary")} />
             {opt.label}
           </button>
         );

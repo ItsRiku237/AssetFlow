@@ -4,30 +4,30 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --radius: 0.5rem;
+  --radius: 0.625rem;
 
   /* Base surface */
-  --background: #f7f8fa;
-  --foreground: #18181b;
+  --background: #f6f8fb;
+  --foreground: #131722;
 
   --card: #ffffff;
-  --card-foreground: #18181b;
+  --card-foreground: #131722;
 
   --popover: #ffffff;
-  --popover-foreground: #18181b;
+  --popover-foreground: #131722;
 
-  /* Actions */
-  --primary: #1d4ed8;
+  /* Actions — cyan-leaning blue primary */
+  --primary: #0e7cf0;
   --primary-foreground: #f8fafc;
 
-  --secondary: #eef0f3;
-  --secondary-foreground: #18181b;
+  --secondary: #eef1f6;
+  --secondary-foreground: #131722;
 
-  --muted: #eef0f3;
-  --muted-foreground: #6b7280;
+  --muted: #eef1f6;
+  --muted-foreground: #64748b;
 
-  --accent: #eef0f3;
-  --accent-foreground: #18181b;
+  --accent: #eef1f6;
+  --accent-foreground: #131722;
 
   --destructive: #dc2626;
   --destructive-foreground: #fef2f2;
@@ -37,44 +37,52 @@
   --warning: #b45309;
   --warning-foreground: #fffbeb;
 
-  --border: #e4e4e7;
-  --input: #e4e4e7;
-  --ring: #1d4ed8;
+  --border: #e2e6ee;
+  --input: #e2e6ee;
+  --ring: #0e7cf0;
 
-  /* Sidebar: light surface in light mode, dark surface in dark mode
-     — it follows the theme like every other surface. See the .dark
-     block below for the dark-mode values. */
-  --sidebar: #f4f5f7;
-  --sidebar-foreground: #3f3f46;
-  --sidebar-primary: #1d4ed8;
+  /* Premium accents — used sparingly for glow/gradient design-system pieces */
+  --glow-cyan: #06b6d4;
+  --glow-blue: #2563eb;
+  --glow-purple: #8b5cf6;
+
+  --glass-bg: color-mix(in oklab, var(--card) 72%, transparent);
+  --glass-border: color-mix(in oklab, var(--foreground) 8%, transparent);
+  --glass-highlight: color-mix(in oklab, white 60%, transparent);
+  --grid-line: color-mix(in oklab, var(--foreground) 5%, transparent);
+
+  --sidebar: #f3f5f9;
+  --sidebar-foreground: #3f4759;
+  --sidebar-primary: #0e7cf0;
   --sidebar-primary-foreground: #f8fafc;
-  --sidebar-accent: #e4e4e7;
-  --sidebar-accent-foreground: #18181b;
-  --sidebar-border: #e4e4e7;
-  --sidebar-ring: #1d4ed8;
+  --sidebar-accent: #e6eaf2;
+  --sidebar-accent-foreground: #131722;
+  --sidebar-border: #e2e6ee;
+  --sidebar-ring: #0e7cf0;
 }
 
 .dark {
-  --background: #0b0e14;
-  --foreground: #e4e6eb;
+  /* Deep navy base — premium enterprise SaaS feel */
+  --background: #070a12;
+  --foreground: #e7eaf3;
 
-  --card: #12151d;
-  --card-foreground: #e4e6eb;
+  --card: #0e121c;
+  --card-foreground: #e7eaf3;
 
-  --popover: #12151d;
-  --popover-foreground: #e4e6eb;
+  --popover: #0e121c;
+  --popover-foreground: #e7eaf3;
 
-  --primary: #3b82f6;
-  --primary-foreground: #0b0e14;
+  --primary: #38bdf8;
+  --primary-foreground: #051019;
 
-  --secondary: #1a1e29;
-  --secondary-foreground: #e4e6eb;
+  --secondary: #161b28;
+  --secondary-foreground: #e7eaf3;
 
-  --muted: #1a1e29;
-  --muted-foreground: #9198a8;
+  --muted: #161b28;
+  --muted-foreground: #8b93a8;
 
-  --accent: #1a1e29;
-  --accent-foreground: #e4e6eb;
+  --accent: #161b28;
+  --accent-foreground: #e7eaf3;
 
   --destructive: #f87171;
   --destructive-foreground: #1a0505;
@@ -84,18 +92,28 @@
   --warning: #fbbf24;
   --warning-foreground: #2e1e05;
 
-  --border: #212635;
-  --input: #212635;
-  --ring: #3b82f6;
+  --border: #1b2130;
+  --input: #1b2130;
+  --ring: #38bdf8;
 
-  --sidebar: #0a0d14;
-  --sidebar-foreground: #cbd2e0;
-  --sidebar-primary: #3b82f6;
-  --sidebar-primary-foreground: #0b0e14;
-  --sidebar-accent: #171c2b;
-  --sidebar-accent-foreground: #f4f5f7;
-  --sidebar-border: #1b2033;
-  --sidebar-ring: #3b82f6;
+  /* Premium accents */
+  --glow-cyan: #22d3ee;
+  --glow-blue: #3b82f6;
+  --glow-purple: #a78bfa;
+
+  --glass-bg: color-mix(in oklab, var(--card) 55%, transparent);
+  --glass-border: color-mix(in oklab, white 8%, transparent);
+  --glass-highlight: color-mix(in oklab, white 6%, transparent);
+  --grid-line: color-mix(in oklab, white 5%, transparent);
+
+  --sidebar: #060810;
+  --sidebar-foreground: #ccd3e3;
+  --sidebar-primary: #38bdf8;
+  --sidebar-primary-foreground: #051019;
+  --sidebar-accent: #141a29;
+  --sidebar-accent-foreground: #f4f6fb;
+  --sidebar-border: #171d2c;
+  --sidebar-ring: #38bdf8;
 }
 
 @theme inline {
@@ -135,6 +153,10 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  --color-glow-cyan: var(--glow-cyan);
+  --color-glow-blue: var(--glow-blue);
+  --color-glow-purple: var(--glow-purple);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
@@ -150,5 +172,189 @@
   }
   body {
     @apply bg-background text-foreground;
+    min-width: 320px;
+  }
+}
+
+/* ── Premium design-system utilities ─────────────────────────────────────
+   Glass surfaces, restrained glow, and a subtle grid pattern. Additive
+   only — nothing here changes existing component markup or behavior. */
+@layer components {
+  .glass-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    box-shadow:
+      0 18px 50px -30px color-mix(in oklab, #020617 65%, transparent),
+      inset 0 1px 0 var(--glass-highlight);
+  }
+
+  .af-background-image {
+    background-image: linear-gradient(
+        180deg,
+        color-mix(in oklab, var(--background) 62%, transparent),
+        color-mix(in oklab, var(--background) 88%, transparent)
+      ),
+      url("/images/dashboard-hero.webp");
+    background-position: center top;
+    background-size: cover;
+    filter: saturate(0.75) blur(7px);
+    opacity: 0.22;
+    transform: scale(1.04);
+  }
+
+  .dark .af-background-image {
+    opacity: 0.34;
+  }
+
+  .data-table-shell {
+    isolation: isolate;
+    scrollbar-color: color-mix(in oklab, var(--primary) 35%, var(--muted)) transparent;
+  }
+
+  .data-table-shell thead {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .data-table-shell thead th {
+    background: color-mix(in oklab, var(--card) 92%, transparent);
+    box-shadow: inset 0 -1px 0 var(--border), 0 8px 14px -14px color-mix(in oklab, #020617 75%, transparent);
+    backdrop-filter: blur(16px) saturate(1.25);
+    -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  }
+
+  @media (max-width: 767px) {
+    .af-background-image {
+      background-position: 68% top;
+      filter: saturate(0.7) blur(9px);
+      opacity: 0.14;
+    }
+
+    .dark .af-background-image {
+      opacity: 0.22;
+    }
+  }
+
+  .glass-panel-hover {
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+  .glass-panel-hover:hover {
+    border-color: color-mix(in oklab, var(--glow-cyan) 35%, var(--glass-border));
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--glow-cyan) 12%, transparent),
+      0 12px 32px -16px color-mix(in oklab, var(--glow-blue) 30%, transparent);
+  }
+
+  .glow-ring {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--glow-cyan) 25%, transparent),
+      0 0 24px -6px color-mix(in oklab, var(--glow-cyan) 45%, transparent);
+  }
+
+  .glow-icon-chip {
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--glow-blue) 18%, transparent),
+      color-mix(in oklab, var(--glow-purple) 14%, transparent)
+    );
+    border: 1px solid color-mix(in oklab, var(--glow-cyan) 20%, var(--glass-border));
+  }
+
+  .text-gradient-brand {
+    background: linear-gradient(
+      100deg,
+      var(--glow-cyan),
+      var(--glow-blue) 55%,
+      var(--glow-purple)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .bg-grid-pattern {
+    background-image:
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}
+
+/* ── Motion system ────────────────────────────────────────────────────── */
+@layer utilities {
+  @keyframes af-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes af-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes af-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes af-glow-pulse {
+    0%,
+    100% {
+      opacity: 0.55;
+    }
+    50% {
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes af-shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  .animate-af-fade-up {
+    animation: af-fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-af-fade-in {
+    animation: af-fade-in 0.5s ease both;
+  }
+  .animate-af-float {
+    animation: af-float 6s ease-in-out infinite;
+  }
+  .animate-af-glow-pulse {
+    animation: af-glow-pulse 4s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-af-fade-up,
+    .animate-af-fade-in,
+    .animate-af-float,
+    .animate-af-glow-pulse {
+      animation: none !important;
+    }
   }
 }

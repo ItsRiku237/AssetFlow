@@ -1,5 +1,6 @@
 import { MapPin } from "lucide-react";
 
+import { GlassCard } from "@/components/design-system/glass-card";
 import type { AssetLocationData } from "@/types/asset";
 
 function LocationRow({ label, value }: { label: string; value: string | null | undefined }) {
@@ -29,7 +30,7 @@ export function AssetLocationCard({
   location: AssetLocationData | null;
 }) {
   return (
-    <section className="space-y-3 rounded-lg border border-border bg-card p-4">
+    <GlassCard className="space-y-3 p-4">
       <div className="flex items-center gap-2">
         <MapPin className="size-4 text-muted-foreground" />
         <h2 className="text-sm font-semibold">Physical Location</h2>
@@ -61,7 +62,7 @@ export function AssetLocationCard({
           <p className="text-sm">{location.description}</p>
         </div>
       )}
-    </section>
+    </GlassCard>
   );
 }
 

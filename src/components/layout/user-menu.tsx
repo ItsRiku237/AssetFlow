@@ -26,21 +26,36 @@ function initials(name: string | null | undefined) {
     .toUpperCase();
 }
 
+const ROLE_LABEL: Record<string, string> = {
+  SUPER_ADMIN: "Super Admin",
+  ADMIN: "Administrator",
+  EMPLOYEE: "Employee",
+};
+
 export function UserMenu({ user }: { user: Session["user"] }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="h-9 gap-2 px-2"
+          className="h-11 gap-2 px-2"
           aria-label="Open account menu"
         >
-          <Avatar className="size-6">
-            {user.image ? <AvatarImage src={user.image} alt="" /> : null}
-            <AvatarFallback>{initials(user.name)}</AvatarFallback>
-          </Avatar>
-          <span className="hidden text-sm font-medium sm:inline">
-            {user.name ?? user.email}
+          <span className="glow-ring inline-flex rounded-full">
+            <Avatar className="size-8">
+              {user.image ? <AvatarImage src={user.image} alt="" /> : null}
+              <AvatarFallback className="bg-primary/15 font-semibold text-primary">
+                {initials(user.name)}
+              </AvatarFallback>
+            </Avatar>
+          </span>
+          <span className="hidden flex-col items-start leading-tight sm:flex">
+            <span className="text-sm font-medium">
+              {user.name ?? user.email}
+            </span>
+            <span className="text-[11px] text-muted-foreground">
+              {ROLE_LABEL[user.role] ?? user.role}
+            </span>
           </span>
         </Button>
       </DropdownMenuTrigger>

@@ -21,17 +21,17 @@ export function MaintenanceHistoryTable({
   return (
     <>
       {/* ── Desktop table ──────────────────────────────────── */}
-      <div className="hidden overflow-x-auto md:block">
+      <div className="hidden md:block">
         <Table>
           <TableHeader>
             <TableRow className="border-b border-border/60 hover:bg-transparent">
-              <TableHead className="pl-5">Asset</TableHead>
-              <TableHead>Issue</TableHead>
-              <TableHead>Vendor</TableHead>
-              <TableHead>Cost</TableHead>
-              <TableHead>Started</TableHead>
-              <TableHead>Completed</TableHead>
-              <TableHead className="pr-5">Status</TableHead>
+              <TableHead className="pl-5 min-w-[180px]">Asset</TableHead>
+              <TableHead className="min-w-[200px]">Issue</TableHead>
+              <TableHead className="min-w-[130px]">Vendor</TableHead>
+              <TableHead className="min-w-[110px]">Cost</TableHead>
+              <TableHead className="min-w-[120px]">Started</TableHead>
+              <TableHead className="min-w-[120px]">Completed</TableHead>
+              <TableHead className="pr-5 min-w-[130px]">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -40,7 +40,7 @@ export function MaintenanceHistoryTable({
                 key={record.id}
                 className="group border-b border-border/40 transition-colors hover:bg-primary/5"
               >
-                <TableCell className="pl-5">
+                <TableCell className="pl-5 min-w-[180px]">
                   <Link
                     href={`/assets/${record.assetId}`}
                     className="font-medium transition-colors hover:text-primary hover:underline"
@@ -51,7 +51,7 @@ export function MaintenanceHistoryTable({
                     {record.assetTag}
                   </div>
                 </TableCell>
-                <TableCell className="max-w-48">
+                <TableCell className="min-w-[200px] max-w-xs">
                   <p className="truncate text-sm text-muted-foreground">
                     {record.issue}
                   </p>
@@ -61,23 +61,23 @@ export function MaintenanceHistoryTable({
                     </p>
                   ) : null}
                 </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
+                <TableCell className="min-w-[130px] text-sm text-muted-foreground">
                   {record.vendor ?? "—"}
                 </TableCell>
-                <TableCell className="text-sm font-medium">
+                <TableCell className="min-w-[110px] text-sm font-medium">
                   {record.cost ? (
                     `$${record.cost}`
                   ) : (
                     <span className="text-muted-foreground">—</span>
                   )}
                 </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
+                <TableCell className="min-w-[120px] text-sm text-muted-foreground">
                   {formatDate(record.startedAt)}
                 </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
+                <TableCell className="min-w-[120px] text-sm text-muted-foreground">
                   {record.completedAt ? formatDate(record.completedAt) : "—"}
                 </TableCell>
-                <TableCell className="pr-5">
+                <TableCell className="pr-5 min-w-[130px]">
                   <MaintenanceStatusBadge status={record.status} />
                 </TableCell>
               </TableRow>

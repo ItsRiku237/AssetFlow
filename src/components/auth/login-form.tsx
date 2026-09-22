@@ -163,7 +163,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
                     Explore the live demo
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    No account needed — experience AssetFlow instantly.
+                    No account needed — experience ADP AssetHub instantly.
                   </p>
                 </div>
               </div>

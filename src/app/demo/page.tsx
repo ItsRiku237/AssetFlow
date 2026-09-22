@@ -21,14 +21,14 @@ export default async function DemoPage() {
       <div className="flex items-center gap-2 text-foreground">
         <Boxes className="size-6 text-primary" />
         <span className="text-lg font-semibold tracking-tight">
-          AssetFlow
+          ADP AssetHub
         </span>
       </div>
 
       <div className="max-w-2xl space-y-2 text-center">
         <h1 className="text-xl font-semibold">Try the live demo</h1>
         <p className="text-sm text-muted-foreground">
-          Explore AssetFlow as an Employee, an Admin, or a Super Admin. Demo
+          Explore ADP AssetHub as an Employee, an Admin, or a Super Admin. Demo
           accounts use isolated demo data and can never modify real business
           records.
         </p>

@@ -21,6 +21,7 @@ interface FadeInProps {
 export function FadeIn({ children, delay = 0, className }: FadeInProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const [animationFinished, setAnimationFinished] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -42,8 +43,9 @@ export function FadeIn({ children, delay = 0, className }: FadeInProps) {
   return (
     <div
       ref={ref}
+      onAnimationEnd={() => setAnimationFinished(true)}
       style={visible ? { animationDelay: `${delay}ms` } : { opacity: 0 }}
-      className={cn(visible && "animate-af-fade-up", className)}
+      className={cn(visible && !animationFinished && "animate-af-fade-up", className)}
     >
       {children}
     </div>

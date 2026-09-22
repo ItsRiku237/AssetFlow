@@ -27,7 +27,7 @@ export default async function ReturnRequestsPage() {
     const rejected = requests.filter((r) => r.status === "REJECTED").length;
 
     return (
-      <div className="space-y-6">
+      <div className="data-page-with-controls has-sticky-filter space-y-5">
         <FadeIn>
           <GlassCard className="relative overflow-hidden">
             <div className="absolute inset-0">
@@ -38,7 +38,7 @@ export default async function ReturnRequestsPage() {
                 className="object-cover opacity-10"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-background/96 via-background/88 to-background/70" />
             </div>
             <div
               aria-hidden
@@ -72,6 +72,26 @@ export default async function ReturnRequestsPage() {
           </GlassCard>
         </FadeIn>
 
+        {/* ── Sticky Control / Summary Bar ──────────────────────── */}
+        <div className="sticky-control-bar">
+          <GlassCard className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
+            <p className="text-sm font-medium text-muted-foreground">
+              Total Requests: <span className="font-semibold text-foreground">{requests.length}</span>
+            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-warning/30 bg-warning/10 px-3 py-1 text-xs font-medium text-warning">
+                <Clock className="size-3" /> {pending} pending
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-success/30 bg-success/10 px-3 py-1 text-xs font-medium text-success">
+                <CheckCircle2 className="size-3" /> {approved} approved
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-destructive/30 bg-destructive/10 px-3 py-1 text-xs font-medium text-destructive">
+                <XCircle className="size-3" /> {rejected} rejected
+              </span>
+            </div>
+          </GlassCard>
+        </div>
+
         <FadeIn delay={60}>
           {requests.length === 0 ? (
             <EmptyState
@@ -80,7 +100,7 @@ export default async function ReturnRequestsPage() {
               description="Employee return requests will appear here."
             />
           ) : (
-            <GlassCard className="overflow-hidden p-0">
+            <GlassCard className="overflow-visible rounded-xl p-0">
               <ReturnRequestsTable requests={requests} />
             </GlassCard>
           )}

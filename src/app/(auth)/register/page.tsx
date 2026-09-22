@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { ActivationForm } from "@/components/auth/activation-form";
 
 export const metadata = {
-  title: "Activate Account — AssetFlow",
+  title: "Activate Account — ADP AssetHub",
 };
 
 export default async function RegisterPage() {

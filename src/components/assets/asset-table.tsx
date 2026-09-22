@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import {
   Boxes,
@@ -38,7 +39,6 @@ import {
 import { AssetStatusBadge } from "@/components/shared/status-badge";
 import { formatDate } from "@/lib/utils";
 import { formatLocationSummary } from "@/components/assets/asset-location-card";
-import { cn } from "@/lib/utils";
 import type { AssetListItem } from "@/lib/data/assets";
 
 // ── Asset type icon mapping ───────────────────────────────────────────────────
@@ -110,7 +110,6 @@ function AssetThumbnail({
   type: string;
 }) {
   const [imgError, setImgError] = useState(false);
-  const Icon = getAssetIcon(type, name);
   const hasValidUrl = Boolean(imageUrl && imageUrl.trim().length > 0 && !imgError);
 
   return (
@@ -126,7 +125,7 @@ function AssetThumbnail({
         />
       ) : (
         <div className="flex size-full items-center justify-center bg-primary/10 text-primary">
-          <Icon className="size-4 shrink-0" />
+          {React.createElement(getAssetIcon(type, name), { className: "size-4 shrink-0" })}
         </div>
       )}
     </div>

@@ -236,7 +236,7 @@ export default async function ProfilePage() {
               <div>
                 <h2 className="font-semibold">Administrator Privileges</h2>
                 <p className="text-xs text-muted-foreground">
-                  System access overview for AssetFlow platform management.
+                  System access overview for ADP AssetHub platform management.
                 </p>
               </div>
               <div className="glow-icon-chip flex size-8 items-center justify-center rounded-lg text-primary">

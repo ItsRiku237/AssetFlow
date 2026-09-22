@@ -51,7 +51,6 @@ export default async function SettingsPage() {
   if (!settings) notFound();
 
   const isSuperAdmin = settings.account.role === "SUPER_ADMIN";
-  const isAdmin = settings.account.role === "ADMIN" || isSuperAdmin;
 
   return (
     <div className="space-y-5">
@@ -109,7 +108,7 @@ export default async function SettingsPage() {
       <SettingsSection
         icon={Palette}
         title="Appearance"
-        description="Choose how AssetFlow looks on this device."
+        description="Choose how ADP AssetHub looks on this device."
         delay={120}
       >
         <div className="max-w-xs">
@@ -140,7 +139,7 @@ export default async function SettingsPage() {
         title="Security"
         description={
           settings.hasPassword
-            ? "Update the password used to sign in to AssetFlow."
+            ? "Update the password used to sign in to ADP AssetHub."
             : "This account authenticates with Google Sign-In."
         }
         delay={240}
@@ -153,7 +152,7 @@ export default async function SettingsPage() {
           <div className="flex items-start gap-3 rounded-xl border border-dashed border-border/60 bg-muted/30 px-4 py-3 text-sm text-muted-foreground">
             <KeyRound className="mt-0.5 size-4 shrink-0" />
             <p>
-              This account uses Google Sign-In, so there is no AssetFlow
+              This account uses Google Sign-In, so there is no ADP AssetHub
               password to update here.
             </p>
           </div>

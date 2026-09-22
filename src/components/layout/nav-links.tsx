@@ -4,15 +4,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { NAV_ITEMS } from "@/config/nav";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import type { Role } from "@/types/role";
 
 export function NavLinks({
   role,
   onNavigate,
+  collapsed = false,
 }: {
   role: Role;
   onNavigate?: () => void;
+  collapsed?: boolean;
 }) {
   const pathname = usePathname();
   const items = NAV_ITEMS.filter(
@@ -20,28 +23,27 @@ export function NavLinks({
   );
 
   return (
-    <nav className="flex flex-col gap-1 px-2">
+    <TooltipProvider delayDuration={150}>
+      <nav className="flex flex-col gap-1 px-2">
       {items.map((item) => {
         const isActive =
           pathname === item.href || pathname.startsWith(`${item.href}/`);
         const Icon = item.icon;
 
-        return (
+        const link = (
           <Link
-            key={item.href}
             href={item.href}
-            onClick={onNavigate}
+            onClick={(e) => {
+              e.stopPropagation();
+              onNavigate?.();
+            }}
             aria-current={isActive ? "page" : undefined}
             className={cn(
-              "group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground/75 transition-all",
+              "group relative flex items-center rounded-lg text-sm font-medium text-sidebar-foreground/75 transition-all",
+              collapsed ? "justify-center px-2 py-2.5" : "gap-2.5 px-3 py-2",
               "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-              isActive && "bg-primary/15 text-sidebar-primary shadow-[0_0_0_1px_var(--glow-cyan)_inset] font-semibold"
+              isActive && "border border-primary/25 bg-primary/12 text-sidebar-primary shadow-[0_10px_22px_-18px_var(--glow-cyan)] font-semibold"
             )}
-            style={
-              isActive
-                ? { boxShadow: "0 0 24px -10px var(--glow-cyan)" }
-                : undefined
-            }
           >
             <Icon
               className={cn(
@@ -49,10 +51,24 @@ export function NavLinks({
                 isActive && "text-sidebar-primary"
               )}
             />
-            <span className="truncate">{item.title}</span>
+            {collapsed ? (
+              <span className="sr-only">{item.title}</span>
+            ) : (
+              <span className="truncate">{item.title}</span>
+            )}
           </Link>
         );
+
+        return collapsed ? (
+          <Tooltip key={item.href}>
+            <TooltipTrigger asChild>{link}</TooltipTrigger>
+            <TooltipContent side="right">{item.title}</TooltipContent>
+          </Tooltip>
+        ) : (
+          <span key={item.href}>{link}</span>
+        );
       })}
-    </nav>
+      </nav>
+    </TooltipProvider>
   );
 }

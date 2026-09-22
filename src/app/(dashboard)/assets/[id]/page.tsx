@@ -1,3 +1,4 @@
+import React from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
@@ -10,7 +11,6 @@ import {
   History,
   Keyboard,
   Laptop,
-  MapPin,
   Mic,
   Monitor,
   Mouse,
@@ -117,8 +117,7 @@ function getAssetIcon(type?: string | null, name?: string | null): React.Element
 }
 
 function AssetTypeIcon({ type, name, className }: { type: string; name?: string; className?: string }) {
-  const Icon = getAssetIcon(type, name);
-  return <Icon className={cn("size-6", className)} />;
+  return React.createElement(getAssetIcon(type, name), { className: cn("size-6", className) });
 }
 
 interface AssetDetailPageProps {

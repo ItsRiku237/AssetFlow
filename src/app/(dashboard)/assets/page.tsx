@@ -60,7 +60,7 @@ export default async function AssetsPage({ searchParams }: AssetsPageProps) {
   const hasActiveFilters = Boolean(search || status || type || locationType || ram);
 
   return (
-    <div className="space-y-5">
+    <div className="data-page-with-controls has-sticky-filter space-y-5">
       {/* ── Hero ────────────────────────────────────────────────── */}
       <FadeIn>
         <PageHero imageSrc="/images/assets-hero.webp" className="px-6 py-8 sm:px-8">
@@ -88,11 +88,11 @@ export default async function AssetsPage({ searchParams }: AssetsPageProps) {
       </FadeIn>
 
       {/* ── Filters ─────────────────────────────────────────────── */}
-      <FadeIn delay={60}>
+      <div className="sticky-control-bar">
         <GlassCard className="p-3 sm:p-4">
           <AssetFilters types={types} />
         </GlassCard>
-      </FadeIn>
+      </div>
 
       {/* ── Table / empty ───────────────────────────────────────── */}
       <FadeIn delay={120}>
@@ -109,7 +109,7 @@ export default async function AssetsPage({ searchParams }: AssetsPageProps) {
             />
           </GlassCard>
         ) : (
-          <GlassCard className="overflow-hidden">
+          <GlassCard className="overflow-visible rounded-xl">
             <AssetTable assets={assets} />
           </GlassCard>
         )}

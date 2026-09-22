@@ -36,7 +36,7 @@ function Field({
   autoFocus,
   defaultValue,
   hint,
-  className,
+  className: _className,
 }: {
   icon?: React.ElementType;
   label: string;
@@ -339,7 +339,7 @@ function Step4() {
       <div className="space-y-1">
         <p className="text-lg font-semibold">Account ready!</p>
         <p className="text-sm text-muted-foreground">
-          Your AssetFlow account has been created. You can now sign in.
+          Your ADP AssetHub account has been created. You can now sign in.
         </p>
       </div>
       <Button asChild className="w-full">

@@ -30,18 +30,18 @@ export function ReimbursementsTable({
   return (
     <>
       {/* ── Desktop table ──────────────────────────────────── */}
-      <div className="hidden overflow-x-auto md:block">
+      <div className="hidden md:block">
         <Table>
           <TableHeader>
             <TableRow className="border-b border-border/60 hover:bg-transparent">
-              <TableHead className="pl-5">Asset</TableHead>
-              <TableHead>Employee</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Repair</TableHead>
-              <TableHead>Submitted</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="pr-5 text-right">Actions</TableHead>
+              <TableHead className="pl-5 min-w-[180px]">Asset</TableHead>
+              <TableHead className="min-w-[150px]">Employee</TableHead>
+              <TableHead className="min-w-[110px]">Amount</TableHead>
+              <TableHead className="min-w-[200px]">Description</TableHead>
+              <TableHead className="min-w-[140px]">Repair</TableHead>
+              <TableHead className="min-w-[120px]">Submitted</TableHead>
+              <TableHead className="min-w-[140px]">Status</TableHead>
+              <TableHead className="pr-5 min-w-[150px] text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -50,7 +50,7 @@ export function ReimbursementsTable({
                 key={req.id}
                 className="group border-b border-border/40 transition-colors hover:bg-primary/5"
               >
-                <TableCell className="pl-5">
+                <TableCell className="pl-5 min-w-[180px]">
                   <Link
                     href={`/assets/${req.assetId}`}
                     className="font-medium transition-colors hover:text-primary hover:underline"
@@ -61,13 +61,13 @@ export function ReimbursementsTable({
                     {req.assetTag}
                   </div>
                 </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
+                <TableCell className="min-w-[150px] text-sm text-muted-foreground">
                   {req.employeeName}
                 </TableCell>
-                <TableCell className="font-semibold tabular-nums">
-                  {formatAmount(req.amount)}
+                <TableCell className="min-w-[110px] font-semibold tabular-nums">
+                  ${formatAmount(req.amount)}
                 </TableCell>
-                <TableCell className="max-w-48">
+                <TableCell className="min-w-[200px] max-w-xs">
                   <p className="truncate text-sm text-muted-foreground">{req.description}</p>
                   {req.receiptReference ? (
                     <div className="text-xs text-muted-foreground/70">
@@ -75,15 +75,15 @@ export function ReimbursementsTable({
                     </div>
                   ) : null}
                 </TableCell>
-                <TableCell className="max-w-36">
+                <TableCell className="min-w-[140px] max-w-xs">
                   <p className="truncate text-xs text-muted-foreground">
                     {req.maintenanceIssue ?? "—"}
                   </p>
                 </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
+                <TableCell className="min-w-[120px] text-sm text-muted-foreground">
                   {formatDate(req.submittedAt)}
                 </TableCell>
-                <TableCell>
+                <TableCell className="min-w-[140px]">
                   <ReimbursementStatusBadge status={req.status} />
                   {req.status === "REJECTED" && req.rejectionReason ? (
                     <div className="mt-0.5 max-w-36 truncate text-xs text-muted-foreground">
@@ -97,7 +97,7 @@ export function ReimbursementsTable({
                     </div>
                   ) : null}
                 </TableCell>
-                <TableCell className="pr-5 text-right">
+                <TableCell className="pr-5 min-w-[150px] text-right">
                   {req.status === "PENDING" ? (
                     <div className="flex items-center justify-end gap-1">
                       <ApproveReimbursementButton reimbursementId={req.id} />

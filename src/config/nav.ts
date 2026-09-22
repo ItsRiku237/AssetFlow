@@ -6,12 +6,10 @@ import {
   Undo2,
   Wrench,
   ScrollText,
-  UserCircle,
   ShieldCheck,
   PackageSearch,
   PackagePlus,
   Receipt,
-  Settings,
 } from "lucide-react";
 
 import type { NavItem } from "@/types/nav";
@@ -29,6 +27,4 @@ export const NAV_ITEMS: NavItem[] = [
   { title: "Repairs",            href: "/repairs",          icon: Wrench,          roles: ["ADMIN", "SUPER_ADMIN"] },
   { title: "Audit Logs",       href: "/audit-logs",       icon: ScrollText,      roles: ["ADMIN", "SUPER_ADMIN"] },
   { title: "Admins",           href: "/admins",           icon: ShieldCheck,     roles: ["SUPER_ADMIN"] },
-  { title: "Profile",          href: "/profile",          icon: UserCircle,      roles: ["both"] },
-  { title: "Settings",         href: "/settings",         icon: Settings,        roles: ["both"] },
 ];

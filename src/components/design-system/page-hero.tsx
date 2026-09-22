@@ -50,7 +50,7 @@ export function PageHero({
         className={cn(
           "pointer-events-none absolute inset-0",
           overlayClass ??
-            "bg-gradient-to-r from-background/90 via-background/75 to-background/50 dark:from-[#070a12]/92 dark:via-[#070a12]/78 dark:to-[#070a12]/55"
+            "bg-gradient-to-r from-background/96 via-background/88 to-background/70 dark:from-[#070a12]/96 dark:via-[#070a12]/88 dark:to-[#070a12]/70"
         )}
       />
 

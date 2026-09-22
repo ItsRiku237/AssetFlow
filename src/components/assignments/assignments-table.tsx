@@ -20,17 +20,17 @@ export function AssignmentsTable({
   return (
     <>
       {/* ── Desktop table ──────────────────────────────────────── */}
-      <div className="hidden overflow-x-auto md:block">
+      <div className="hidden md:block">
         <Table>
           <TableHeader>
             <TableRow className="border-b border-border/60 hover:bg-transparent">
-              <TableHead className="pl-4">Asset</TableHead>
-              <TableHead>Employee</TableHead>
-              <TableHead>Department</TableHead>
-              <TableHead>Asset Status</TableHead>
-              <TableHead>Custody</TableHead>
-              <TableHead>Assigned</TableHead>
-              <TableHead className="pr-4">Returned</TableHead>
+              <TableHead className="pl-5 min-w-[200px]">Asset</TableHead>
+              <TableHead className="min-w-[180px]">Employee</TableHead>
+              <TableHead className="min-w-[130px]">Department</TableHead>
+              <TableHead className="min-w-[140px]">Asset Status</TableHead>
+              <TableHead className="min-w-[110px]">Custody</TableHead>
+              <TableHead className="min-w-[120px]">Assigned</TableHead>
+              <TableHead className="pr-5 min-w-[120px]">Returned</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -39,7 +39,7 @@ export function AssignmentsTable({
                 key={a.id}
                 className="group border-b border-border/40 transition-colors hover:bg-primary/5"
               >
-                <TableCell className="pl-4">
+                <TableCell className="pl-5 min-w-[200px]">
                   <Link
                     href={`/assets/${a.assetId}`}
                     className="font-medium transition-colors group-hover:text-primary hover:underline"
@@ -50,7 +50,7 @@ export function AssignmentsTable({
                     {a.assetTag}
                   </div>
                 </TableCell>
-                <TableCell>
+                <TableCell className="min-w-[180px]">
                   <Link
                     href={`/employees/${a.employeeId}`}
                     className="transition-colors hover:text-primary hover:underline"
@@ -61,21 +61,21 @@ export function AssignmentsTable({
                     {a.employeeCode}
                   </div>
                 </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
+                <TableCell className="min-w-[130px] text-sm text-muted-foreground">
                   {a.department ?? <span className="opacity-40">—</span>}
                 </TableCell>
-                <TableCell>
+                <TableCell className="min-w-[140px]">
                   <AssetStatusBadge status={a.assetStatus} />
                 </TableCell>
-                <TableCell>
+                <TableCell className="min-w-[110px]">
                   <Badge variant={a.status === "ACTIVE" ? "default" : "secondary"}>
                     {a.status === "ACTIVE" ? "Active" : "Returned"}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
+                <TableCell className="min-w-[120px] text-sm text-muted-foreground">
                   {formatDate(a.assignedAt)}
                 </TableCell>
-                <TableCell className="pr-4 text-sm text-muted-foreground">
+                <TableCell className="pr-5 min-w-[120px] text-sm text-muted-foreground">
                   {a.returnedAt ? formatDate(a.returnedAt) : <span className="opacity-40">—</span>}
                 </TableCell>
               </TableRow>

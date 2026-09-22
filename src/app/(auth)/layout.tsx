@@ -43,7 +43,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         <div className="glow-icon-chip flex size-9 items-center justify-center rounded-lg text-primary">
           <Boxes className="size-5" />
         </div>
-        <span className="text-lg font-semibold tracking-tight">AssetFlow</span>
+        <span className="text-lg font-semibold tracking-tight">ADP AssetHub</span>
       </div>
 
       {/* ── Content ────────────────────────────────────────────── */}

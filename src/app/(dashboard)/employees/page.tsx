@@ -39,7 +39,7 @@ export default async function EmployeesPage({
   const hasActiveFilters = Boolean(search || department || status);
 
   return (
-    <div className="space-y-6">
+    <div className="data-page-with-controls has-sticky-filter space-y-6">
       {/* ── Premium page hero ─────────────────────────────────── */}
       <FadeIn>
         <GlassCard className="relative overflow-hidden px-6 py-5">
@@ -78,11 +78,11 @@ export default async function EmployeesPage({
       </FadeIn>
 
       {/* ── Glass filter bar ──────────────────────────────────── */}
-      <FadeIn delay={60}>
+      <div className="sticky-control-bar">
         <GlassCard className="px-4 py-3">
           <EmployeeFilters departments={departments} />
         </GlassCard>
-      </FadeIn>
+      </div>
 
       {/* ── Employee table ────────────────────────────────────── */}
       <FadeIn delay={120}>
@@ -97,7 +97,7 @@ export default async function EmployeesPage({
             }
           />
         ) : (
-          <GlassCard className="overflow-hidden p-0">
+          <GlassCard className="overflow-visible rounded-xl p-0">
             <EmployeeTable employees={employees} />
           </GlassCard>
         )}

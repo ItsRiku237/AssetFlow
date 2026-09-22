@@ -45,7 +45,7 @@ export default async function AssignmentsPage({
   const hasActiveFilters = Boolean(filters.search || filters.status);
 
   return (
-    <div className="space-y-5">
+    <div className="data-page-with-controls has-sticky-filter space-y-5">
       {/* ── Hero ────────────────────────────────────────────── */}
       <FadeIn>
         <GlassCard className="relative overflow-hidden px-6 py-5">
@@ -78,19 +78,30 @@ export default async function AssignmentsPage({
 
       {/* ── Stats ────────────────────────────────────────────── */}
       <FadeIn delay={60}>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 max-w-2xl">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <StatCard label="Active" value={stats.active} icon={Boxes} tone="default" />
           <StatCard label="Returned" value={stats.returned} icon={RotateCcw} tone="success" />
           <StatCard label="Total" value={stats.total} icon={ClipboardList} tone="default" />
         </div>
       </FadeIn>
 
-      {/* ── Filters ──────────────────────────────────────────── */}
-      <FadeIn delay={90}>
-        <GlassCard className="p-3 sm:p-4">
+      {/* ── Filters & Stats Control Bar ──────────────────────── */}
+      <div className="sticky-control-bar">
+        <GlassCard className="flex flex-wrap items-center justify-between gap-3 p-3 sm:p-4">
           <AssignmentsFilters />
+          <div className="hidden sm:flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+              <Boxes className="size-3" /> {stats.active} Active
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-success/30 bg-success/10 px-3 py-1 text-xs font-medium text-success">
+              <RotateCcw className="size-3" /> {stats.returned} Returned
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-muted/50 px-3 py-1 text-xs font-medium text-muted-foreground">
+              <ClipboardList className="size-3" /> {stats.total} Total
+            </span>
+          </div>
         </GlassCard>
-      </FadeIn>
+      </div>
 
       {/* ── Table / empty ────────────────────────────────────── */}
       <FadeIn delay={120}>
@@ -107,7 +118,7 @@ export default async function AssignmentsPage({
             />
           </GlassCard>
         ) : (
-          <GlassCard className="overflow-hidden p-0">
+          <GlassCard className="overflow-visible rounded-xl p-0">
             <AssignmentsTable assignments={assignments} />
           </GlassCard>
         )}

@@ -11,15 +11,19 @@ function greeting(): string {
 }
 
 /**
- * Premium hero banner for the Admin Dashboard. Self-contained decorative
- * background (CSS gradients + grid, no external image) so real artwork
- * can be dropped in later without touching this component's structure.
+ * Premium hero banner for the Admin Dashboard. The local artwork is kept
+ * deliberately low contrast beneath the glass surface.
  */
 export function DashboardHero({ name, subtitle }: DashboardHeroProps) {
   return (
     <div className="glass-panel animate-af-fade-up relative overflow-hidden rounded-xl px-6 py-8 sm:px-8">
       {/* Decorative background layer */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-35 blur-[1px] dark:opacity-45"
+          style={{ backgroundImage: "url('/images/dashboard-hero.webp')" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/96 via-background/88 to-background/70 dark:from-[#070a12]/92 dark:via-[#070a12]/82 dark:to-[#070a12]/60" />
         <div className="absolute inset-0 bg-grid-pattern opacity-30 [mask-image:linear-gradient(to_bottom,#000,transparent)]" />
         <div
           className="animate-af-glow-pulse absolute -right-16 -top-20 size-72 rounded-full opacity-40 blur-[90px]"

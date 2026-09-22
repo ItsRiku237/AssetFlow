@@ -32,7 +32,7 @@ export default async function AdminsPage() {
               className="object-cover opacity-10"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/92 via-background/78 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/96 via-background/88 to-background/70" />
           </div>
           {/* Glow accents */}
           <div
@@ -105,7 +105,7 @@ export default async function AdminsPage() {
             />
           </GlassCard>
         ) : (
-          <GlassCard className="overflow-hidden p-0">
+          <GlassCard className="overflow-visible rounded-xl p-0">
             <AdminTable
               admins={admins}
               currentUserId={session.user.id}

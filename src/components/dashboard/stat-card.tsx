@@ -43,12 +43,12 @@ export function StatCard({
   return (
     <GlassCard
       interactive
-      className="p-4"
+      className="min-w-0 p-3 sm:p-4"
       style={{
         background: `linear-gradient(160deg, color-mix(in oklab, ${TONE_TINT[tone]} 10%, var(--glass-bg)), var(--glass-bg))`,
       }}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
         <div
           className={cn(
             "glow-icon-chip flex size-10 shrink-0 items-center justify-center rounded-lg",
@@ -61,7 +61,7 @@ export function StatCard({
           <Icon className="size-5" />
         </div>
         <div className="min-w-0">
-          <p className="text-xs font-medium text-muted-foreground">{label}</p>
+          <p className="truncate text-xs font-medium text-muted-foreground">{label}</p>
           <p className="text-2xl font-semibold tabular-nums tracking-tight">
             {value}
           </p>

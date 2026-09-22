@@ -23,14 +23,14 @@ export function AssetsInRepairTable({
   return (
     <>
       {/* ── Desktop table ──────────────────────────────────── */}
-      <div className="hidden overflow-x-auto md:block">
+      <div className="hidden md:block">
         <Table>
           <TableHeader>
             <TableRow className="border-b border-border/60 hover:bg-transparent">
-              <TableHead className="pl-5">Asset</TableHead>
-              <TableHead>Issue</TableHead>
-              <TableHead>Repair started</TableHead>
-              <TableHead className="pr-5 text-right">Actions</TableHead>
+              <TableHead className="pl-5 min-w-[240px]">Asset</TableHead>
+              <TableHead className="min-w-[220px]">Issue</TableHead>
+              <TableHead className="min-w-[150px]">Repair started</TableHead>
+              <TableHead className="pr-5 min-w-[170px] text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -39,7 +39,7 @@ export function AssetsInRepairTable({
                 key={asset.id}
                 className="group border-b border-border/40 transition-colors hover:bg-primary/5"
               >
-                <TableCell className="pl-5">
+                <TableCell className="pl-5 min-w-[240px]">
                   <div className="flex items-center gap-3">
                     <span className="glow-icon-chip flex size-8 shrink-0 items-center justify-center rounded-lg text-warning">
                       <Wrench className="size-4" />
@@ -57,17 +57,17 @@ export function AssetsInRepairTable({
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="max-w-56">
+                <TableCell className="min-w-[220px] max-w-xs">
                   <p className="truncate text-sm text-muted-foreground">
                     {asset.activeIssue ?? (
                       <span className="italic opacity-60">No record logged yet</span>
                     )}
                   </p>
                 </TableCell>
-                <TableCell className="text-sm text-muted-foreground">
+                <TableCell className="min-w-[150px] text-sm text-muted-foreground">
                   {asset.repairStartedAt ? formatDate(asset.repairStartedAt) : "—"}
                 </TableCell>
-                <TableCell className="pr-5 text-right">
+                <TableCell className="pr-5 min-w-[170px] text-right">
                   {asset.activeMaintenanceRecordId ? (
                     <div className="flex justify-end gap-1.5">
                       <EditMaintenanceDialog

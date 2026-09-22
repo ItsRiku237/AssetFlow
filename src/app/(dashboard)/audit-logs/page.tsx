@@ -43,7 +43,7 @@ export default async function AuditLogsPage({
   const hasActiveFilters = Boolean(search || action || entityType);
 
   return (
-    <div className="space-y-5">
+    <div className="data-page-with-controls has-sticky-filter space-y-5">
       {/* ── Hero ──────────────────────────────────────────────── */}
       <FadeIn>
         <GlassCard className="relative overflow-hidden">
@@ -55,7 +55,7 @@ export default async function AuditLogsPage({
               className="object-cover opacity-10"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/92 via-background/75 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/96 via-background/88 to-background/70" />
           </div>
           <div
             aria-hidden
@@ -78,7 +78,7 @@ export default async function AuditLogsPage({
                 </p>
                 <h1 className="text-lg font-semibold tracking-tight">Audit Logs</h1>
                 <p className="text-sm text-muted-foreground">
-                  A tamper-evident record of significant actions across AssetFlow.
+                  A tamper-evident record of significant actions across ADP AssetHub.
                 </p>
               </div>
             </div>
@@ -90,11 +90,11 @@ export default async function AuditLogsPage({
       </FadeIn>
 
       {/* ── Filters ───────────────────────────────────────────── */}
-      <FadeIn delay={60}>
+      <div className="sticky-control-bar">
         <GlassCard className="p-3 sm:p-4">
           <AuditLogFilters actions={actions} entityTypes={entityTypes} />
         </GlassCard>
-      </FadeIn>
+      </div>
 
       {/* ── Table / empty ─────────────────────────────────────── */}
       <FadeIn delay={120}>
@@ -111,7 +111,7 @@ export default async function AuditLogsPage({
             />
           </GlassCard>
         ) : (
-          <GlassCard className="overflow-hidden p-0">
+          <GlassCard className="overflow-visible rounded-xl p-0">
             <AuditLogTable logs={result.items} />
           </GlassCard>
         )}

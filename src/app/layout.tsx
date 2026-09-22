@@ -7,8 +7,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "AssetFlow",
-  description: "Company asset management system",
+  title: "ADP AssetHub",
+  description: "Enterprise asset management system",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -24,7 +24,7 @@ export default async function RepairsPage() {
   const completed = history.filter((r) => r.status === "COMPLETED").length;
 
   return (
-    <div className="data-page-with-controls has-sticky-filter space-y-5">
+    <div className="space-y-5">
       {/* ── Hero ──────────────────────────────────────────────── */}
       <FadeIn>
         <GlassCard className="relative overflow-hidden">
@@ -71,26 +71,6 @@ export default async function RepairsPage() {
           </div>
         </GlassCard>
       </FadeIn>
-
-      {/* ── Sticky Summary Bar ────────────────────────────────── */}
-      <div className="sticky-control-bar">
-        <GlassCard className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
-          <p className="text-sm font-medium text-muted-foreground">
-            Repair Status Overview
-          </p>
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-warning/30 bg-warning/10 px-3 py-1 text-xs font-medium text-warning">
-              <Clock className="size-3" /> {assetsInRepair.length} in repair
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-warning/30 bg-warning/10 px-3 py-1 text-xs font-medium text-warning">
-              <Wrench className="size-3" /> {inProgress} in progress
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-success/30 bg-success/10 px-3 py-1 text-xs font-medium text-success">
-              <CheckCircle2 className="size-3" /> {completed} completed
-            </span>
-          </div>
-        </GlassCard>
-      </div>
 
       {/* ── Assets in repair ──────────────────────────────────── */}
       <FadeIn delay={60}>

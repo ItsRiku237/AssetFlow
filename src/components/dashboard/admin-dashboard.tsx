@@ -53,7 +53,7 @@ export async function AdminDashboard({ adminName }: AdminDashboardProps) {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <FadeIn delay={0}>
+        <FadeIn delay={0} className="lg:h-[340px]">
           <DashboardSection
             title="Recent Asset Activity"
             description="Latest assignments and returns."
@@ -79,7 +79,7 @@ export async function AdminDashboard({ adminName }: AdminDashboardProps) {
           </DashboardSection>
         </FadeIn>
 
-        <FadeIn delay={60}>
+        <FadeIn delay={60} className="lg:h-[340px]">
           <DashboardSection
             title="Recent Return Requests"
             description="Pending and reviewed return requests."
@@ -106,7 +106,7 @@ export async function AdminDashboard({ adminName }: AdminDashboardProps) {
           </DashboardSection>
         </FadeIn>
 
-        <FadeIn delay={120}>
+        <FadeIn delay={120} className="lg:h-[340px]">
           <DashboardSection
             title="Maintenance / Repair Activity"
             description="Latest service records."
@@ -137,7 +137,7 @@ export async function AdminDashboard({ adminName }: AdminDashboardProps) {
           </DashboardSection>
         </FadeIn>
 
-        <FadeIn delay={180}>
+        <FadeIn delay={180} className="lg:h-[340px]">
           <DashboardSection
             title="Recent Audit Activity"
             description="System-wide action log."

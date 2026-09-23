@@ -305,6 +305,14 @@
 
 /* ── Motion system ────────────────────────────────────────────────────── */
 @layer utilities {
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
   @keyframes af-fade-up {
     from {
       opacity: 0;

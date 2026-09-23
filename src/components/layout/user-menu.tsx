@@ -32,6 +32,9 @@ const ROLE_LABEL: Record<string, string> = {
   EMPLOYEE: "Employee",
 };
 
+const itemCls =
+  "gap-2.5 rounded-lg px-2.5 py-2 text-sm transition-colors focus:bg-primary/10 focus:text-primary [&_svg]:size-4 [&_svg]:shrink-0";
+
 export function UserMenu({ user }: { user: Session["user"] }) {
   return (
     <DropdownMenu>
@@ -59,29 +62,58 @@ export function UserMenu({ user }: { user: Session["user"] }) {
           </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel className="font-normal">
-          <p className="text-sm font-medium">{user.name ?? "Account"}</p>
-          <p className="truncate text-xs text-muted-foreground">
-            {user.email}
-          </p>
+
+      <DropdownMenuContent
+        align="end"
+        className="w-60 border-[var(--glass-border)] bg-[var(--glass-bg)] p-1.5 shadow-[0_12px_40px_-8px_rgba(0,0,0,0.4),inset_0_1px_0_var(--glass-highlight)] backdrop-blur-2xl"
+      >
+        {/* Account identity */}
+        <DropdownMenuLabel className="px-2.5 py-2.5">
+          <div className="flex items-center gap-2.5">
+            <Avatar className="size-8 shrink-0">
+              {user.image ? <AvatarImage src={user.image} alt="" /> : null}
+              <AvatarFallback className="bg-primary/15 text-xs font-semibold text-primary">
+                {initials(user.name)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold">
+                {user.name ?? "Account"}
+              </p>
+              <p className="truncate text-[11px] text-muted-foreground">
+                {user.email}
+              </p>
+              <p className="mt-0.5 text-[11px] font-medium text-primary/80">
+                {ROLE_LABEL[user.role] ?? user.role}
+              </p>
+            </div>
+          </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
+
+        <DropdownMenuSeparator className="mx-1 my-1 bg-border/50" />
+
+        <DropdownMenuItem asChild className={itemCls}>
           <Link href="/profile">
             <UserCircle />
             Profile
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
+
+        <DropdownMenuItem asChild className={itemCls}>
           <Link href="/settings">
             <Settings />
             Settings
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
+
+        <DropdownMenuSeparator className="mx-1 my-1 bg-border/50" />
+
         <form action={logout} className="w-full">
-          <DropdownMenuItem asChild variant="destructive">
+          <DropdownMenuItem
+            asChild
+            variant="destructive"
+            className={`${itemCls} data-[variant=destructive]:focus:bg-destructive/10`}
+          >
             <button type="submit" className="w-full">
               <LogOut />
               Sign out

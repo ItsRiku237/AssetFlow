@@ -36,7 +36,7 @@ export default async function AssetRequestsPage() {
             className="pointer-events-none absolute -right-10 -top-10 size-52 rounded-full opacity-20 blur-[80px]"
             style={{ background: "radial-gradient(circle, var(--glow-cyan), transparent 70%)" }}
           />
-          <div className="relative flex flex-wrap items-center justify-between gap-4 px-6 py-5">
+          <div className="relative px-6 py-5">
             <div className="flex items-center gap-3">
               <span className="glow-icon-chip flex size-11 items-center justify-center rounded-xl text-primary">
                 <PackagePlus className="size-5" />
@@ -47,18 +47,6 @@ export default async function AssetRequestsPage() {
                   Employee requests to be assigned assets — approve to create an assignment.
                 </p>
               </div>
-            </div>
-            {/* Summary chips */}
-            <div className="flex flex-wrap gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-warning/30 bg-warning/10 px-3 py-1 text-xs font-medium text-warning">
-                <Clock className="size-3" /> {pending} pending
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-success/30 bg-success/10 px-3 py-1 text-xs font-medium text-success">
-                <CheckCircle2 className="size-3" /> {approved} approved
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-destructive/30 bg-destructive/10 px-3 py-1 text-xs font-medium text-destructive">
-                <XCircle className="size-3" /> {rejected} rejected
-              </span>
             </div>
           </div>
         </GlassCard>

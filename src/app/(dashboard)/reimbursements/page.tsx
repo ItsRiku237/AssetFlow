@@ -39,7 +39,7 @@ export default async function ReimbursementsPage() {
     const rejected = requests.filter((r) => r.status === "REJECTED").length;
 
     return (
-      <div className="data-page-with-controls has-sticky-filter space-y-5">
+      <div className="space-y-5">
         {/* ── Hero ──────────────────────────────────────────── */}
         <FadeIn>
           <GlassCard className="relative overflow-hidden">
@@ -86,26 +86,6 @@ export default async function ReimbursementsPage() {
             </div>
           </GlassCard>
         </FadeIn>
-
-        {/* ── Sticky Summary Bar ────────────────────────────── */}
-        <div className="sticky-control-bar">
-          <GlassCard className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
-            <p className="text-sm font-medium text-muted-foreground">
-              Total Requests: <span className="font-semibold text-foreground">{requests.length}</span>
-            </p>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-warning/30 bg-warning/10 px-3 py-1 text-xs font-medium text-warning">
-                <Clock className="size-3" /> {pending} pending
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-success/30 bg-success/10 px-3 py-1 text-xs font-medium text-success">
-                <CheckCircle2 className="size-3" /> {approved} approved
-              </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-destructive/30 bg-destructive/10 px-3 py-1 text-xs font-medium text-destructive">
-                <XCircle className="size-3" /> {rejected} rejected
-              </span>
-            </div>
-          </GlassCard>
-        </div>
 
         {/* ── Table ─────────────────────────────────────────── */}
         <FadeIn delay={60}>

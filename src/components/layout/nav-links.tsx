@@ -47,7 +47,8 @@ export function NavLinks({
           >
             <Icon
               className={cn(
-                "size-4 shrink-0 transition-colors",
+                "shrink-0 transition-colors",
+                collapsed ? "size-5" : "size-4",
                 isActive && "text-sidebar-primary"
               )}
             />

@@ -20,8 +20,8 @@ export function DashboardSection({
   viewAllHref,
 }: DashboardSectionProps) {
   return (
-    <GlassCard className="space-y-3 p-4">
-      <div className="flex items-start justify-between gap-3">
+    <GlassCard className="flex h-full flex-col p-4">
+      <div className="flex shrink-0 items-start justify-between gap-3">
         <SectionHeader title={title} description={description} />
         {viewAllHref ? (
           <Link
@@ -33,7 +33,9 @@ export function DashboardSection({
           </Link>
         ) : null}
       </div>
-      {children}
+      <div className="scrollbar-none mt-3 flex-1 overflow-y-auto">
+        <div className="space-y-3">{children}</div>
+      </div>
     </GlassCard>
   );
 }

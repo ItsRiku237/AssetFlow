@@ -136,7 +136,7 @@ export async function EmployeeDashboard({
               {data.assignedAssets.map((a) => (
                 <Link
                   key={a.id}
-                  href={`/assets/${a.id}`}
+                  href={`/assets/${a.assetId}`}
                   className={cn(
                     "-mx-1 flex items-center justify-between gap-3 rounded-md px-2 py-2.5 text-sm transition-colors",
                     "hover:bg-primary/5 hover:text-foreground"

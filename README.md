@@ -416,7 +416,7 @@ The full demo will walk through authentication, the dashboard, assets, employees
 <tr>
 <td align="center" width="50%">
 <sub><b>🔑 Login</b></sub><br>
-<sub><code>docs/screenshots/login.png</code></sub>
+<img src="./docs/screenshots/login.png" alt="Login" width="400">
 </td>
 </tr>
 </table>
@@ -424,30 +424,30 @@ The full demo will walk through authentication, the dashboard, assets, employees
 ### 📊 Admin Experience
 
 <table>
-<tr>
+
 <td align="center" width="50%">
 <sub><b>📊 Admin Dashboard</b></sub><br>
-<sub><code>docs/screenshots/admin-dashboard.png</code></sub>
+<img src="./docs/screenshots/admin-dashboard.png" alt="Admin Dashboard">
 </td>
+
+<tr>
 <td align="center" width="50%">
 <sub><b>📦 Assets</b></sub><br>
-<sub><code>docs/screenshots/assets.png</code></sub>
+<img src="./docs/screenshots/assets.png" alt="Assets" width="400">
 </td>
-</tr>
-<tr>
 <td align="center" width="50%">
 <sub><b>📄 Asset Details</b></sub><br>
-<sub><code>docs/screenshots/asset-details.png</code></sub>
-</td>
-<td align="center" width="50%">
-<sub><b>👥 Employees</b></sub><br>
-<sub><code>docs/screenshots/employees.png</code></sub>
+<img src="./docs/screenshots/asset-details.png" alt="Asset Details" width="400">
 </td>
 </tr>
 <tr>
 <td align="center" width="50%">
+<sub><b>👥 Employees</b></sub><br>
+<img src="./docs/screenshots/employees.png" alt="Employees" width="400">
+</td>
+<td align="center" width="50%">
 <sub><b>🔄 Assignments</b></sub><br>
-<sub><code>docs/screenshots/assignments.png</code></sub>
+<img src="./docs/screenshots/assignments.png" alt="Assignments" width="400">
 </td>
 </tr>
 </table>
@@ -458,21 +458,21 @@ The full demo will walk through authentication, the dashboard, assets, employees
 <tr>
 <td align="center" width="50%">
 <sub><b>📨 Asset Requests</b></sub><br>
-<sub><code>docs/screenshots/asset-requests.png</code></sub>
+<img src="./docs/screenshots/asset-requests.png" alt="Asset Requests" width="400">
 </td>
 <td align="center" width="50%">
 <sub><b>↩️ Return Requests</b></sub><br>
-<sub><code>docs/screenshots/return-requests.png</code></sub>
+<img src="./docs/screenshots/return-requests.png" alt="Return Requests" width="400">
 </td>
 </tr>
 <tr>
 <td align="center" width="50%">
 <sub><b>🔧 Repairs</b></sub><br>
-<sub><code>docs/screenshots/repairs.png</code></sub>
+<img src="./docs/screenshots/repairs.png" alt="Repairs" width="400">
 </td>
 <td align="center" width="50%">
 <sub><b>💰 Reimbursements</b></sub><br>
-<sub><code>docs/screenshots/reimbursements.png</code></sub>
+<img src="./docs/screenshots/reimbursements.png" alt="Reimbursements" width="400">
 </td>
 </tr>
 </table>
@@ -483,11 +483,11 @@ The full demo will walk through authentication, the dashboard, assets, employees
 <tr>
 <td align="center" width="50%">
 <sub><b>📜 Audit Logs</b></sub><br>
-<sub><code>docs/screenshots/audit-logs.png</code></sub>
+<img src="./docs/screenshots/audit-logs.png" alt="Audit Logs" width="400">
 </td>
 <td align="center" width="50%">
 <sub><b>👑 Admins</b></sub><br>
-<sub><code>docs/screenshots/admins.png</code></sub>
+<img src="./docs/screenshots/admins.png" alt="Admins" width="400">
 </td>
 </tr>
 </table>
@@ -498,21 +498,21 @@ The full demo will walk through authentication, the dashboard, assets, employees
 <tr>
 <td align="center" width="50%">
 <sub><b>🏠 Employee Dashboard</b></sub><br>
-<sub><code>docs/screenshots/employee-dashboard.png</code></sub>
+<img src="./docs/screenshots/employee-dashboard.png" alt="Employee Dashboard" width="400">
 </td>
 <td align="center" width="50%">
 <sub><b>💻 My Assets</b></sub><br>
-<sub><code>docs/screenshots/my-assets.png</code></sub>
+<img src="./docs/screenshots/my-assets.png" alt="My Assets" width="400">
 </td>
 </tr>
 <tr>
 <td align="center" width="50%">
 <sub><b>👤 Profile</b></sub><br>
-<sub><code>docs/screenshots/profile.png</code></sub>
+<img src="./docs/screenshots/profile.png" alt="Profile" width="400">
 </td>
 <td align="center" width="50%">
 <sub><b>⚙️ Settings</b></sub><br>
-<sub><code>docs/screenshots/settings.png</code></sub>
+<img src="./docs/screenshots/settings.png" alt="Settings" width="400">
 </td>
 </tr>
 </table>

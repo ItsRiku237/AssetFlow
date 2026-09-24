@@ -38,18 +38,39 @@ export async function AdminDashboard({ adminName }: AdminDashboardProps) {
         subtitle="Here's what's happening with your assets today."
       />
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        {[
-          { label: "Total Assets", value: stats.totalAssets, icon: Boxes, tone: "default" as const },
-          { label: "Available", value: stats.available, icon: CheckCircle2, tone: "success" as const },
-          { label: "Assigned", value: stats.assigned, icon: UserCheck, tone: "default" as const },
-          { label: "In Repair", value: stats.inRepair, icon: Wrench, tone: "warning" as const },
-          { label: "Return Requests", value: stats.pendingReturnRequests, icon: Undo2, tone: "purple" as const },
-        ].map((s, i) => (
-          <FadeIn key={s.label} delay={i * 60}>
-            <StatCard label={s.label} value={s.value} icon={s.icon} tone={s.tone} />
-          </FadeIn>
-        ))}
+      {/* Total Assets — full width on mobile, part of 5-col grid on lg */}
+      <div className="grid gap-3">
+        <FadeIn delay={0} className="sm:hidden">
+          <StatCard label="Total Assets" value={stats.totalAssets} icon={Boxes} tone="default" />
+        </FadeIn>
+
+        <div className="grid grid-cols-2 gap-3 sm:hidden">
+          {[
+            { label: "Available", value: stats.available, icon: CheckCircle2, tone: "success" as const },
+            { label: "Assigned", value: stats.assigned, icon: UserCheck, tone: "default" as const },
+            { label: "In Repair", value: stats.inRepair, icon: Wrench, tone: "warning" as const },
+            { label: "Return Requests", value: stats.pendingReturnRequests, icon: Undo2, tone: "purple" as const },
+          ].map((s, i) => (
+            <FadeIn key={s.label} delay={(i + 1) * 60}>
+              <StatCard label={s.label} value={s.value} icon={s.icon} tone={s.tone} />
+            </FadeIn>
+          ))}
+        </div>
+
+        {/* Desktop / tablet: uniform 5-column grid */}
+        <div className="hidden sm:grid sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          {[
+            { label: "Total Assets", value: stats.totalAssets, icon: Boxes, tone: "default" as const },
+            { label: "Available", value: stats.available, icon: CheckCircle2, tone: "success" as const },
+            { label: "Assigned", value: stats.assigned, icon: UserCheck, tone: "default" as const },
+            { label: "In Repair", value: stats.inRepair, icon: Wrench, tone: "warning" as const },
+            { label: "Return Requests", value: stats.pendingReturnRequests, icon: Undo2, tone: "purple" as const },
+          ].map((s, i) => (
+            <FadeIn key={s.label} delay={i * 60}>
+              <StatCard label={s.label} value={s.value} icon={s.icon} tone={s.tone} />
+            </FadeIn>
+          ))}
+        </div>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">

@@ -139,6 +139,7 @@ export async function getRecentAuditActivity(
 
 export interface MyAssignedAsset {
   id: string;
+  assetId: string;
   assetName: string;
   assetTag: string;
   status: AssetStatus;
@@ -200,6 +201,7 @@ export async function getEmployeeDashboardData(
   return {
     assignedAssets: activeAssignments.map((a) => ({
       id: a.id,
+      assetId: a.assetId,
       assetName: a.asset.name,
       assetTag: a.asset.assetTag,
       status: a.asset.status,

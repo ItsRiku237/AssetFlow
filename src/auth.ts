@@ -11,12 +11,61 @@ import type { Role } from "@/types/role";
 import { createNotifications, getAdminUserIds } from "@/lib/notifications";
 import { resolveSessionRole } from "@/lib/demo";
 
+// ─── Pending-link store ──────────────────────────────────────────────────────
+//
+// When a Google user signs in for the first time and matches an unlinked
+// Employee record, the signIn callback fires BEFORE the PrismaAdapter calls
+// createUser. We cannot attach extra fields to the `user` object because the
+// adapter passes that same object directly to `prisma.user.create`, and Prisma
+// rejects unknown fields with a PrismaClientValidationError.
+//
+// Instead we keep an in-process Map keyed by the normalised email address. The
+// entry is written in signIn (before the adapter creates the row) and read in
+// the jwt callback (after the adapter has created the row and we have a user
+// id). Entries are deleted as soon as they are consumed or after a short TTL.
+//
+// This is safe because:
+//   - The Map lives in the Node.js server process (never reaches the client).
+//   - The key is the verified Google email; we re-validate ownership in jwt.
+//   - The entry is consumed once and immediately deleted.
+//   - A TTL of 5 minutes prevents stale entries from accumulating.
+
+interface PendingLink {
+  employeeId: string;
+  employeeCode: string;
+  expiresAt: number;
+}
+
+const PENDING_LINK_TTL_MS = 5 * 60 * 1000; // 5 minutes
+const pendingLinks = new Map<string, PendingLink>();
+
+function setPendingLink(email: string, employeeId: string, employeeCode: string) {
+  pendingLinks.set(email, {
+    employeeId,
+    employeeCode,
+    expiresAt: Date.now() + PENDING_LINK_TTL_MS,
+  });
+}
+
+function consumePendingLink(email: string): PendingLink | undefined {
+  const entry = pendingLinks.get(email);
+  pendingLinks.delete(email); // consume immediately
+  if (!entry) return undefined;
+  if (Date.now() > entry.expiresAt) return undefined; // expired
+  return entry;
+}
+
+// ─── NextAuth instance ───────────────────────────────────────────────────────
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   adapter: PrismaAdapter(prisma),
   trustHost: true,
   providers: [
-    Google,
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID!,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+    }),
     Credentials({
       credentials: {
         email: { label: "Email", type: "email" },
@@ -48,12 +97,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     ...authConfig.callbacks,
 
     /**
-     * Fired after every successful OAuth sign-in (credentials bypass this —
-     * they can only reach here if authorize() returned a user).
+     * Fired after Google returns a verified profile, BEFORE the PrismaAdapter
+     * calls createUser. We must NOT mutate `user` here — the adapter passes
+     * the same object to prisma.user.create and Prisma rejects unknown fields.
      *
-     * Google sign-in is allowed ONLY when the verified Google email
-     * exactly matches an existing ACTIVE, unlinked Employee directory record.
-     * Everything else is rejected here — before the session is issued.
+     * Instead we use the in-process pendingLinks map to carry the employee
+     * context forward to the jwt callback, where the user row already exists.
      */
     async signIn({ user, account }) {
       if (account?.provider !== "google") return true;
@@ -74,15 +123,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // Reject if no matching ACTIVE employee in directory.
       if (!employee) {
         // Clean up any orphan user the adapter may have just created,
-        // but only if it has no employee link (i.e. it's truly orphaned).
+        // but only if it has no employee link and no password hash.
         await cleanupOrphanUser(normalizedEmail);
         return false;
       }
 
-      // Check whether this employee already has a linked account.
+      // Employee already linked — only allow sign-in if it's the SAME user.
       if (employee.userId !== null) {
-        // Employee already linked — only allow sign-in if it's the SAME user.
-        // (i.e. they're logging back in with Google, not a second account.)
         const dbUser = await prisma.user.findUnique({
           where: { email: normalizedEmail },
           select: { id: true },
@@ -90,27 +137,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!dbUser || dbUser.id !== employee.userId) {
           return false;
         }
-        // Returning linked employee — fine.
+        // Returning linked employee — allow.
         return true;
       }
 
-      // Employee is unlinked — this is a first-time Google activation.
-      // The adapter will create (or has just created) the User row.
-      // We need to link it and set onboardingRequired = false, role = EMPLOYEE.
+      // Employee is unlinked — first-time Google activation.
+      // Check whether the User row already exists (created by a previous
+      // partial attempt that failed before reaching jwt).
       const dbUser = await prisma.user.findUnique({
         where: { email: normalizedEmail },
         select: { id: true },
       });
 
-      if (!dbUser) {
-        // Adapter hasn't created the row yet — flag it for the jwt callback.
-        (user as unknown as Record<string, unknown>).__employeeId = employee.id;
-        (user as unknown as Record<string, unknown>).__employeeCode = employee.employeeCode;
+      if (dbUser) {
+        // Row already exists — link now; no need for the pending map.
+        await linkGoogleEmployee(dbUser.id, employee.id, employee.employeeCode);
         return true;
       }
 
-      // Link in a race-safe transaction.
-      await linkGoogleEmployee(dbUser.id, employee.id, employee.employeeCode);
+      // Row does NOT exist yet. The adapter will create it after we return
+      // true. Record the pending link so the jwt callback can finish the job.
+      // DO NOT mutate `user` — that object is passed directly to createUser.
+      setPendingLink(normalizedEmail, employee.id, employee.employeeCode);
       return true;
     },
 
@@ -120,18 +168,30 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.role = user.role as Role;
       }
 
-      // Google first-time activation: adapter just created the row.
-      const meta = user as unknown as Record<string, unknown> | undefined;
-      const pendingEmployeeId = meta?.__employeeId as string | undefined;
-      const pendingEmployeeCode = meta?.__employeeCode as string | undefined;
+      // Google first-time activation: the adapter just created the User row.
+      // Check whether there is a pending employee link for this email.
+      if (user?.email && user.id) {
+        const normalizedEmail = user.email.toLowerCase().trim();
+        const pending = consumePendingLink(normalizedEmail);
 
-      if (pendingEmployeeId && user?.id) {
-        await linkGoogleEmployee(user.id as string, pendingEmployeeId, pendingEmployeeCode ?? "");
-        token.onboardingRequired = false;
-        token.role = "EMPLOYEE" as Role;
+        if (pending) {
+          try {
+            await linkGoogleEmployee(
+              user.id as string,
+              pending.employeeId,
+              pending.employeeCode
+            );
+          } catch {
+            // linkGoogleEmployee throws "already_claimed" on a race condition
+            // (two simultaneous first-time sign-ins for the same employee).
+            // The employee is already linked; let the session continue normally.
+          }
+          token.onboardingRequired = false;
+          token.role = "EMPLOYEE" as Role;
+        }
       }
 
-      // On session refresh, re-read live values.
+      // On session refresh, re-read live values from the database.
       if (trigger === "update" || (!user && token.id)) {
         const dbUser = await prisma.user.findUnique({
           where: { id: token.id as string },
@@ -157,9 +217,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 /**
- * Link a newly-created Google User to an existing Employee directory record.
- * Sets role = EMPLOYEE, onboardingRequired = false.
- * Uses updateMany for the Employee side to be race-safe.
+ * Link a Google-created User row to an existing Employee directory record.
+ * Sets role = EMPLOYEE and onboardingRequired = false atomically.
+ * The updateMany on Employee is race-safe: if another request already linked
+ * it, count === 0 and we throw so the transaction rolls back.
  */
 async function linkGoogleEmployee(
   userId: string,
@@ -178,7 +239,6 @@ async function linkGoogleEmployee(
     });
 
     if (linked.count === 0) {
-      // Race condition or already linked — roll back.
       throw new Error("already_claimed");
     }
 
@@ -205,10 +265,9 @@ async function linkGoogleEmployee(
 }
 
 /**
- * Delete an orphan User row that the PrismaAdapter may have created for
- * a Google account whose email doesn't match any Employee directory entry.
- * Only deletes the row if it has no employee link and no password hash
- * (i.e. it was just auto-created by the adapter, not a real account).
+ * Delete an orphan User row the PrismaAdapter may have created for a Google
+ * account whose email doesn't match any Employee directory entry.
+ * Only deletes rows that have no employee link and no password hash.
  */
 async function cleanupOrphanUser(email: string) {
   try {
@@ -220,6 +279,6 @@ async function cleanupOrphanUser(email: string) {
       await prisma.user.delete({ where: { id: u.id } });
     }
   } catch {
-    // Non-critical — ignore any cleanup error.
+    // Non-critical cleanup — ignore errors.
   }
 }

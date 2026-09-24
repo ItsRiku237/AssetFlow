@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { LogIn, Loader2, Mail, Lock, Sparkles } from "lucide-react";
+import { AlertTriangle, LogIn, Loader2, Mail, Lock, Sparkles, UserX } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +15,39 @@ import {
 
 const initialState: LoginActionState = { error: null };
 
-export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
+/**
+ * Maps Auth.js error codes (passed as ?error= query param) to
+ * user-facing messages appropriate for ADP AssetHub.
+ */
+function getAuthErrorMessage(error: string): { icon: typeof UserX; message: string; detail: string } {
+  switch (error) {
+    case "AccessDenied":
+      return {
+        icon: UserX,
+        message: "Not registered as an employee",
+        detail:
+          "Your Google account is not registered as an employee of this company. Please contact your administrator if you believe you should have access.",
+      };
+    case "OAuthSignin":
+    case "OAuthCallback":
+    case "OAuthCreateAccount":
+    case "OAuthAccountNotLinked":
+      return {
+        icon: AlertTriangle,
+        message: "Google sign-in failed",
+        detail:
+          "There was a problem signing in with Google. Please try again or use your email and password.",
+      };
+    default:
+      return {
+        icon: AlertTriangle,
+        message: "Sign-in error",
+        detail: "Something went wrong. Please try again.",
+      };
+  }
+}
+
+export function LoginForm({ callbackUrl, authError }: { callbackUrl: string; authError?: string }) {
   const authenticate = authenticateWithCredentials.bind(null, callbackUrl);
   const signInWithGoogleTo = signInWithGoogle.bind(null, callbackUrl);
   const [state, formAction, isPending] = useActionState(
@@ -34,6 +66,22 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
             Use your company credentials to continue.
           </p>
         </div>
+
+        {/* Auth error banner (e.g. from Google OAuth redirect) */}
+        {authError ? (() => {
+          const { icon: Icon, message, detail } = getAuthErrorMessage(authError);
+          return (
+            <div className="mb-5 rounded-xl border border-destructive/30 bg-destructive/10 p-4">
+              <div className="flex items-start gap-3">
+                <Icon className="mt-0.5 size-5 shrink-0 text-destructive" />
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-destructive">{message}</p>
+                  <p className="text-xs text-muted-foreground">{detail}</p>
+                </div>
+              </div>
+            </div>
+          );
+        })() : null}
 
         {/* Credentials form */}
         <form action={formAction} className="space-y-4">

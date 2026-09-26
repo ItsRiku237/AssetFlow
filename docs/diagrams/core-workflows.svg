@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360">
+<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#7c3aed"/><stop offset="1" stop-color="#06b6d4"/></linearGradient><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#67e8f9"/></marker></defs>
+<rect width="1200" height="360" rx="26" fill="#070b16" stroke="#334155"/>
+<text x="48" y="48" font-family="Inter,Arial" font-size="22" font-weight="700" fill="#f8fafc">Core Workflows</text>
+
+<g transform="translate(48,78)">
+<rect width="520" height="230" rx="20" fill="#0f172a" stroke="#334155"/>
+<text x="24" y="34" font-family="Inter,Arial" font-size="13" font-weight="700" fill="#67e8f9">WORKFLOW 01 · ASSET ASSIGNMENT</text>
+<g font-family="Inter,Arial" font-size="13" fill="#e2e8f0">
+<rect x="24" y="62" width="130" height="48" rx="12" fill="#172033"/><text x="89" y="91" text-anchor="middle">Available Asset</text>
+<rect x="195" y="62" width="130" height="48" rx="12" fill="#172033"/><text x="260" y="91" text-anchor="middle">Select Employee</text>
+<rect x="366" y="62" width="130" height="48" rx="12" fill="#172033"/><text x="431" y="91" text-anchor="middle">Assign</text>
+<path d="M154 86H192M325 86H363" stroke="#67e8f9" stroke-width="2" marker-end="url(#a)"/>
+<rect x="110" y="145" width="300" height="48" rx="12" fill="url(#g)" opacity=".8"/><text x="260" y="174" text-anchor="middle" fill="white">Custody + Audit History Created</text>
+<path d="M431 110V133H260V142" stroke="#67e8f9" stroke-width="2" marker-end="url(#a)"/>
+</g></g>
+
+<g transform="translate(632,78)">
+<rect width="520" height="230" rx="20" fill="#0f172a" stroke="#334155"/>
+<text x="24" y="34" font-family="Inter,Arial" font-size="13" font-weight="700" fill="#67e8f9">WORKFLOW 02 · RETURN → REPAIR</text>
+<g font-family="Inter,Arial" font-size="13" fill="#e2e8f0">
+<rect x="24" y="62" width="130" height="48" rx="12" fill="#172033"/><text x="89" y="91" text-anchor="middle">Employee</text>
+<rect x="195" y="62" width="130" height="48" rx="12" fill="#172033"/><text x="260" y="91" text-anchor="middle">Return Request</text>
+<rect x="366" y="62" width="130" height="48" rx="12" fill="#172033"/><text x="431" y="91" text-anchor="middle">Review</text>
+<path d="M154 86H192M325 86H363" stroke="#67e8f9" stroke-width="2" marker-end="url(#a)"/>
+<rect x="70" y="145" width="175" height="48" rx="12" fill="#172033"/><text x="157" y="174" text-anchor="middle">Available</text>
+<rect x="275" y="145" width="175" height="48" rx="12" fill="url(#g)" opacity=".8"/><text x="362" y="174" text-anchor="middle" fill="white">In Repair</text>
+<path d="M431 110V130H157V142M431 110V130H362V142" stroke="#67e8f9" stroke-width="2" marker-end="url(#a)"/>
+</g></g>
+</svg>

@@ -1,30 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360">
-<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#7c3aed"/><stop offset="1" stop-color="#06b6d4"/></linearGradient><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#67e8f9"/></marker></defs>
-<rect width="1200" height="360" rx="26" fill="#070b16" stroke="#334155"/>
-<text x="48" y="48" font-family="Inter,Arial" font-size="22" font-weight="700" fill="#f8fafc">Core Workflows</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="380" viewBox="0 0 1200 380">
+<defs>
+  <linearGradient id="cw-g" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#7c3aed"/>
+    <stop offset="100%" stop-color="#06b6d4"/>
+  </linearGradient>
+</defs>
 
-<g transform="translate(48,78)">
-<rect width="520" height="230" rx="20" fill="#0f172a" stroke="#334155"/>
-<text x="24" y="34" font-family="Inter,Arial" font-size="13" font-weight="700" fill="#67e8f9">WORKFLOW 01 · ASSET ASSIGNMENT</text>
-<g font-family="Inter,Arial" font-size="13" fill="#e2e8f0">
-<rect x="24" y="62" width="130" height="48" rx="12" fill="#172033"/><text x="89" y="91" text-anchor="middle">Available Asset</text>
-<rect x="195" y="62" width="130" height="48" rx="12" fill="#172033"/><text x="260" y="91" text-anchor="middle">Select Employee</text>
-<rect x="366" y="62" width="130" height="48" rx="12" fill="#172033"/><text x="431" y="91" text-anchor="middle">Assign</text>
-<path d="M154 86H192M325 86H363" stroke="#67e8f9" stroke-width="2" marker-end="url(#a)"/>
-<rect x="110" y="145" width="300" height="48" rx="12" fill="url(#g)" opacity=".8"/><text x="260" y="174" text-anchor="middle" fill="white">Custody + Audit History Created</text>
-<path d="M431 110V133H260V142" stroke="#67e8f9" stroke-width="2" marker-end="url(#a)"/>
-</g></g>
+<!-- Background -->
+<rect width="1200" height="380" rx="26" fill="#070b16" stroke="#334155" stroke-width="1.5"/>
+<text x="50" y="50" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#f8fafc">Core Workflows</text>
 
-<g transform="translate(632,78)">
-<rect width="520" height="230" rx="20" fill="#0f172a" stroke="#334155"/>
-<text x="24" y="34" font-family="Inter,Arial" font-size="13" font-weight="700" fill="#67e8f9">WORKFLOW 02 · RETURN → REPAIR</text>
-<g font-family="Inter,Arial" font-size="13" fill="#e2e8f0">
-<rect x="24" y="62" width="130" height="48" rx="12" fill="#172033"/><text x="89" y="91" text-anchor="middle">Employee</text>
-<rect x="195" y="62" width="130" height="48" rx="12" fill="#172033"/><text x="260" y="91" text-anchor="middle">Return Request</text>
-<rect x="366" y="62" width="130" height="48" rx="12" fill="#172033"/><text x="431" y="91" text-anchor="middle">Review</text>
-<path d="M154 86H192M325 86H363" stroke="#67e8f9" stroke-width="2" marker-end="url(#a)"/>
-<rect x="70" y="145" width="175" height="48" rx="12" fill="#172033"/><text x="157" y="174" text-anchor="middle">Available</text>
-<rect x="275" y="145" width="175" height="48" rx="12" fill="url(#g)" opacity=".8"/><text x="362" y="174" text-anchor="middle" fill="white">In Repair</text>
-<path d="M431 110V130H157V142M431 110V130H362V142" stroke="#67e8f9" stroke-width="2" marker-end="url(#a)"/>
-</g></g>
+<!-- ═══ WORKFLOW 01: Asset Assignment ════════════════════════════════ -->
+<g transform="translate(40,75)">
+  <rect width="530" height="256" rx="20" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
+  <text x="24" y="36" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#67e8f9" letter-spacing="1.5">WORKFLOW 01  ·  ASSET ASSIGNMENT</text>
+
+  <!-- Step boxes -->
+  <rect x="24"  y="60" width="130" height="48" rx="12" fill="#172033" stroke="#334155"/>
+  <text x="89"  y="89" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#e2e8f0">Available Asset</text>
+
+  <rect x="200" y="60" width="130" height="48" rx="12" fill="#172033" stroke="#334155"/>
+  <text x="265" y="89" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#e2e8f0">Select Employee</text>
+
+  <rect x="376" y="60" width="130" height="48" rx="12" fill="#172033" stroke="#334155"/>
+  <text x="441" y="89" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#e2e8f0">Assign</text>
+
+  <!-- Arrow 1: Available → Select -->
+  <line x1="157" y1="84" x2="194" y2="84" stroke="#67e8f9" stroke-width="2"/>
+  <polygon points="194,79 204,84 194,89" fill="#67e8f9"/>
+
+  <!-- Arrow 2: Select → Assign -->
+  <line x1="333" y1="84" x2="370" y2="84" stroke="#67e8f9" stroke-width="2"/>
+  <polygon points="370,79 380,84 370,89" fill="#67e8f9"/>
+
+  <!-- Arrow 3: Assign down to result -->
+  <line x1="441" y1="108" x2="441" y2="138" stroke="#67e8f9" stroke-width="2"/>
+  <line x1="441" y1="138" x2="265" y2="138" stroke="#67e8f9" stroke-width="2"/>
+  <line x1="265" y1="138" x2="265" y2="158" stroke="#67e8f9" stroke-width="2"/>
+  <polygon points="260,158 265,168 270,158" fill="#67e8f9"/>
+
+  <!-- Result box -->
+  <rect x="110" y="168" width="310" height="48" rx="12" fill="url(#cw-g)" opacity=".85"/>
+  <text x="265" y="197" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="white" font-weight="600">Custody + Audit History Created</text>
+</g>
+
+<!-- ═══ WORKFLOW 02: Return → Repair ════════════════════════════════ -->
+<g transform="translate(628,75)">
+  <rect width="530" height="256" rx="20" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
+  <text x="24" y="36" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#67e8f9" letter-spacing="1.5">WORKFLOW 02  ·  RETURN  →  REPAIR</text>
+
+  <!-- Step boxes -->
+  <rect x="24"  y="60" width="130" height="48" rx="12" fill="#172033" stroke="#334155"/>
+  <text x="89"  y="89" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#e2e8f0">Employee</text>
+
+  <rect x="200" y="60" width="130" height="48" rx="12" fill="#172033" stroke="#334155"/>
+  <text x="265" y="83" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#e2e8f0">Return</text>
+  <text x="265" y="99" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#e2e8f0">Request</text>
+
+  <rect x="376" y="60" width="130" height="48" rx="12" fill="#172033" stroke="#334155"/>
+  <text x="441" y="89" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#e2e8f0">Review</text>
+
+  <!-- Arrow: Employee → Return -->
+  <line x1="157" y1="84" x2="194" y2="84" stroke="#67e8f9" stroke-width="2"/>
+  <polygon points="194,79 204,84 194,89" fill="#67e8f9"/>
+
+  <!-- Arrow: Return → Review -->
+  <line x1="333" y1="84" x2="370" y2="84" stroke="#67e8f9" stroke-width="2"/>
+  <polygon points="370,79 380,84 370,89" fill="#67e8f9"/>
+
+  <!-- Arrow: Review → Available (left branch) -->
+  <line x1="441" y1="108" x2="441" y2="135" stroke="#67e8f9" stroke-width="2"/>
+  <line x1="441" y1="135" x2="160" y2="135" stroke="#67e8f9" stroke-width="2"/>
+  <line x1="160" y1="135" x2="160" y2="158" stroke="#67e8f9" stroke-width="2"/>
+  <polygon points="155,158 160,168 165,158" fill="#67e8f9"/>
+
+  <!-- Arrow: Review → In Repair (right branch) -->
+  <line x1="441" y1="108" x2="441" y2="158" stroke="#67e8f9" stroke-width="2"/>
+  <polygon points="436,158 441,168 446,158" fill="#67e8f9"/>
+
+  <!-- Result boxes -->
+  <rect x="70"  y="168" width="178" height="48" rx="12" fill="#172033" stroke="#334155"/>
+  <text x="159" y="197" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#e2e8f0">Available</text>
+
+  <rect x="276" y="168" width="178" height="48" rx="12" fill="url(#cw-g)" opacity=".85"/>
+  <text x="365" y="197" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="white" font-weight="600">In Repair</text>
+</g>
 </svg>

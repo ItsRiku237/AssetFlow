@@ -1,15 +1,64 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500">
-<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#7c3aed"/><stop offset="1" stop-color="#06b6d4"/></linearGradient><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#67e8f9"/></marker></defs>
-<rect width="1200" height="500" rx="28" fill="#070b16" stroke="#334155"/>
-<text x="50" y="50" font-family="Inter,Arial" font-size="25" font-weight="700" fill="#f8fafc">System Architecture</text>
-<text x="50" y="77" font-family="Inter,Arial" font-size="14" fill="#94a3b8">Browser → Next.js → Auth / Business Logic → PostgreSQL + Email.</text>
-<g font-family="Inter,Arial">
-<rect x="55" y="145" width="205" height="105" rx="20" fill="#111827" stroke="#475569"/><text x="157" y="180" text-anchor="middle" font-size="19" font-weight="700" fill="#f8fafc">Browser</text><text x="157" y="207" text-anchor="middle" font-size="12" fill="#94a3b8">Admin / Employee UI</text>
-<rect x="330" y="115" width="260" height="165" rx="22" fill="url(#g)" opacity=".82"/><text x="460" y="155" text-anchor="middle" font-size="20" font-weight="700" fill="white">Next.js App</text><text x="460" y="184" text-anchor="middle" font-size="12" fill="white">App Router + React + TypeScript</text><text x="460" y="208" text-anchor="middle" font-size="12" fill="white">Server Actions / Route Handlers</text><text x="460" y="232" text-anchor="middle" font-size="12" fill="white">RBAC + Zod validation</text>
-<rect x="660" y="95" width="210" height="90" rx="18" fill="#111827" stroke="#475569"/><text x="765" y="130" text-anchor="middle" font-size="18" font-weight="700" fill="#f8fafc">Auth.js</text><text x="765" y="156" text-anchor="middle" font-size="12" fill="#94a3b8">Credentials + Google</text>
-<rect x="660" y="205" width="210" height="90" rx="18" fill="#111827" stroke="#475569"/><text x="765" y="240" text-anchor="middle" font-size="18" font-weight="700" fill="#f8fafc">Prisma 7</text><text x="765" y="266" text-anchor="middle" font-size="12" fill="#94a3b8">Relational data access</text>
-<rect x="935" y="145" width="205" height="105" rx="20" fill="#111827" stroke="#475569"/><text x="1037" y="180" text-anchor="middle" font-size="19" font-weight="700" fill="#f8fafc">Neon</text><text x="1037" y="207" text-anchor="middle" font-size="12" fill="#94a3b8">PostgreSQL database</text>
-<path d="M260 197H325M590 150H655M590 245H655M870 150H930M870 250H930" stroke="#67e8f9" stroke-width="3" marker-end="url(#a)"/>
-<rect x="250" y="350" width="700" height="72" rx="18" fill="#0f172a" stroke="#334155"/><text x="600" y="380" text-anchor="middle" font-family="Inter,Arial" font-size="15" font-weight="700" fill="#67e8f9">External services</text><text x="600" y="402" text-anchor="middle" font-family="Inter,Arial" font-size="13" fill="#cbd5e1">Resend → OTP / email notifications · Google → OAuth · Vercel → deployment</text>
-</g>
+<defs>
+  <linearGradient id="sa-g" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#7c3aed"/>
+    <stop offset="100%" stop-color="#06b6d4"/>
+  </linearGradient>
+</defs>
+
+<rect width="1200" height="500" rx="28" fill="#070b16" stroke="#334155" stroke-width="1.5"/>
+<text x="50" y="50" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#f8fafc">System Architecture</text>
+<text x="50" y="77" font-family="Arial,sans-serif" font-size="14" fill="#94a3b8">Browser → Next.js → Auth / Business Logic → PostgreSQL + Email.</text>
+
+<!-- Browser -->
+<rect x="55" y="145" width="205" height="105" rx="20" fill="#111827" stroke="#475569" stroke-width="1.5"/>
+<text x="157" y="188" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#f8fafc">Browser</text>
+<text x="157" y="212" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#94a3b8">Admin / Employee UI</text>
+
+<!-- Arrow: Browser → Next.js -->
+<line x1="262" y1="197" x2="322" y2="197" stroke="#67e8f9" stroke-width="3"/>
+<polygon points="322,190 336,197 322,204" fill="#67e8f9"/>
+
+<!-- Next.js App -->
+<rect x="336" y="115" width="260" height="165" rx="22" fill="url(#sa-g)" opacity=".82"/>
+<text x="466" y="160" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="white">Next.js App</text>
+<text x="466" y="186" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="white">App Router + React + TypeScript</text>
+<text x="466" y="208" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="white">Server Actions / Route Handlers</text>
+<text x="466" y="230" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="white">RBAC + Zod validation</text>
+
+<!-- Arrow: Next.js → Auth.js -->
+<line x1="596" y1="155" x2="650" y2="140" stroke="#67e8f9" stroke-width="2.5"/>
+<polygon points="645,132 660,138 650,148" fill="#67e8f9"/>
+
+<!-- Arrow: Next.js → Prisma -->
+<line x1="596" y1="240" x2="650" y2="250" stroke="#67e8f9" stroke-width="2.5"/>
+<polygon points="645,243 660,250 647,258" fill="#67e8f9"/>
+
+<!-- Auth.js -->
+<rect x="664" y="95" width="210" height="90" rx="18" fill="#111827" stroke="#475569" stroke-width="1.5"/>
+<text x="769" y="135" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#f8fafc">Auth.js</text>
+<text x="769" y="160" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#94a3b8">Credentials + Google OAuth</text>
+
+<!-- Arrow: Auth.js → Neon -->
+<line x1="874" y1="140" x2="926" y2="185" stroke="#67e8f9" stroke-width="2.5"/>
+<polygon points="919,179 932,188 922,197" fill="#67e8f9"/>
+
+<!-- Prisma 7 -->
+<rect x="664" y="205" width="210" height="90" rx="18" fill="#111827" stroke="#475569" stroke-width="1.5"/>
+<text x="769" y="245" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#f8fafc">Prisma 7</text>
+<text x="769" y="270" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#94a3b8">Relational data access</text>
+
+<!-- Arrow: Prisma → Neon -->
+<line x1="874" y1="250" x2="926" y2="220" stroke="#67e8f9" stroke-width="2.5"/>
+<polygon points="920,212 934,218 925,228" fill="#67e8f9"/>
+
+<!-- Neon PostgreSQL -->
+<rect x="940" y="145" width="210" height="105" rx="20" fill="#111827" stroke="#475569" stroke-width="1.5"/>
+<text x="1045" y="188" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#f8fafc">Neon</text>
+<text x="1045" y="212" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#94a3b8">PostgreSQL database</text>
+
+<!-- External services bar -->
+<rect x="250" y="355" width="700" height="72" rx="18" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
+<text x="600" y="385" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#67e8f9">External services</text>
+<text x="600" y="408" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#cbd5e1">Resend — OTP / email notifications  ·  Google — OAuth  ·  Vercel — deployment</text>
 </svg>

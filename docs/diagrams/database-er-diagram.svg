@@ -1,20 +1,91 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520">
-<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#7c3aed"/><stop offset="1" stop-color="#06b6d4"/></linearGradient><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#67e8f9"/></marker></defs>
-<rect width="1200" height="520" rx="28" fill="#070b16" stroke="#334155"/>
-<text x="50" y="50" font-family="Inter,Arial" font-size="25" font-weight="700" fill="#f8fafc">Database — Simple Relationship Map</text>
-<text x="50" y="77" font-family="Inter,Arial" font-size="14" fill="#94a3b8">One asset can collect many workflow records over its lifetime.</text>
-<g font-family="Inter,Arial">
-<rect x="70" y="130" width="190" height="100" rx="18" fill="#111827" stroke="#475569"/><text x="165" y="168" text-anchor="middle" font-size="19" font-weight="700" fill="#f8fafc">User</text><text x="165" y="196" text-anchor="middle" font-size="12" fill="#94a3b8">login + role</text>
-<rect x="330" y="130" width="190" height="100" rx="18" fill="#111827" stroke="#475569"/><text x="425" y="168" text-anchor="middle" font-size="19" font-weight="700" fill="#f8fafc">Employee</text><text x="425" y="196" text-anchor="middle" font-size="12" fill="#94a3b8">directory record</text>
-<rect x="590" y="110" width="210" height="140" rx="22" fill="url(#g)" opacity=".84"/><text x="695" y="155" text-anchor="middle" font-size="22" font-weight="700" fill="white">Asset</text><text x="695" y="182" text-anchor="middle" font-size="12" fill="white">the central item</text><text x="695" y="205" text-anchor="middle" font-size="12" fill="white">status + identity</text>
-<path d="M260 180H325M520 180H585" stroke="#67e8f9" stroke-width="3" marker-end="url(#a)"/>
-<g fill="#111827" stroke="#475569">
-<rect x="70" y="330" width="150" height="70" rx="14"/><rect x="250" y="330" width="150" height="70" rx="14"/><rect x="430" y="330" width="150" height="70" rx="14"/><rect x="610" y="330" width="150" height="70" rx="14"/><rect x="790" y="330" width="150" height="70" rx="14"/><rect x="970" y="330" width="150" height="70" rx="14"/>
-</g>
-<g font-family="Inter,Arial" font-size="13" font-weight="700" fill="#f8fafc">
-<text x="145" y="360" text-anchor="middle">Assignment</text><text x="325" y="360" text-anchor="middle">Return Request</text><text x="505" y="360" text-anchor="middle">Asset Request</text><text x="685" y="360" text-anchor="middle">Maintenance</text><text x="865" y="360" text-anchor="middle">Reimbursement</text><text x="1045" y="360" text-anchor="middle">Location</text>
-</g>
-<path d="M695 250V300M145 300V330M325 300V330M505 300V330M685 300V330M865 300V330M1045 300V330" stroke="#67e8f9" stroke-width="2" marker-end="url(#a)"/>
-<rect x="255" y="430" width="690" height="55" rx="15" fill="#0f172a" stroke="#334155"/><text x="600" y="463" text-anchor="middle" font-family="Inter,Arial" font-size="13" fill="#cbd5e1">AuditLog + Notification reference the acting / receiving User.</text>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="530" viewBox="0 0 1200 530">
+<defs>
+  <linearGradient id="er-g" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#7c3aed"/>
+    <stop offset="100%" stop-color="#06b6d4"/>
+  </linearGradient>
+</defs>
+
+<rect width="1200" height="530" rx="28" fill="#070b16" stroke="#334155" stroke-width="1.5"/>
+<text x="50" y="50" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#f8fafc">Database — Relationship Map</text>
+<text x="50" y="77" font-family="Arial,sans-serif" font-size="14" fill="#94a3b8">One asset collects many workflow records over its lifetime.</text>
+
+<!-- User -->
+<rect x="70" y="128" width="185" height="100" rx="18" fill="#111827" stroke="#475569" stroke-width="1.5"/>
+<text x="162" y="168" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#f8fafc">User</text>
+<text x="162" y="194" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#94a3b8">login + role</text>
+
+<!-- Arrow: User → Employee -->
+<line x1="257" y1="178" x2="316" y2="178" stroke="#67e8f9" stroke-width="3"/>
+<polygon points="316,171 330,178 316,185" fill="#67e8f9"/>
+
+<!-- Employee -->
+<rect x="330" y="128" width="185" height="100" rx="18" fill="#111827" stroke="#475569" stroke-width="1.5"/>
+<text x="422" y="168" text-anchor="middle" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#f8fafc">Employee</text>
+<text x="422" y="194" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#94a3b8">directory record</text>
+
+<!-- Arrow: Employee → Asset -->
+<line x1="517" y1="178" x2="580" y2="178" stroke="#67e8f9" stroke-width="3"/>
+<polygon points="580,171 594,178 580,185" fill="#67e8f9"/>
+
+<!-- Asset (central, gradient) -->
+<rect x="594" y="108" width="210" height="140" rx="22" fill="url(#er-g)" opacity=".85"/>
+<text x="699" y="163" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="white">Asset</text>
+<text x="699" y="188" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="white">the central item</text>
+<text x="699" y="210" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="white">status + identity</text>
+
+<!-- Fanout: Asset → 6 child records -->
+<!-- Asset bottom-centre to horizontal bus at y=294 -->
+<line x1="699" y1="248" x2="699" y2="294" stroke="#67e8f9" stroke-width="2"/>
+<!-- Horizontal bus -->
+<line x1="145" y1="294" x2="1045" y2="294" stroke="#67e8f9" stroke-width="2"/>
+<!-- 6 vertical drops from bus to child boxes -->
+<line x1="145" y1="294" x2="145" y2="330" stroke="#67e8f9" stroke-width="2"/>
+<polygon points="139,330 145,342 151,330" fill="#67e8f9"/>
+
+<line x1="325" y1="294" x2="325" y2="330" stroke="#67e8f9" stroke-width="2"/>
+<polygon points="319,330 325,342 331,330" fill="#67e8f9"/>
+
+<line x1="505" y1="294" x2="505" y2="330" stroke="#67e8f9" stroke-width="2"/>
+<polygon points="499,330 505,342 511,330" fill="#67e8f9"/>
+
+<line x1="685" y1="294" x2="685" y2="330" stroke="#67e8f9" stroke-width="2"/>
+<polygon points="679,330 685,342 691,330" fill="#67e8f9"/>
+
+<line x1="865" y1="294" x2="865" y2="330" stroke="#67e8f9" stroke-width="2"/>
+<polygon points="859,330 865,342 871,330" fill="#67e8f9"/>
+
+<line x1="1045" y1="294" x2="1045" y2="330" stroke="#67e8f9" stroke-width="2"/>
+<polygon points="1039,330 1045,342 1051,330" fill="#67e8f9"/>
+
+<!-- Child record boxes -->
+<rect x="70"  y="342" width="150" height="68" rx="14" fill="#111827" stroke="#475569" stroke-width="1.2"/>
+<rect x="250" y="342" width="150" height="68" rx="14" fill="#111827" stroke="#475569" stroke-width="1.2"/>
+<rect x="430" y="342" width="150" height="68" rx="14" fill="#111827" stroke="#475569" stroke-width="1.2"/>
+<rect x="610" y="342" width="150" height="68" rx="14" fill="#111827" stroke="#475569" stroke-width="1.2"/>
+<rect x="790" y="342" width="150" height="68" rx="14" fill="#111827" stroke="#475569" stroke-width="1.2"/>
+<rect x="970" y="342" width="150" height="68" rx="14" fill="#111827" stroke="#475569" stroke-width="1.2"/>
+
+<!-- Child record labels -->
+<text x="145"  y="366" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#f8fafc">Assignment</text>
+<text x="145"  y="388" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#94a3b8">custody record</text>
+
+<text x="325"  y="366" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#f8fafc">Return Request</text>
+<text x="325"  y="388" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#94a3b8">return workflow</text>
+
+<text x="505"  y="366" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#f8fafc">Asset Request</text>
+<text x="505"  y="388" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#94a3b8">employee request</text>
+
+<text x="685"  y="366" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#f8fafc">Maintenance</text>
+<text x="685"  y="388" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#94a3b8">repair record</text>
+
+<text x="865"  y="366" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#f8fafc">Reimbursement</text>
+<text x="865"  y="388" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#94a3b8">expense claim</text>
+
+<text x="1045" y="366" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#f8fafc">Location</text>
+<text x="1045" y="388" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#94a3b8">physical location</text>
+
+<!-- Footer note -->
+<rect x="255" y="438" width="690" height="55" rx="15" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
+<text x="600" y="468" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#cbd5e1">AuditLog + Notification reference the acting / receiving User via FK with SetNull on delete.</text>
 </svg>

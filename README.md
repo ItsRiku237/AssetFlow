@@ -1,50 +1,35 @@
+<div align="center">
 
-<h1 align="center">🚀 ADP AssetHub</h1>
+# 🚀 ADP AssetHub
 
+**Enterprise Asset Management • Assignment • Returns • Repairs • Auditability**
 
-
-> Enterprise Asset Management & Lifecycle Tracking Platform
-
-ADP AssetHub is an enterprise-style asset management platform for tracking company IT assets through their complete lifecycle — from procurement to retirement — with full employee custody tracking, repair workflows, reimbursements, and an immutable audit trail.
+🌐 [Live Demo](https://assetflow-rust.vercel.app/) &nbsp;|&nbsp; 💻 [GitHub Repository](https://github.com/ItsRiku237/AssetFlow)
 
 <p>
   <img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-000000?logo=next.js&logoColor=white">
   <img alt="React" src="https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white">
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white">
-  <img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-DB-4169E1?logo=postgresql&logoColor=white">
+  <img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-Neon-4169E1?logo=postgresql&logoColor=white">
   <img alt="Prisma" src="https://img.shields.io/badge/Prisma-7-2D3748?logo=prisma&logoColor=white">
   <img alt="Auth.js" src="https://img.shields.io/badge/Auth.js-v5-24292E">
   <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white">
-  <img alt="Vercel" src="https://img.shields.io/badge/Vercel-Deployed-000000?logo=vercel&logoColor=white">
-  <img alt="Neon" src="https://img.shields.io/badge/Neon-PostgreSQL-00E599?logo=postgresql&logoColor=white">
+  <img alt="Vercel" src="https://img.shields.io/badge/Deployed-Vercel-000000?logo=vercel&logoColor=white">
 </p>
 
-🌐 **Live Demo:** _coming soon_ &nbsp;|&nbsp; 🎥 **Product Demo:** see [§ Product Demo](#-product-demo) below
+</div>
 
 ---
 
-## 📊 At a Glance
-
-<table>
-<tr>
-<td><b>🎯 Purpose</b></td><td>Enterprise IT asset management</td>
-<td><b>🧠 Architecture</b></td><td>Next.js + Prisma + PostgreSQL</td>
-</tr>
-<tr>
-<td><b>👥 Roles</b></td><td>Super Admin · Admin · Employee</td>
-<td><b>🔐 Auth</b></td><td>Auth.js — Credentials + Google OAuth</td>
-</tr>
-<tr>
-<td><b>🗄️ Database</b></td><td>PostgreSQL on Neon</td>
-<td><b>🚀 Deployment</b></td><td>Vercel</td>
-</tr>
-</table>
+ADP AssetHub is an enterprise-grade asset management platform for tracking company IT assets from procurement to retirement — with employee custody tracking, repair workflows, reimbursements, and an immutable audit trail.
 
 ---
 
 ## 📸 Product Preview
 
+<div align="center">
 <img src="./docs/screenshots/admin-dashboard.png" alt="ADP AssetHub — Admin Dashboard" width="860">
+</div>
 
 ---
 
@@ -60,12 +45,12 @@ ADP AssetHub is an enterprise-style asset management platform for tracking compa
 <td width="50%"><img src="./docs/features/feature-04-return-requests.svg" alt="Return Requests" width="420"></td>
 </tr>
 <tr>
-<td width="50%"><img src="./docs/features/feature-05-repairs-and-maintenance.svg" alt="Repairs & Maintenance" width="420"></td>
+<td width="50%"><img src="./docs/features/feature-05-repairs-and-maintenance.svg" alt="Repairs &amp; Maintenance" width="420"></td>
 <td width="50%"><img src="./docs/features/feature-06-asset-requests.svg" alt="Asset Requests" width="420"></td>
 </tr>
 <tr>
 <td width="50%"><img src="./docs/features/feature-07-reimbursements.svg" alt="Reimbursements" width="420"></td>
-<td width="50%"><img src="./docs/features/feature-08-audit-and-notifications.svg" alt="Audit & Notifications" width="420"></td>
+<td width="50%"><img src="./docs/features/feature-08-audit-and-notifications.svg" alt="Audit &amp; Notifications" width="420"></td>
 </tr>
 </table>
 
@@ -75,13 +60,14 @@ ADP AssetHub is an enterprise-style asset management platform for tracking compa
 
 <img src="./docs/diagrams/role-access-flow.svg" alt="Role Access Flow" width="860">
 
-| Role | Access |
-|---|---|
-| **Super Admin** | Full platform access + administrator account management |
-| **Admin** | Assets, employees, assignments, requests, repairs, reimbursements, audit logs |
-| **Employee** | Own assets, available assets, requests, returns, profile |
+<table>
+<tr><th>Role</th><th>Access</th></tr>
+<tr><td><b>Super Admin</b></td><td>Full platform access + administrator account management</td></tr>
+<tr><td><b>Admin</b></td><td>Assets, employees, assignments, requests, repairs, reimbursements, audit logs</td></tr>
+<tr><td><b>Employee</b></td><td>Own assets, available assets, requests, returns, profile</td></tr>
+</table>
 
-> Authorization is enforced **server-side** for every page and action — role visibility in the UI is cosmetic; the real check happens on the server.
+> All role checks are enforced **server-side** — UI visibility is cosmetic only.
 
 ---
 
@@ -93,42 +79,28 @@ ADP AssetHub is an enterprise-style asset management platform for tracking compa
 <tr>
 <td width="50%">
 
-**Asset Workflow**
-1. Admin assigns an available asset to an employee
-2. Employee uses the asset
-3. Employee requests a return
-4. Admin approves → asset becomes available
-5. Admin can send asset to repair → returns to available
+**Asset Assignment**
+1. Admin selects an available asset and an employee
+2. Asset transitions to `ASSIGNED`
+3. Custody record + audit log created
+
+**Return Request**
+1. Employee submits a return request
+2. Admin approves → asset back to `AVAILABLE`
+3. Admin redirects → asset goes `IN_REPAIR`
 
 </td>
 <td width="50%">
+
+**Reimbursement**
+1. Employee submits expense against a repair record
+2. Admin reviews and approves or rejects
+3. Notification sent; audit log updated
 
 **Employee Onboarding**
-1. Admin creates employee directory record
-2. System sends OTP activation email
-3. Employee enters OTP to activate account
-4. Account is linked to directory record
-5. Employee accesses dashboard
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-**Reimbursement Flow**
-1. Employee pays for a repair out-of-pocket
-2. Employee submits a reimbursement request (optionally linked to maintenance record)
-3. Admin reviews, approves or rejects
-4. Employee is notified; audit log is updated
-
-</td>
-<td width="50%">
-
-**Asset Request Flow**
-1. Employee requests an available asset
-2. Admin reviews the request
-3. Admin approves → assignment is created automatically
-4. Admin rejects → employee is notified
+1. Admin creates directory record
+2. OTP email sent via Resend
+3. Employee activates account and signs in
 
 </td>
 </tr>
@@ -145,6 +117,7 @@ ADP AssetHub is an enterprise-style asset management platform for tracking compa
 <td width="50%">
 
 **States**
+
 | State | Meaning |
 |---|---|
 | `AVAILABLE` | Ready for assignment |
@@ -156,7 +129,8 @@ ADP AssetHub is an enterprise-style asset management platform for tracking compa
 </td>
 <td width="50%">
 
-**Transitions**
+**Valid Transitions**
+
 - Admin assigns → `AVAILABLE` → `ASSIGNED`
 - Employee requests return → `ASSIGNED` → `RETURN_REQUESTED`
 - Admin approves return → `RETURN_REQUESTED` → `AVAILABLE`
@@ -177,12 +151,12 @@ ADP AssetHub is an enterprise-style asset management platform for tracking compa
 ```
 Browser
   └── Next.js App (Vercel)
-        ├── UI — React Server + Client Components
-        ├── Server Actions — mutations, validated with Zod
-        ├── Auth — Auth.js v5 (JWT, Credentials, Google OAuth)
-        ├── Prisma ORM
+        ├── React Server + Client Components
+        ├── Server Actions — mutations validated with Zod
+        ├── Auth.js v5 — JWT sessions, Credentials, Google OAuth
+        ├── Prisma 7 ORM
         └── Neon PostgreSQL
-              External: Resend (OTP email), Google OAuth
+              External: Resend (OTP email) · Google OAuth
 ```
 
 ---
@@ -196,9 +170,10 @@ Browser
 <td width="50%">
 
 **Core Models**
+
 | Model | Role |
 |---|---|
-| `User` | Login identity |
+| `User` | Login identity + role |
 | `Employee` | Company directory record |
 | `Asset` | Trackable inventory item |
 | `AssetAssignment` | Custody record |
@@ -209,6 +184,7 @@ Browser
 <td width="50%">
 
 **Supporting Models**
+
 | Model | Role |
 |---|---|
 | `MaintenanceRecord` | Repair history |
@@ -222,27 +198,41 @@ Browser
 </tr>
 </table>
 
-**Key relationships:**
+**Key design decisions:**
 - `User` optionally links to one `Employee` — directory records exist before sign-in
-- `Asset` accumulates `AssetAssignment`, `ReturnRequest`, `AssetRequest`, `MaintenanceRecord`, `Reimbursement`, and `AssetLocation` records over its lifetime
-- `AuditLog` references the acting `User` with `onDelete: SetNull` — audit history is preserved even if an admin account is deleted
+- `Asset` accumulates `Assignment`, `ReturnRequest`, `AssetRequest`, `MaintenanceRecord`, `Reimbursement`, and `AssetLocation` over its lifetime
+- `AuditLog.actorId` uses `onDelete: SetNull` — audit history is preserved even when an admin is deleted
 
 ---
 
 ## 🔐 Security & Authorization
 
+<table>
+<tr>
+<td width="50%">
+
 | Mechanism | Implementation |
 |---|---|
 | Authentication | Auth.js v5 — JWT sessions |
 | Passwords | bcrypt hashing |
-| OAuth | Google — email-matched employee directory only |
-| Employee onboarding | Hashed OTP activation code via Resend |
-| Route authorization | `requireAuth` / `requireRole` server-side guards |
-| Mutation authorization | Per-action server-side ownership + role checks |
+| OAuth | Google — email matched to employee directory only |
+| Onboarding | Hashed OTP sent via Resend |
+| Route guards | `requireAuth` / `requireRole` server-side |
+
+</td>
+<td width="50%">
+
+| Mechanism | Implementation |
+|---|---|
+| Mutation guards | Per-action ownership + role checks |
 | Input validation | Zod on every server action |
 | Audit trail | Append-only `AuditLog` table |
-| Demo isolation | Server-side guards scope demo sessions to demo-tagged data |
-| Error pages | Auth errors surfaced as branded, user-friendly messages — no stack traces |
+| Demo isolation | Server-side guards scope demo to tagged data |
+| Error handling | Auth errors shown as branded messages — no traces |
+
+</td>
+</tr>
+</table>
 
 ---
 
@@ -251,23 +241,28 @@ Browser
 ```
 .
 ├── prisma/
-│   ├── schema.prisma          # Database schema — models, enums, relations
-│   ├── seed.ts                # Development seed (demo accounts + assets)
+│   ├── schema.prisma          # Models, enums, relations
+│   ├── seed.ts                # Dev seed — demo accounts + sample assets
 │   └── migrations/            # Prisma migration history
 │
 ├── public/
-│   └── images/                # Hero background images used in glass UI
+│   └── images/                # Hero background images for glass UI
 │
 ├── scripts/
-│   └── promote-super-admin.ts # CLI: promote an existing admin → super admin
+│   └── promote-super-admin.ts # CLI: promote existing admin → super admin
+│
+├── docs/
+│   ├── screenshots/           # README screenshots
+│   ├── features/              # Feature card SVGs
+│   └── diagrams/              # Architecture + workflow SVGs
 │
 ├── src/
 │   ├── app/
-│   │   ├── (auth)/            # Login, register, deactivated error pages
-│   │   ├── (dashboard)/       # All protected pages (admin + employee)
-│   │   │   ├── admins/        # Admin management (Super Admin only)
+│   │   ├── (auth)/            # Login, register, deactivated pages
+│   │   ├── (dashboard)/       # All protected pages
+│   │   │   ├── admins/        # Admin management — Super Admin only
 │   │   │   ├── asset-requests/
-│   │   │   ├── assets/        # Asset list, detail, create, edit
+│   │   │   ├── assets/        # List, detail [id], create, edit [id]/edit
 │   │   │   ├── assignments/
 │   │   │   ├── audit-logs/
 │   │   │   ├── available-assets/
@@ -280,7 +275,7 @@ Browser
 │   │   │   ├── return-requests/
 │   │   │   └── settings/
 │   │   ├── (onboarding)/      # Employee OTP onboarding flow
-│   │   ├── api/auth/          # Auth.js API handler
+│   │   ├── api/auth/          # Auth.js catch-all route handler
 │   │   └── demo/              # Public demo entry point
 │   │
 │   ├── components/
@@ -288,20 +283,20 @@ Browser
 │   │   ├── layout/            # Sidebar, Topbar, NavLinks, MobileSidebar, NotificationBell
 │   │   ├── shared/            # PageHeader, EmptyState, StatusBadge, InfoGrid
 │   │   ├── dashboard/         # DashboardHero, DashboardSection, ActivityRow
-│   │   ├── assets/            # AssetTable, AssetForm, AssetTimeline, AssetActions…
-│   │   ├── employees/         # EmployeeTable, ActivateEmployeeDialog…
+│   │   ├── assets/            # AssetTable, AssetForm, AssetTimeline, AssetActions
+│   │   ├── employees/         # EmployeeTable, ActivateEmployeeDialog
 │   │   ├── admins/            # AdminTable, InviteAdminDialog, AdminStatusButton
 │   │   ├── audit-logs/        # AuditLogTable, AuditLogFilters, Pagination
-│   │   ├── reimbursements/    # Submit / Approve / Reject / Cancel dialogs + table
+│   │   ├── reimbursements/    # Submit / Approve / Reject / Cancel + table
 │   │   └── settings/          # ThemeSettings, ChangePasswordForm
 │   │
 │   ├── lib/
 │   │   ├── actions/           # Server actions — one file per domain (mutations)
-│   │   ├── data/              # Server-side data-fetching — one file per domain (reads)
+│   │   ├── data/              # Server data-fetching — one file per domain (reads)
 │   │   ├── validations/       # Zod schemas — one file per domain
-│   │   ├── auth-guards.ts     # requireAuth / requireRole — real authorization boundary
+│   │   ├── auth-guards.ts     # requireAuth / requireRole — authorization boundary
 │   │   ├── audit.ts           # recordAuditLog helper
-│   │   ├── notifications.ts   # createNotification / createNotifications helpers
+│   │   ├── notifications.ts   # createNotification / createNotifications
 │   │   ├── demo.ts            # Demo-mode isolation guards
 │   │   ├── email.ts           # Resend email helpers
 │   │   ├── otp.ts             # OTP generation / verification
@@ -312,12 +307,12 @@ Browser
 │   │   ├── nav.ts             # Navigation items keyed by role
 │   │   └── route-access.ts    # Route → required role mapping
 │   │
-│   ├── types/                 # TypeScript type declarations
+│   ├── types/                 # TypeScript declarations
 │   ├── auth.ts                # NextAuth instance (Node.js — full features)
 │   ├── auth.config.ts         # NextAuth config (edge-safe — middleware)
-│   └── proxy.ts               # Edge-level middleware route gate
+│   └── proxy.ts               # Edge middleware route gate
 │
-├── auth.config.ts             # Root auth config (shared base)
+├── auth.config.ts             # Root auth config base
 └── .env.example               # Environment variable reference
 ```
 
@@ -325,20 +320,15 @@ Browser
 
 ## 🎥 Product Demo
 
-> **Watch the full ADP AssetHub walkthrough**
+**Watch the full ADP AssetHub product walkthrough**
 
-The demo covers:
-- Authentication (credentials + Google OAuth)
-- Admin Dashboard, assets, employees, assignments
-- Asset requests, return requests, repairs, reimbursements
-- Audit logs, admin management, super admin controls
-- Full employee experience
+> The demo video covers the complete admin and employee experience including authentication, asset management, assignments, return requests, repairs, reimbursements, audit logs, and admin controls.
 
 ```
 docs/demo/adp-assethub-demo.mp4
 ```
 
-> _Video file not yet committed to the repository. Place it at the path above and update this section with a hosted link (YouTube / Loom / GitHub Release asset) for best GitHub README compatibility._
+> _Place the recorded demo at the path above. For GitHub README compatibility, host it on YouTube, Loom, or as a GitHub Release asset and update this section with the public link._
 
 ---
 
@@ -451,32 +441,28 @@ docs/demo/adp-assethub-demo.mp4
 
 <table>
 <tr>
-<td><b>Layer</b></td><td><b>Technology</b></td>
-<td><b>Layer</b></td><td><b>Technology</b></td>
+<td><b>Framework</b></td><td>Next.js 16 (App Router)</td>
+<td><b>Language</b></td><td>TypeScript 5</td>
 </tr>
 <tr>
-<td>Framework</td><td>Next.js 16 (App Router)</td>
-<td>Language</td><td>TypeScript 5</td>
+<td><b>UI</b></td><td>React 19 + Tailwind CSS 4</td>
+<td><b>Validation</b></td><td>Zod</td>
 </tr>
 <tr>
-<td>UI</td><td>React 19 + Tailwind CSS 4</td>
-<td>Validation</td><td>Zod</td>
+<td><b>Database</b></td><td>PostgreSQL (Neon)</td>
+<td><b>ORM</b></td><td>Prisma 7</td>
 </tr>
 <tr>
-<td>Database</td><td>PostgreSQL (Neon)</td>
-<td>ORM</td><td>Prisma 7</td>
+<td><b>Authentication</b></td><td>Auth.js v5</td>
+<td><b>OAuth</b></td><td>Google</td>
 </tr>
 <tr>
-<td>Authentication</td><td>Auth.js v5</td>
-<td>OAuth</td><td>Google</td>
+<td><b>Email</b></td><td>Resend</td>
+<td><b>Icons</b></td><td>Lucide React</td>
 </tr>
 <tr>
-<td>Email</td><td>Resend</td>
-<td>Icons</td><td>Lucide React</td>
-</tr>
-<tr>
-<td>Deployment</td><td>Vercel</td>
-<td>DB Hosting</td><td>Neon</td>
+<td><b>Deployment</b></td><td>Vercel</td>
+<td><b>DB Hosting</b></td><td>Neon</td>
 </tr>
 </table>
 
@@ -486,19 +472,19 @@ docs/demo/adp-assethub-demo.mp4
 
 ```bash
 # 1. Clone
-git clone <repo-url> && cd assetflow
+git clone https://github.com/ItsRiku237/AssetFlow.git && cd AssetFlow
 
-# 2. Install (runs prisma generate automatically)
+# 2. Install (runs prisma generate automatically via postinstall)
 npm install
 
 # 3. Environment
 cp .env.example .env
-# fill in values — see Environment Variables below
+# Fill in values — see Environment Variables below
 
 # 4. Migrate database
 npx prisma migrate deploy
 
-# 5. Seed (optional — creates demo accounts)
+# 5. Seed (optional — creates demo accounts and sample assets)
 npx tsx prisma/seed.ts
 
 # 6. Dev server
@@ -508,9 +494,9 @@ npm run dev
 **Other scripts:**
 
 ```bash
-npm run build                   # production build
-npm run lint                    # ESLint
-npm run promote:superadmin      # promote a user to SUPER_ADMIN via CLI
+npm run build                    # Production build
+npm run lint                     # ESLint check
+npm run promote:superadmin       # CLI: promote a user to SUPER_ADMIN
 ```
 
 ---
@@ -519,24 +505,24 @@ npm run promote:superadmin      # promote a user to SUPER_ADMIN via CLI
 
 | Variable | Purpose | Required |
 |---|---|---|
-| `DATABASE_URL` | PostgreSQL connection string | ✅ |
+| `DATABASE_URL` | PostgreSQL connection string (Neon) | ✅ |
 | `AUTH_SECRET` | Auth.js session encryption secret | ✅ |
-| `AUTH_URL` | App base URL (for OAuth callbacks) | ✅ |
+| `AUTH_URL` | App base URL for OAuth callbacks | ✅ |
 | `AUTH_GOOGLE_ID` | Google OAuth client ID | ✅ |
 | `AUTH_GOOGLE_SECRET` | Google OAuth client secret | ✅ |
-| `RESEND_API_KEY` | Resend API key (OTP emails) | ✅ |
+| `RESEND_API_KEY` | Resend API key for OTP emails | ✅ |
 | `RESEND_FROM` | Sender address for OTP emails | ✅ |
 | `DEMO_ADMIN_PASSWORD` | Password for seeded demo admin | Optional |
 | `DEMO_EMPLOYEE_PASSWORD` | Password for seeded demo employee | Optional |
 | `DEMO_SUPER_ADMIN_PASSWORD` | Password for seeded demo super admin | Optional |
 
-See `.env.example` for placeholder formatting. Never commit real secrets.
+See `.env.example` for placeholder formatting. **Never commit real secrets.**
 
 ---
 
 ## 🎮 Demo Mode
 
-The `/demo` page lets anyone try the Employee, Admin, and Super Admin experiences without an account. Demo sessions are isolated server-side — a demo session can never read or mutate real, non-demo-tagged records regardless of the role it uses.
+The `/demo` page lets anyone try all three roles without an account. Demo sessions are isolated server-side — a demo session cannot read or mutate real, non-demo-tagged records regardless of the role it holds.
 
 ---
 
@@ -546,18 +532,18 @@ The `/demo` page lets anyone try the Employee, Admin, and Super Admin experience
 <tr>
 <td width="50%">
 
-- 🔐 **Server-side RBAC** — every page and action enforces role checks on the server
-- 🔄 **Asset State Machine** — deterministic lifecycle transitions prevent invalid states
-- 📋 **Custody History** — assignment records are preserved, never overwritten
-- 🛡️ **Append-only Audit Log** — full history of system events; actor FK uses `SetNull` on delete
+- 🔐 **Server-side RBAC** — every page and action checks role on the server
+- 🔄 **Asset State Machine** — deterministic transitions prevent invalid states
+- 📋 **Custody History** — assignment records are never overwritten; full history preserved
+- 🛡️ **Append-only Audit Log** — `AuditLog.actorId` uses `SetNull` on delete to preserve history
 
 </td>
 <td width="50%">
 
 - 👤 **Decoupled Directory** — `Employee` records exist independently of login accounts
-- 📨 **OTP Onboarding** — secure account activation links login to directory record
+- 📨 **OTP Onboarding** — secure activation links the login identity to the directory record
 - 🎨 **Shared Design System** — glassmorphism component library keeps UI consistent
-- 📱 **Responsive** — admin and employee UIs adapt across desktop, tablet and mobile
+- 📱 **Fully Responsive** — admin and employee UIs adapt across desktop, tablet and mobile
 
 </td>
 </tr>
@@ -567,8 +553,8 @@ The `/demo` page lets anyone try the Employee, Admin, and Super Admin experience
 
 ## 📈 Future Improvements
 
-- Automated integration and end-to-end test coverage
-- Bulk asset import / export
-- Configurable notification preferences
-- Reporting / analytics dashboards
-- Multi-tenant support
+- End-to-end and integration test coverage
+- Bulk asset import and export
+- Configurable notification preferences per user
+- Analytics and reporting dashboards
+- Multi-tenant organisation support
